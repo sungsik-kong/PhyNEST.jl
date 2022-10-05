@@ -4,16 +4,15 @@ module PhyNE
 #   ENV["JULIA_DEBUG"] = "all"/"PhyNE"
 #   ENV["JULIA_DEBUG"] = " "
 
-    using ProgressMeter
     using DataFrames
     using DelimitedFiles
     using CSV    
+    using ProgressMeter
     using Distributions
     using Optim, LineSearches
     using StatsBase
     using Dates
     using Logging
-    using ProgressMeter
     using Suppressor
     import PhyloNetworks: 
         readTopology, 
