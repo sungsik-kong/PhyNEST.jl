@@ -13,6 +13,7 @@ module PhyNE
     using StatsBase
     using Dates
     using Logging
+    using ProgressMeter
     using Suppressor
     import PhyloNetworks: 
         readTopology, 
