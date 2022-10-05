@@ -14,7 +14,13 @@ TBA
 # Manual
 ```@contents
 Pages = [
-    "manual/overview.md"
+    "manual/input.md",
+    "manual/installation.md",
+    "manual/quartet.md",
+    "manual/optimization.md",
+    "manual/networkest.md",
+    "manual/postanalysis.md",
+    "manual/others.md",
     ]
 ```
 
