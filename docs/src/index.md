@@ -20,7 +20,7 @@ Pages = [
     "manual/optimization.md",
     "manual/networkest.md",
     "manual/postanalysis.md",
-    "manual/others.md"
+    "manual/others.md",
     ]
 ```
 
@@ -66,6 +66,8 @@ Pages = [
     extractNQuartets
     printQuarts
     Phylip
+    mrca
+    nature
     nquartets
     Nquartets
     PhyNe!
