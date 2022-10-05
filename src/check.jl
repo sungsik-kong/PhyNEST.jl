@@ -1,5 +1,11 @@
 function greet()
-    return Dates.now()
+    now=Dates.now()
+    msg=println("
+    Thanks for using PhyNE!
+    It seems like PhyNE has been loaded correctly as of $now.
+    Let's make some networks...:) 
+    [Sungsik Kong, October 2022, @MBD OSU]")
+    return msg
 end
 
 function checkDEBUG(i::Any)

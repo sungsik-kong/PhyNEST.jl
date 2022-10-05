@@ -1,10 +1,10 @@
 # PhyNE.jl
 
-Documentation for PhyNE.jl: Estimating Maximum Composite Likelihood Phylogenetic Network
+Documentation for a julia package [PhyNE.jl](https://github.com/sungsik-kong/PhyNE.jl): Estimating Maximum Composite Likelihood Phylogenetic Network directly from the sequence data using site pattern frequency. 
 
 ---
 
-General info TBA
+Please report bugs or suggestions to the [google group](https://groups.google.com/g/phyne-users). Some frequently asked questions may are already answered in the group.
 
 
 ## References
@@ -16,10 +16,7 @@ TBA
 Pages = [
     "manual/input.md",
     "manual/installation.md",
-    "manual/quartet.md",
-    "manual/optimization.md",
     "manual/networkest.md",
-    "manual/postanalysis.md",
     "manual/others.md",
     ]
 ```

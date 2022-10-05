@@ -3,7 +3,9 @@
 # 3.Probabilities
 
 """
-    GetTrueProbsSymm
+    GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+
+gege
 """
 function GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 
@@ -94,7 +96,9 @@ function GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float
 end
 
 """
-    GetTrueProbsAsymm
+    GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+
+gege
 """
 function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 
@@ -268,7 +272,9 @@ function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Floa
 end
 
 """
-    GetTrueProbsNetTypes
+    GetTrueProbsNetTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+
+gege
 """
 function GetTrueProbsNetTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
     p=GetTrueProbsAsymm(myt1,myt2,myt3,theta,alpha)
@@ -293,7 +299,17 @@ function GetTrueProbsNetTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Fl
 end
 
 """ 
-    simspcounts
+    simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)
+
+This function simulates the 15 site pattern probabilities for a quartet.
+
+    - `type`   specify the type of a quartet. 
+    - `myt1`   Branch length
+    - `myt2`   Branch length
+    - `myt3`   Branch length from the root
+    - `theta`  Theta value (default=0.01)
+    - `alpha`  Alpha value (default=4/3)
+    - `length` Sequence lengths in integers (default=1000000)
 """
 simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64)=simspcounts(type,myt1,myt2,myt3,0.01,4/3,1000000)
 function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)
