@@ -1,3 +1,3 @@
-# PhyNE.jl
+# Quartet
 
 Manual TBA
