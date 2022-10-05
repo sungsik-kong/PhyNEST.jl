@@ -2,6 +2,22 @@
 
 Documentation for PhyNE.jl: Estimating Maximum Composite Likelihood Phylogenetic Network
 
+---
+
+General info TBA
+
+
+## References
+
+TBA
+
+# Manual
+```@contents
+Pages = [
+    "manual/overview.md"
+    ]
+```
+
 ## Functions
 
 ```@docs
