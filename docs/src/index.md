@@ -4,7 +4,7 @@ Documentation for a julia package [PhyNE.jl](https://github.com/sungsik-kong/Phy
 
 ---
 
-Please report bugs or suggestions to the [google group](https://groups.google.com/g/phyne-users). Some frequently asked questions may are already answered in the group.
+Please use [google group](https://groups.google.com/g/phyne-users) to report bugs or make suggestions.
 
 
 ## References
