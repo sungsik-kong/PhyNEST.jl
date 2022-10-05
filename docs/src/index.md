@@ -30,9 +30,26 @@ Pages = [
     readPhylipFile!
     readCheckPoint
     writeSitePatternCounts
+    mrca
+    nature
     extractNQuartets
     printQuarts
+    GetTrueProbsSymm
+    GetTrueProbsAsymm
+    GetTrueProbsNetTypes
+    simspcounts
+    momentEstimat
+    startTheta
+    Optimization
+    hillClimb
+    maxburnin
+    simAnneal
+
     PhyNe!
+
+    Dstat
+    HyDe
+    LRT
 ```
 ## Types
 ```@docs
