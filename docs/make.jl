@@ -1,11 +1,7 @@
 using Documenter
 using PhyNE
 
-makedocs(
-    sitename = "PhyNE",
-    format = Documenter.HTML(),
-    modules = [PhyNE]
-)
+makedocs(sitename = "PhyNE")
 
 deploydocs(
     repo = "github.com/sungsik-kong/PhyNE.jl.git",
