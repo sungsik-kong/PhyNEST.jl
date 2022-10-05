@@ -8,7 +8,10 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/sungsik-kong/PhyNE.jl.git"
+    repo = "github.com/sungsik-kong/PhyNE.jl.git",
+    target = "build",
+    branch = "gh-pages",
+    versions = ["stable" => "v^", "v#.#" ],
 )
 
 # Documenter can also automatically deploy documentation to gh-pages.
