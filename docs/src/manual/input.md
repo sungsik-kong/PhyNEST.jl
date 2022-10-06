@@ -16,12 +16,13 @@ nothing # hide
 data = readPhylipFile!(path, showProgress=false)
 ```
 
-## Exporting as `.csv` file
+## Exporting the parsed site patterns frequencies in `.csv` file
 ```@repl input
 data = readPhylipFile!(path, writecsv=true, showProgress=false)
 ```
 ```@repl input
-df = readCSVFile("sitePatternCounts_n5h1_3k.txt.csv")
+csvpath = joinpath(dirname(pathof(PhyNE)), "..","example","sitePatternCounts_n5h1_3k.txt.csv");
+df = readCSVFile(csvpath)
 ```
 
 ## Reading in `.ckp` file
