@@ -16,8 +16,6 @@ if not specified.
 `writecsv` Boolean to write site pattern frequencies in CSV file\\
 
 """
-#readPhylipFile!(inputfile::AbstractString;showProgress::Bool)=readPhylipFile!(inputfile;writecsv=false,showProgress=showProgress)
-#readPhylipFile!(inputfile::AbstractString;writecsv::Bool)=readPhylipFile!(inputfile;writecsv=writecsv,showProgress=false)
 function readPhylipFile!(inputfile::AbstractString;writecsv=false::Bool,csvname=""::AbstractString,showProgress=true::Bool)
     try
         p=@timed readPhylipFile(inputfile,writecsv,csvname,showProgress)
@@ -28,6 +26,8 @@ function readPhylipFile!(inputfile::AbstractString;writecsv=false::Bool,csvname=
         display(err)
     end
 end
+#readPhylipFile!(inputfile::AbstractString;showProgress::Bool)=readPhylipFile!(inputfile;writecsv=false,showProgress=showProgress)
+#readPhylipFile!(inputfile::AbstractString;writecsv::Bool)=readPhylipFile!(inputfile;writecsv=writecsv,showProgress=false)
 
 readPhylipFile(inputfile::AbstractString)=readPhylipFile(inputfile,false,"",true)
 function readPhylipFile(inputfile::AbstractString,writecsv::Bool,csvname::AbstractString,showProgress::Bool)
