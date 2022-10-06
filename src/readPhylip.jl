@@ -18,9 +18,9 @@ if not specified.
 """
 #readPhylipFile!(inputfile::AbstractString;showProgress::Bool)=readPhylipFile!(inputfile;writecsv=false,showProgress=showProgress)
 #readPhylipFile!(inputfile::AbstractString;writecsv::Bool)=readPhylipFile!(inputfile;writecsv=writecsv,showProgress=false)
-function readPhylipFile!(inputfile::AbstractString;writecsv=false::Bool,showProgress=true::Bool)
+function readPhylipFile!(inputfile::AbstractString;writecsv=false::Bool,csvname=""::AbstractString,showProgress=true::Bool)
     try
-        p=@timed readPhylipFile(inputfile,writecsv,showProgress)
+        p=@timed readPhylipFile(inputfile,writecsv,csvname,showProgress)
         p[1].time=round(p[2],digits=3)
         printCheckPoint(p[1])
         return p[1]
@@ -29,8 +29,8 @@ function readPhylipFile!(inputfile::AbstractString;writecsv=false::Bool,showProg
     end
 end
 
-readPhylipFile(inputfile::AbstractString)=readPhylipFile(inputfile,false,true)
-function readPhylipFile(inputfile::AbstractString,writecsv::Bool,showProgress::Bool)
+readPhylipFile(inputfile::AbstractString)=readPhylipFile(inputfile,false,"",true)
+function readPhylipFile(inputfile::AbstractString,writecsv::Bool,csvname::AbstractString,showProgress::Bool)
 
     p=Phylip(inputfile)
     UniqueBase,BaseCounts=PhylipFileInfo(inputfile, p, showProgress)
@@ -40,7 +40,7 @@ function readPhylipFile(inputfile::AbstractString,writecsv::Bool,showProgress::B
     binaryIndexforQuartet(p)
     
     #write site pattern counts for all quartets into .csv
-    if(writecsv) writeSitePatternCounts(p,writecsv,inputfile) end
+    if(writecsv) writeSitePatternCounts(p,writecsv,csvname,inputfile) end
     
     return p
 end
@@ -324,7 +324,7 @@ it runs `readPhylipFile!` first then write csv. file.
 `write`  Boolean variable to export site pattern frequences in .csv\\
 `inputfile` Name of phylip file as a AbstractString\\
 """
-function writeSitePatternCounts(p::Phylip,write::Bool,inputfile::AbstractString)
+function writeSitePatternCounts(p::Phylip,write::Bool,csvname::AbstractString,inputfile::AbstractString)
     
     df=DataFrame(i=Any[],j=Any[],k=Any[],l=Any[], 
                 AAAA=Int[], AAAB=Int[], AABA=Int[], AABB=Int[], AABC=Int[], 
@@ -358,9 +358,14 @@ function writeSitePatternCounts(p::Phylip,write::Bool,inputfile::AbstractString)
         push!(df.BCAA,p.spcounts[n][14])
         push!(df.ABCD,p.spcounts[n][15])
     end
-    if write==true
-        CSV.write("sitePatternCounts_$inputfile.csv",df)
-        println("A [.csv] file is saved as sitePatternCounts_$inputfile.csv in the current working directory.")
+    if write==true 
+        if isempty(csvname)
+            CSV.write("sitePatternCounts_$inputfile.csv",df)
+            println("A [.csv] file is saved as sitePatternCounts_$inputfile.csv in the current working directory.")
+        else
+            CSV.write("$csvname.csv",df)
+            println("A [.csv] file is saved as $csvname.csv in the current working directory.")
+        end
     end
 end
 function writeSitePatternCounts(inputfile::AbstractString) readPhylipFile!(inputfile,true) end
