@@ -1,3 +1,13 @@
 # Network estimation
 
-Manual TBA
+## Optimizing parameters for a given network
+
+
+## Network analysis
+### Hill climbing
+
+
+### Simulated Annealing
+
+
+## Visualizing network
