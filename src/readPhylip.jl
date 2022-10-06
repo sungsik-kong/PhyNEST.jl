@@ -16,9 +16,9 @@ if not specified.
 `writecsv` Boolean to write site pattern frequencies in CSV file\\
 
 """
-readPhylipFile!(inputfile::AbstractString;showProgress=true::Bool)=readPhylipFile!(inputfile,false;showProgress=showProgress)
-#readPhylipFile!(inputfile::AbstractString,showProgress::Bool)=readPhylipFile!(inputfile,false;showProgress)
-function readPhylipFile!(inputfile::AbstractString,writecsv::Bool;showProgress=true::Bool)
+#readPhylipFile!(inputfile::AbstractString;showProgress::Bool)=readPhylipFile!(inputfile;writecsv=false,showProgress=showProgress)
+#readPhylipFile!(inputfile::AbstractString;writecsv::Bool)=readPhylipFile!(inputfile;writecsv=writecsv,showProgress=false)
+function readPhylipFile!(inputfile::AbstractString;writecsv=false::Bool,showProgress=true::Bool)
     try
         p=@timed readPhylipFile(inputfile,writecsv,showProgress)
         p[1].time=round(p[2],digits=3)
@@ -501,4 +501,10 @@ function readCheckPoint(ckpfile::AbstractString)
 
     end
     return p
+end
+
+
+function readCSVFile(inputfile::AbstractString)
+    df=DataFrame(CSV.File(inputfile))
+    return df
 end

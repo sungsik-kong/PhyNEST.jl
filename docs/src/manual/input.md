@@ -16,11 +16,18 @@ nothing # hide
 data = readPhylipFile!(path, showProgress=false)
 ```
 
+## Exporting as `.csv` file
+```@repl input
+data = readPhylipFile!(path, writecsv=true, showProgress=false)
+```
+```@repl input
+df = readCSVFile("sitePatternCounts_n5h1_3k.txt.csv")
+```
+
 ## Reading in `.ckp` file
-Every time a sequence alignment is parsed, PhyNE creates a `.ckp` file that contains all information in the object `PHYPLIP`. 
+Every time a sequence alignment is parsed, PhyNE creates a `.ckp` file that contains all information in the object `PHYPLIP`. PhyNE can parse a DNA alignment reasonably fast, however, it can take a while if the dataset is large. In case multiple network analysis using the same data is planned, one can bypass data parsing and use the automatically created `.ckp` file. 
 ```@repl input
 ckppath = joinpath(dirname(pathof(PhyNE)), "..","example","n5h1_3k.txt.ckp");
 ckpdata = readCheckPoint(ckppath)
 ```
 
-## Exporting as `.csv` file

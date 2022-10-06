@@ -36,7 +36,7 @@ module PhyNE
         readPhylipFile!, 
         readCheckPoint,
         writeSitePatternCounts,
-
+        readCSVFile,
         readTopology,#from PhyloNetworks
         mrca, #Quartets
         extractNQuartets,
