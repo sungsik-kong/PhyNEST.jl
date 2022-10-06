@@ -15,7 +15,7 @@ nothing # hide
 ```
 
 ```@repl qcf
-sequences = readPhylipFile!(align)
+sequences = readPhylipFile!(align, showProgress=false)
 ```
 
 ## Reading in `.ckp` file
