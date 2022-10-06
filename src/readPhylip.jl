@@ -16,10 +16,11 @@ if not specified.
 `writecsv` Boolean to write site pattern frequencies in CSV file\\
 
 """
-readPhylipFile!(inputfile::AbstractString)=readPhylipFile!(inputfile,false)
-function readPhylipFile!(inputfile::AbstractString,writecsv::Bool)
+readPhylipFile!(inputfile::AbstractString;showProgress=true::Bool)=readPhylipFile!(inputfile,false;showProgress=showProgress)
+#readPhylipFile!(inputfile::AbstractString,showProgress::Bool)=readPhylipFile!(inputfile,false;showProgress)
+function readPhylipFile!(inputfile::AbstractString,writecsv::Bool;showProgress=true::Bool)
     try
-        p=@timed readPhylipFile(inputfile,writecsv)
+        p=@timed readPhylipFile(inputfile,writecsv,showProgress)
         p[1].time=round(p[2],digits=3)
         printCheckPoint(p[1])
         return p[1]
@@ -28,11 +29,11 @@ function readPhylipFile!(inputfile::AbstractString,writecsv::Bool)
     end
 end
 
-readPhylipFile(inputfile::AbstractString)=readPhylipFile(inputfile,false)
-function readPhylipFile(inputfile::AbstractString,writecsv::Bool)
+readPhylipFile(inputfile::AbstractString)=readPhylipFile(inputfile,false,true)
+function readPhylipFile(inputfile::AbstractString,writecsv::Bool,showProgress::Bool)
 
     p=Phylip(inputfile)
-    UniqueBase,BaseCounts=PhylipFileInfo(inputfile, p)
+    UniqueBase,BaseCounts=PhylipFileInfo(inputfile, p, showProgress)
     getUniqueQuartets(p)
     sitePatternCounts(p,UniqueBase,BaseCounts)
     spRearrange(p)
@@ -44,7 +45,8 @@ function readPhylipFile(inputfile::AbstractString,writecsv::Bool)
     return p
 end
 
-function PhylipFileInfo(inputfile::AbstractString, p::Phylip)
+PhylipFileInfo(inputfile::AbstractString, p::Phylip)=PhylipFileInfo(inputfile,p,true)
+function PhylipFileInfo(inputfile::AbstractString, p::Phylip, showProgress::Bool)
     #taxaMatch=false
     seq=String[]
     countTaxa1=0#the number of taxa indicated in the first line
@@ -112,11 +114,18 @@ function PhylipFileInfo(inputfile::AbstractString, p::Phylip)
         #BaseCounts=[count(==(element),ppbase) for element in UniqueBase] #original line without using ProgressMeter
         #p = Progress(n, 1, "Parsing [$inputfile]...", 50)#using package ProgressMeter=#
         BaseCounts=Int[]
+        
         n = length(UniqueBase)
-        p = Progress(n, dt=0.5, barglyphs=BarGlyphs("[=> ]"), barlen=50, color=:yellow)
-        for f in 1:length(UniqueBase)
-            BaseCounts=append!(BaseCounts,count(==(UniqueBase[f]),ppbase))
-            next!(p)#using package ProgressMeter
+        if(showProgress)
+            p = Progress(n, dt=0.5, barglyphs=BarGlyphs("[=> ]"), barlen=50, color=:yellow)
+            for f in 1:length(UniqueBase)
+                BaseCounts=append!(BaseCounts,count(==(UniqueBase[f]),ppbase))
+                next!(p)#using package ProgressMeter
+            end
+        else
+            for f in 1:length(UniqueBase)
+                BaseCounts=append!(BaseCounts,count(==(UniqueBase[f]),ppbase))
+            end
         end
         
         length(UniqueBase)==length(BaseCounts) || error("Something went wrong while reading the sequences. The length of UniqueBase and BaseCounts are not the same.")
