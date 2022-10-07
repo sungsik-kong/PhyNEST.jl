@@ -26,7 +26,7 @@ symqProb=GetTrueProbsSymm(1.0,2.0,5.0,0.0025,4/3)
 ### Asymmetric quartet
 function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 ```@repl quartet
-asymqProb=GetTrueProbsAsymm(1.0,2.0,5,0.0025,4/3)
+asymqProb=GetTrueProbsAsymm(1.0,2.0,5.0,0.0025,4/3) 
 ```
 ## Simulate true site pattern frequencies
 function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)
