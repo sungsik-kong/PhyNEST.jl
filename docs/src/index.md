@@ -18,6 +18,7 @@ Pages = [
     "manual/installation.md",
     "manual/input.md",
     "manual/quartet.md",
+    "manual/sitepattern.md",    
     "manual/networkest.md",
     "manual/others.md",
     ]
