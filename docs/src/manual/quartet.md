@@ -21,25 +21,32 @@ printQuartets(extractQuartets(network))
 GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 net=readTopology
 ```@repl quartet
-symqProb=GetTrueProbsSymm(1.0,2.0,5.0,0.01,4/3)
+symqProb=GetTrueProbsSymm(1.0,2.0,5.0,0.0025,4/3)
 ```
 ### Asymmetric quartet
 function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 ```@repl quartet
-asymqProb=GetTrueProbsAsymm(1.0,2.0,5.0,0.01,4/3)
+asymqProb=GetTrueProbsAsymm(1.0,2.0,5,0.0025,4/3)
 ```
 ## Simulate true site pattern frequencies
 function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)
 ```@repl quartet
-simSPsym=simspcounts(0,1.0,2.0,5.0,0.01,4/3,1000000)
-simSPasym=simspcounts(3,1.0,2.0,5.0,0.01,4/3,1000000)
+simSPsym=simspcounts(0,1.0,2.0,5.0,0.0025,4/3,1000000)
+simSPasym=simspcounts(3,1.0,2.0,5.0,0.0025,4/3,1000000)
 ```
 ## Method-of-moment estimator of branch lengths
 function momentEstimat(type::Integer,spcounts::Array,theta::Float64)
 ```@repl quartet
-momEstsym=momentEstimat(0,simSPsym,0.01)
-momEstasym=momentEstimat(3,simSPasym,0.01)
+momEstsym=momentEstimat(0,simSPsym,0.0025)
+momEstasym=momentEstimat(3,simSPasym,0.0025)
 ```
 
 ## Estimating theta
 function startTheta(q::Array{Nquartets, 1},net::HybridNetwork; lbound=0.00001::Float64,factor=2.0::Float64)
+```@repl quartet
+datapath = joinpath(dirname(pathof(PhyNE)), "..","example","n5h1_5k.txt");
+phydata = readPhylipFile!(datapath, showProgress=false)
+theta=startTheta(network,phydata)
+```
+
+
