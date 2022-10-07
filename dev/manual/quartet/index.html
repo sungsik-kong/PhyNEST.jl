@@ -33,41 +33,54 @@ Gamma for parental tree 2: 0.4
  1.0216168918510621e-6
  1.0216168918510621e-6
  8.390874669437423e-6
- 3.0490300551329126e-8</code></pre><h3 id="Asymmetric-quartet"><a class="docs-heading-anchor" href="#Asymmetric-quartet">Asymmetric quartet</a><a id="Asymmetric-quartet-1"></a><a class="docs-heading-anchor-permalink" href="#Asymmetric-quartet" title="Permalink"></a></h3><p>function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; asymqProb=GetTrueProbsAsymm(1.0,2.0,5,0.0025,4/3)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: MethodError: no method matching GetTrueProbsAsymm(::Float64, ::Float64, ::Int64, ::Float64, ::Float64)
-Closest candidates are:
-  GetTrueProbsAsymm(::Float64, ::Float64, !Matched::Float64, ::Float64, ::Float64) at ~/work/PhyNE.jl/PhyNE.jl/src/Probabilities.jl:103</code></pre><h2 id="Simulate-true-site-pattern-frequencies"><a class="docs-heading-anchor" href="#Simulate-true-site-pattern-frequencies">Simulate true site pattern frequencies</a><a id="Simulate-true-site-pattern-frequencies-1"></a><a class="docs-heading-anchor-permalink" href="#Simulate-true-site-pattern-frequencies" title="Permalink"></a></h2><p>function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPsym=simspcounts(0,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
- 958761
-   4805
-   4812
-  16700
-    127
-   7221
-     18
-     26
-     21
-   7275
-     28
+ 3.0490300551329126e-8</code></pre><h3 id="Asymmetric-quartet"><a class="docs-heading-anchor" href="#Asymmetric-quartet">Asymmetric quartet</a><a id="Asymmetric-quartet-1"></a><a class="docs-heading-anchor-permalink" href="#Asymmetric-quartet" title="Permalink"></a></h3><p>function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; asymqProb=GetTrueProbsAsymm(1.0,2.0,5.0,0.0025,4/3)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Float64}:
+ 0.2397014086499449
+ 0.00037588310389369246
+ 0.00037588310389369246
+ 0.00022931951527033523
+ 1.223275242360262e-6
+ 0.0005775849753122985
+ 2.8069077819539714e-5
+ 9.975582584582903e-7
+ 2.8069077819539714e-5
+ 0.0017866620573686648
+ 3.011003732439706e-6
+ 9.975582584582903e-7
+ 3.011003732439706e-6
+ 6.429647968228448e-6
+ 2.6388794569464492e-8</code></pre><h2 id="Simulate-true-site-pattern-frequencies"><a class="docs-heading-anchor" href="#Simulate-true-site-pattern-frequencies">Simulate true site pattern frequencies</a><a id="Simulate-true-site-pattern-frequencies-1"></a><a class="docs-heading-anchor-permalink" href="#Simulate-true-site-pattern-frequencies" title="Permalink"></a></h2><p>function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPsym=simspcounts(0,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
+ 958300
+   4903
+   4734
+  16963
+    138
+   7158
      25
-     16
-    165
-      0</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPasym=simspcounts(3,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
- 958758
-   4456
-   4395
-   2707
-     29
-   6945
-    383
      24
-    376
-  21606
-     75
-     23
-     64
-    158
-      1</code></pre><h2 id="Method-of-moment-estimator-of-branch-lengths"><a class="docs-heading-anchor" href="#Method-of-moment-estimator-of-branch-lengths">Method-of-moment estimator of branch lengths</a><a id="Method-of-moment-estimator-of-branch-lengths-1"></a><a class="docs-heading-anchor-permalink" href="#Method-of-moment-estimator-of-branch-lengths" title="Permalink"></a></h2><p>function momentEstimat(type::Integer,spcounts::Array,theta::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstsym=momentEstimat(0,simSPsym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(0.9920439505988434, 1.991893788423707, 4.947401957247332)</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstasym=momentEstimat(3,simSPasym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(0.9783559535498113, 1.9818884094308487, 5.0288718469307865)</code></pre><h2 id="Estimating-theta"><a class="docs-heading-anchor" href="#Estimating-theta">Estimating theta</a><a id="Estimating-theta-1"></a><a class="docs-heading-anchor-permalink" href="#Estimating-theta" title="Permalink"></a></h2><p>function startTheta(q::Array{Nquartets, 1},net::HybridNetwork; lbound=0.00001::Float64,factor=2.0::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; datapath = joinpath(dirname(pathof(PhyNE)), &quot;..&quot;,&quot;example&quot;,&quot;n5h1_5k.txt&quot;);</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; phydata = readPhylipFile!(datapath, showProgress=false)</code><code class="nohighlight hljs ansi" style="display:block;">Summary: Phylip File
-Parsing the file [/home/runner/work/PhyNE.jl/PhyNE.jl/src/../example/n5h1_5k.txt] took [53.876] seconds.
+     31
+   7443
+     21
+     24
+     24
+    211
+      1</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPasym=simspcounts(3,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
+ 958869
+   4645
+   4456
+   2755
+     31
+   6923
+    325
+     32
+    330
+  21341
+     60
+     29
+     56
+    148
+      0</code></pre><h2 id="Method-of-moment-estimator-of-branch-lengths"><a class="docs-heading-anchor" href="#Method-of-moment-estimator-of-branch-lengths">Method-of-moment estimator of branch lengths</a><a id="Method-of-moment-estimator-of-branch-lengths-1"></a><a class="docs-heading-anchor-permalink" href="#Method-of-moment-estimator-of-branch-lengths" title="Permalink"></a></h2><p>function momentEstimat(type::Integer,spcounts::Array,theta::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstsym=momentEstimat(0,simSPsym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(1.0015697096733298, 2.025969788251923, 5.0286809992344566)</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstasym=momentEstimat(3,simSPasym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(1.010411979543124, 2.004875423456443, 4.976900845627993)</code></pre><h2 id="Estimating-theta"><a class="docs-heading-anchor" href="#Estimating-theta">Estimating theta</a><a id="Estimating-theta-1"></a><a class="docs-heading-anchor-permalink" href="#Estimating-theta" title="Permalink"></a></h2><p>function startTheta(q::Array{Nquartets, 1},net::HybridNetwork; lbound=0.00001::Float64,factor=2.0::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; datapath = joinpath(dirname(pathof(PhyNE)), &quot;..&quot;,&quot;example&quot;,&quot;n5h1_5k.txt&quot;);</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; phydata = readPhylipFile!(datapath, showProgress=false)</code><code class="nohighlight hljs ansi" style="display:block;">Summary: Phylip File
+Parsing the file [/home/runner/work/PhyNE.jl/PhyNE.jl/src/../example/n5h1_5k.txt] took [54.617] seconds.
 Number of taxa: 5
 Species names: [&quot;5&quot;, &quot;4&quot;, &quot;3&quot;, &quot;1&quot;, &quot;2&quot;]
 Sequence length (b.p): 2500000
-Site patterns frequencies for [120] quartets computed and stored.</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; theta=startTheta(network,phydata)</code><code class="nohighlight hljs ansi" style="display:block;">0.002559999924257746</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../input/">« Input</a><a class="docs-footer-nextpage" href="../networkest/">Network estimation »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Friday 7 October 2022 13:06">Friday 7 October 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+Site patterns frequencies for [120] quartets computed and stored.</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; theta=startTheta(network,phydata)</code><code class="nohighlight hljs ansi" style="display:block;">0.002559999924257746</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../input/">« Input</a><a class="docs-footer-nextpage" href="../networkest/">Network estimation »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Friday 7 October 2022 13:23">Friday 7 October 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
