@@ -47,7 +47,7 @@ function extractNQuartets(net::HybridNetwork,p::Phylip)
     return nq
 end
 
-function extractNQuartets2(net::HybridNetwork)
+function extractQuartets(net::HybridNetwork)
     nq=Nquartets[]
     if net.numHybrids==0
         nqq=extractNQuartets1(net)
@@ -363,12 +363,12 @@ end
 end=#
 
 """
-    printQuarts
+    printQuartets
 
 gegejaga
 """
-printQuarts(x) = printQuarts(stdout::IO, x)
-function printQuarts(io::IO, qq::Array)
+printQuartets(x) = printQuartets(stdout::IO, x)
+function printQuartets(io::IO, qq::Array)
     count=0
     for q in qq
         count+=1

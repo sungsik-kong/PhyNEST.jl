@@ -40,7 +40,8 @@ module PhyNE
         readTopology,#from PhyloNetworks
         mrca, #Quartets
         extractNQuartets,
-        printQuarts,
+        extractQuartets,
+        printQuartets,
         GetTrueProbsSymm, #Probabilities
         GetTrueProbsAsymm,
         GetTrueProbsNetTypes,
