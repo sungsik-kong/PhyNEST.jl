@@ -27,7 +27,9 @@ ckpdata = readCheckPoint(ckppath)
 ```
 
 ## Exporting as `.csv` file
-The observed quartet site pattern frequencies from the data can be exported as a `.csv` formatted file. This can be done when parsing the alignment using the function `readPhylipFile!` by setting the option `writecsv=true`. It will create a `.csv` file in the working directory with the filename `sitePatternCounts_$inputfile.csv`. If a user would like to save the `.csv` file in a different name, the file name can be specified in the option `csvname`. In the below example, we set the filename as "tutorial_n5h1" for the `.csv` file. The `.csv` file can be visualized using function `readCSVFile(csvfile)`.
+The observed quartet site pattern frequencies from the data can be exported as a `.csv` formatted file. This can be done when parsing the alignment using the function `readPhylipFile!` by setting the option `writecsv=true`. It will create a `.csv` file in the working directory with the filename `sitePatternCounts_$inputfile.csv`. If a user would like to save the `.csv` file in a different name, the file name can be specified in the option `csvname`. In the below example, we set the filename as "tutorial_n5h1" for the `.csv` file. The `.csv` file can be visualized using function `readCSVFile(csvfile)`. 
+
+If a user forgot to set `writecsv=true`, the function `writeSitePatternCounts` can be used to export. See [here](https://sungsik-kong.github.io/PhyNE.jl/dev/#PhyNE.writeSitePatternCounts) for more information.
 ```@repl input
 phydata = readPhylipFile!(datapath, showProgress=false,
                         writecsv=true, csvname="tutorial_n5h1")

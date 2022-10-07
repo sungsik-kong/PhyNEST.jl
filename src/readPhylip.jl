@@ -368,9 +368,9 @@ function writeSitePatternCounts(p::Phylip,write::Bool,csvname::AbstractString,in
         end
     end
 end
-function writeSitePatternCounts(inputfile::AbstractString) readPhylipFile!(inputfile,true) end
-function writeSitePatternCounts(p::Phylip) writeSitePatternCounts(p,true,p.filename) end
-writeSitePatternCounts(p::Phylip,inputfile::AbstractString)=writeSitePatternCounts(p,true,inputfile)
+#function writeSitePatternCounts(inputfile::AbstractString) readPhylipFile!(inputfile,true) end
+writeSitePatternCounts(p::Phylip,csvname::AbstractString)=writeSitePatternCounts(p,true,csvname,csvname)
+#writeSitePatternCounts(p::Phylip,inputfile::AbstractString)=writeSitePatternCounts(p,true,inputfile)
 
 function binaryIndexforQuartet(p::Phylip)
     Allquartet=p.allquartet
