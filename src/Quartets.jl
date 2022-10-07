@@ -9,7 +9,7 @@
 #PhyloNetworks.printEverything(x)
 function tauNum(x::Int64) return abs(x+1) end
 
-function extractNQuartets(net::HybridNetwork)
+function extractNQuartets1(net::HybridNetwork)
     leafname,leafnumber=getLeafInfo(net)
     q=Nquartets(leafname,leafnumber)#creates Nquartets type.
     nq=listAllQs(q)#creates nquartets type in the function. 
@@ -31,7 +31,7 @@ gege
 function extractNQuartets(net::HybridNetwork,p::Phylip)
     nq=Nquartets[]
     if net.numHybrids==0
-        nqq=extractNQuartets(net)
+        nqq=extractNQuartets1(net)
         moveSPcounts(nqq,p)
         push!(nq,nqq)
     else
@@ -39,8 +39,27 @@ function extractNQuartets(net::HybridNetwork,p::Phylip)
         numDispTrees=length(t)
         numDispTrees>1 || error("We expect 2 or more displayed trees, but we got $(length(t)).")
         for n in 1:numDispTrees
-            nqq=extractNQuartets(t[n])
+            nqq=extractNQuartets1(t[n])
             moveSPcounts(nqq,p)
+            push!(nq,nqq)
+        end
+    end
+    return nq
+end
+
+function extractNQuartets2(net::HybridNetwork)
+    nq=Nquartets[]
+    if net.numHybrids==0
+        nqq=extractNQuartets1(net)
+        push!(nq,nqq)
+    else
+        t=displayedTrees(net,0.0) 
+        numDispTrees=length(t)
+        numDispTrees>1 || error("We expect 2 or more displayed trees, but we got $(length(t)).")
+        gamma=gamArray(net)
+        for n in 1:numDispTrees
+            nqq=extractNQuartets1(t[n])
+            nqq.gamma=gamma[n]
             push!(nq,nqq)
         end
     end
