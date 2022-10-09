@@ -8,6 +8,8 @@
 #See the parsed topology
 #PhyloNetworks.printEverything(x)
 function tauNum(x::Int64) return abs(x+1) end
+function backtauNum(x::Int64) return -1*(x+1) end
+
 
 function extractNQuartets1(net::HybridNetwork)
     leafname,leafnumber=getLeafInfo(net)
@@ -33,14 +35,17 @@ function extractNQuartets(net::HybridNetwork,p::Phylip)
     if net.numHybrids==0
         nqq=extractNQuartets1(net)
         moveSPcounts(nqq,p)
+        nqq.gamma=1.0
         push!(nq,nqq)
     else
         t=displayedTrees(net,0.0) 
         numDispTrees=length(t)
         numDispTrees>1 || error("We expect 2 or more displayed trees, but we got $(length(t)).")
+        gamma=gamArray(net)
         for n in 1:numDispTrees
             nqq=extractNQuartets1(t[n])
             moveSPcounts(nqq,p)
+            nqq.gamma=gamma[n]
             push!(nq,nqq)
         end
     end
@@ -51,6 +56,7 @@ function extractQuartets(net::HybridNetwork)
     nq=Nquartets[]
     if net.numHybrids==0
         nqq=extractNQuartets1(net)
+        nqq.gamma=1.0
         push!(nq,nqq)
     else
         t=displayedTrees(net,0.0) 
@@ -365,18 +371,55 @@ end=#
 """
     printQuartets
 
-gegejaga
+gegejaga may be use DataFrame
 """
 printQuartets(x) = printQuartets(stdout::IO, x)
-function printQuartets(io::IO, qq::Array)
+function printQuartets(io::IO, x::HybridNetwork)
     count=0
+    #Basic information
+    qq=extractQuartets(x)
+    newick=writeTopologyLevel1(x)
+    NumPTrees=length(qq)
+    NumQuartet=0
+    for i in 1:length(qq)
+        NumQuartet+=length(qq[i].nquartet)
+    end
+    
+    println("Summary of the quartets extracted from the topoology:")
+    println("$newick")
+    println("")
+    println("Number of parental trees: $NumPTrees")
+    println("Total number of quartets extracted: $NumQuartet")
+    println("")
+    println("Hereafter, we replace each species name into the following integers.")
+    length(qq[1].leafname==qq[1].leafnumber)
+    for i in 1:length(qq[1].leafname)
+        println("\t$(qq[1].leafname[i] => qq[1].leafnumber[i])") 
+    end
+
+
+    println("")
+    println("Legend to the quartet types:")
+    println("\tAr")
+    println("\tads")
+    println("\tas")
+    println("\tas")
+    println("")
     for q in qq
         count+=1
+        df=DataFrame(Count=Int[],Quartet=Array[],MRCA=Array[],Taus=Array[],Type=Int[])
+        
         println(io, "Gamma for parental tree $count: $(q.gamma)")
-        println(io, "#\t q [i,j,k,l]\tmrca [ij,ik,il,jk,jl,kl]\ttau#\t\ttype")
+       
         for q in q.nquartet 
-            println("$(q.number)\t$(q.quartet[1])\t$(q.mrca[1])\t$(q.ntau[1])\t$(q.symtype)") 
+            Tau=Int[]
+            for tau in q.ntau[1]
+                push!(Tau,backtauNum(tau))
+            end
+            push!(df,(q.number,q.quartet[1],q.mrca[1],Tau,q.symtype[1]))
         end
+
+        print(df)
         println("\n")
     end
 end

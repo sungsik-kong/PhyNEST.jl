@@ -2,7 +2,7 @@ using Documenter
 using PhyNE
 
 makedocs(
-	sitename = "PhyNE",
+	sitename = "PhyNE.jl",
 	pages = [
 		"index.md",
 		"Manual" => [

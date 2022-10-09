@@ -1,19 +1,20 @@
 # Quartet
 
 ## Reading a network
-An extended Newick string can be read by the function `readTopology` from `PhyloNetworks`. Here we will use a five tip network:
+An extended Newick string can be read by the function `readTopology` from `PhyloNetworks`. See [Cardona et al.,(2008)](https://doi.org/10.1186/1471-2105-9-532) to see the first description of the extended Newick formatted network. Here we use a five tip network:
 
 `(5,(4,((3,(2)#H6:::0.6),(1,#H6:::0.4))));`.
+
+PhyNE uses the same the extended Newick format as in `PhyloNetworks`. Branch lengths can be specified using colon (`:`) as in a regular Newick string. For reticulation nodes, relevant information are specified in the order of ':length:bootstrap:gamma'. PhyNE does *not* require branch lengths to be specified, however, if gamma is specified, it will be set as 0.5 .
 
 ```@repl quartet
 using PhyNE
 network = readTopology("(5,(4,((3,(2)#H6:::0.6),(1,#H6:::0.4))));")
 ```
 ## Extract quartet(s)
-
-net=readTopology
+PhyNE can extract quartets extracted from a tree or a network using the function `extractQuartets`.  
 ```@repl quartet
-printQuartets(extractQuartets(network))
+printQuartets(network)
 ```
 
 ## True site pattern probabilities for a quartet
@@ -32,12 +33,16 @@ asymqProb=GetTrueProbsAsymm(1.0,2.0,5.0,0.0025,4/3)
 function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)
 ```@repl quartet
 simSPsym=simspcounts(0,1.0,2.0,5.0,0.0025,4/3,1000000)
+```
+```@repl quartet
 simSPasym=simspcounts(3,1.0,2.0,5.0,0.0025,4/3,1000000)
 ```
 ## Method-of-moment estimator of branch lengths
 function momentEstimat(type::Integer,spcounts::Array,theta::Float64)
 ```@repl quartet
 momEstsym=momentEstimat(0,simSPsym,0.0025)
+```
+```@repl quartet
 momEstasym=momentEstimat(3,simSPasym,0.0025)
 ```
 
