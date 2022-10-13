@@ -73,37 +73,37 @@ Gamma for parental tree 2: 0.4
  3.011003732439706e-6
  6.429647968226454e-6
  2.6388794569464492e-8</code></pre><h2 id="Simulate-true-site-pattern-frequencies"><a class="docs-heading-anchor" href="#Simulate-true-site-pattern-frequencies">Simulate true site pattern frequencies</a><a id="Simulate-true-site-pattern-frequencies-1"></a><a class="docs-heading-anchor-permalink" href="#Simulate-true-site-pattern-frequencies" title="Permalink"></a></h2><p>function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPsym=simspcounts(0,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
- 958474
-   4700
-   4880
-  17007
+ 958238
+   4932
+   4863
+  17135
     125
-   7313
-     22
-     24
+   7093
      19
-   7158
-     18
-     30
-     23
-    207
+     29
+     24
+   7290
+     14
+     25
+     26
+    187
       0</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPasym=simspcounts(3,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
- 958922
-   4420
-   4510
-   2764
-     28
-   7036
-    334
+ 959075
+   4435
+   4546
+   2720
      30
-    346
-  21286
-     63
-     30
-     75
-    156
-      0</code></pre><h2 id="Method-of-moment-estimator-of-branch-lengths"><a class="docs-heading-anchor" href="#Method-of-moment-estimator-of-branch-lengths">Method-of-moment estimator of branch lengths</a><a id="Method-of-moment-estimator-of-branch-lengths-1"></a><a class="docs-heading-anchor-permalink" href="#Method-of-moment-estimator-of-branch-lengths" title="Permalink"></a></h2><p>function momentEstimat(type::Integer,spcounts::Array,theta::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstsym=momentEstimat(0,simSPsym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(0.9845453743134809, 1.9957703083427414, 5.013379274185923)</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstasym=momentEstimat(3,simSPasym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(0.9810157688325682, 2.014457219848954, 4.971836544028228)</code></pre><h2 id="Estimating-theta"><a class="docs-heading-anchor" href="#Estimating-theta">Estimating theta</a><a id="Estimating-theta-1"></a><a class="docs-heading-anchor-permalink" href="#Estimating-theta" title="Permalink"></a></h2><p>function startTheta(q::Array{Nquartets, 1},net::HybridNetwork; lbound=0.00001::Float64,factor=2.0::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; datapath = joinpath(dirname(pathof(PhyNE)), &quot;..&quot;,&quot;example&quot;,&quot;n5h1_5k.txt&quot;);</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; phydata = readPhylipFile!(datapath, showProgress=false)</code><code class="nohighlight hljs ansi" style="display:block;">Summary: Phylip File
-Parsing the file [/home/runner/work/PhyNE.jl/PhyNE.jl/src/../example/n5h1_5k.txt] took [69.94] seconds.
+   6980
+    332
+     23
+    307
+  21200
+     69
+     21
+     79
+    183
+      0</code></pre><h2 id="Method-of-moment-estimator-of-branch-lengths"><a class="docs-heading-anchor" href="#Method-of-moment-estimator-of-branch-lengths">Method-of-moment estimator of branch lengths</a><a id="Method-of-moment-estimator-of-branch-lengths-1"></a><a class="docs-heading-anchor-permalink" href="#Method-of-moment-estimator-of-branch-lengths" title="Permalink"></a></h2><p>function momentEstimat(type::Integer,spcounts::Array,theta::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstsym=momentEstimat(0,simSPsym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(1.0283261410849474, 1.9739406867999725, 5.049137784177965)</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstasym=momentEstimat(3,simSPasym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(0.9833800886790979, 1.999901972755983, 4.947558020756857)</code></pre><h2 id="Estimating-theta"><a class="docs-heading-anchor" href="#Estimating-theta">Estimating theta</a><a id="Estimating-theta-1"></a><a class="docs-heading-anchor-permalink" href="#Estimating-theta" title="Permalink"></a></h2><p>function startTheta(q::Array{Nquartets, 1},net::HybridNetwork; lbound=0.00001::Float64,factor=2.0::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; datapath = joinpath(dirname(pathof(PhyNE)), &quot;..&quot;,&quot;example&quot;,&quot;n5h1_5k.txt&quot;);</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; phydata = readPhylipFile!(datapath, showProgress=false)</code><code class="nohighlight hljs ansi" style="display:block;">Summary: Phylip File
+Parsing the file [/home/runner/work/PhyNE.jl/PhyNE.jl/src/../example/n5h1_5k.txt] took [69.893] seconds.
 Number of taxa: 5
 Species names: [&quot;5&quot;, &quot;4&quot;, &quot;3&quot;, &quot;1&quot;, &quot;2&quot;]
 Sequence length (b.p): 2500000
