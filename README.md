@@ -9,7 +9,9 @@ Documentation for a julia package [PhyNE.jl](https://github.com/sungsik-kong/Phy
 
 ## Getting help
 Please use [google group](https://groups.google.com/g/phyne-users) to report bugs or make suggestions.
+
 =======
+
 PhyNe (**Phy**logenetic **N**etwork **e**stimation) is a Julia package that can:
 
 - Read multilocus sequence alignment (in relaxed phylip format) and extract site pattern frequencies for all possible permutations of quartet (i.e., four individuals).
