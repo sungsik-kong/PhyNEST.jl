@@ -7,16 +7,6 @@
 
 Documentation for a julia package [PhyNE.jl](https://github.com/sungsik-kong/PhyNE.jl): **Phy**logenetic **N**etwork **E**stimation using composite likelihood directly from the sequence data using site pattern frequency. 
 
-<<<<<<< HEAD
-## Getting help
-Please use [google group](https://groups.google.com/g/phyne-users) to report bugs or make suggestions.
-
-## Quick Tutorial
-Please see [here](https://sungsik-kong.github.io/PhyNE.jl/) for more information.
-
-=======
-=======
->>>>>>> 048aa60ef26d6733feccf3e5fef31af6a6a891b9
 PhyNe (**Phy**logenetic **N**etwork **e**stimation) is a Julia package that can:
 
 - Read multilocus sequence alignment (in relaxed phylip format) and extract site pattern frequencies for all possible permutations of quartet (i.e., four individuals).
@@ -26,10 +16,9 @@ PhyNe (**Phy**logenetic **N**etwork **e**stimation) is a Julia package that can:
 - Estimate species networks directly from multilocus sequence alignment using hill-climbing or simulated annealing algorithms.
 - Detect hybridization using HyDe and the D-statistic.
 
-<<<<<<< HEAD
-=======
-## Quick Tutorial
-
 ## Getting help
 Please use [google group](https://groups.google.com/g/phyne-users) to report bugs or make suggestions.
->>>>>>> 048aa60ef26d6733feccf3e5fef31af6a6a891b9
+
+## Quick Tutorial
+Please see [here](https://sungsik-kong.github.io/PhyNE.jl/) for more information.
+
