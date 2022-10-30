@@ -74,38 +74,38 @@ Gamma for parental tree 2: 0.4
  3.011003732439706e-6
  6.429647968228448e-6
  2.6388794569464492e-8</code></pre><h2 id="Simulate-true-site-pattern-frequencies"><a class="docs-heading-anchor" href="#Simulate-true-site-pattern-frequencies">Simulate true site pattern frequencies</a><a id="Simulate-true-site-pattern-frequencies-1"></a><a class="docs-heading-anchor-permalink" href="#Simulate-true-site-pattern-frequencies" title="Permalink"></a></h2><p>function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPsym=simspcounts(0,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
- 958454
-   4909
-   4923
-  16884
-    116
-   7209
-     24
-     30
-     17
-   7172
-     24
-     26
-     20
-    191
-      1</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPasym=simspcounts(3,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
- 958704
-   4566
-   4516
-   2738
+ 958281
+   4795
+   4969
+  17023
+    141
+   7265
+     39
      31
-   6898
-    331
-     24
-    303
-  21578
-     67
-     19
-     73
-    151
-      1</code></pre><h2 id="Method-of-moment-estimator-of-branch-lengths"><a class="docs-heading-anchor" href="#Method-of-moment-estimator-of-branch-lengths">Method-of-moment estimator of branch lengths</a><a id="Method-of-moment-estimator-of-branch-lengths-1"></a><a class="docs-heading-anchor-permalink" href="#Method-of-moment-estimator-of-branch-lengths" title="Permalink"></a></h2><p>function momentEstimat(type::Integer,spcounts::Array,theta::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstsym=momentEstimat(0,simSPsym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(1.0350159947404312, 1.975368695767904, 5.000420870653172)</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstasym=momentEstimat(3,simSPasym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(1.0040272510021044, 1.9921233164181036, 5.021238128470878)</code></pre><h2 id="Estimating-theta"><a class="docs-heading-anchor" href="#Estimating-theta">Estimating theta</a><a id="Estimating-theta-1"></a><a class="docs-heading-anchor-permalink" href="#Estimating-theta" title="Permalink"></a></h2><p>function startTheta(q::Array{Nquartets, 1},net::HybridNetwork; lbound=0.00001::Float64,factor=2.0::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; datapath = joinpath(dirname(pathof(PhyNE)), &quot;..&quot;,&quot;example&quot;,&quot;n5h1_5k.txt&quot;);</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; phydata = readPhylipFile!(datapath, showProgress=false)</code><code class="nohighlight hljs ansi" style="display:block;">Summary: Phylip File
-Parsing the file [/home/runner/work/PhyNE.jl/PhyNE.jl/src/../example/n5h1_5k.txt] took [55.426] seconds.
+     26
+   7159
+     31
+     20
+     20
+    200
+      0</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPasym=simspcounts(3,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
+ 958605
+   4606
+   4623
+   2730
+     39
+   6893
+    362
+     27
+    356
+  21459
+     70
+     27
+     74
+    127
+      2</code></pre><h2 id="Method-of-moment-estimator-of-branch-lengths"><a class="docs-heading-anchor" href="#Method-of-moment-estimator-of-branch-lengths">Method-of-moment estimator of branch lengths</a><a id="Method-of-moment-estimator-of-branch-lengths-1"></a><a class="docs-heading-anchor-permalink" href="#Method-of-moment-estimator-of-branch-lengths" title="Permalink"></a></h2><p>function momentEstimat(type::Integer,spcounts::Array,theta::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstsym=momentEstimat(0,simSPsym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(1.031366946668791, 1.99107769173256, 5.036436551179071)</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstasym=momentEstimat(3,simSPasym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(1.0562447407224536, 2.0131563721865726, 5.0155477910794115)</code></pre><h2 id="Estimating-theta"><a class="docs-heading-anchor" href="#Estimating-theta">Estimating theta</a><a id="Estimating-theta-1"></a><a class="docs-heading-anchor-permalink" href="#Estimating-theta" title="Permalink"></a></h2><p>function startTheta(q::Array{Nquartets, 1},net::HybridNetwork; lbound=0.00001::Float64,factor=2.0::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; datapath = joinpath(dirname(pathof(PhyNE)), &quot;..&quot;,&quot;example&quot;,&quot;n5h1_5k.txt&quot;);</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; phydata = readPhylipFile!(datapath, showProgress=false)</code><code class="nohighlight hljs ansi" style="display:block;">Summary: Phylip File
+Parsing the file [/home/runner/work/PhyNE.jl/PhyNE.jl/src/../example/n5h1_5k.txt] took [57.952] seconds.
 Number of taxa: 5
 Species names: [&quot;5&quot;, &quot;4&quot;, &quot;3&quot;, &quot;1&quot;, &quot;2&quot;]
 Sequence length (b.p): 2500000
-Site patterns frequencies for [120] quartets computed and stored.</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; theta=startTheta(network,phydata)</code><code class="nohighlight hljs ansi" style="display:block;">0.002559999924257746</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../input/">« Input</a><a class="docs-footer-nextpage" href="../networkest/">Network estimation »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Sunday 30 October 2022 15:27">Sunday 30 October 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+Site patterns frequencies for [120] quartets computed and stored.</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; theta=startTheta(network,phydata)</code><code class="nohighlight hljs ansi" style="display:block;">0.002559999924257746</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../input/">« Input</a><a class="docs-footer-nextpage" href="../networkest/">Network estimation »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Sunday 30 October 2022 15:29">Sunday 30 October 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
