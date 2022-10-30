@@ -397,13 +397,13 @@ function printQuartets(io::IO, x::HybridNetwork)
         println("\t$(qq[1].leafname[i] => qq[1].leafnumber[i])") 
     end
 
-
     println("")
     println("Legend to the quartet types:")
-    println("\tAr")
-    println("\tads")
-    println("\tas")
-    println("\tas")
+    println("\tType 0: ((1,2),(3,4));")
+    println("\tType 1: (1,((2,3),4));")
+    println("\tType 2: ((1,(2,3)),4);")
+    println("\tType 3: (1,(2,(3,4))); ")
+    println("\tType 4: (((1,2),3),4);")
     println("")
     for q in qq
         count+=1

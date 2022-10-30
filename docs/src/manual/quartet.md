@@ -18,9 +18,11 @@ printQuartets(network)
 ```
 
 ## True site pattern probabilities for a quartet
-### Symmaetric quartet
+See [Chifman and Kubatko (2015)](https://www.sciencedirect.com/science/article/pii/S0022519315001095?via%3Dihub) for more information.
+### Symmetric quartet
+True probabilities for the fifteen site pattern for a symmetric quartet can be computed using the function `GetTrueProbsSymm`. We need to specify five parameters, $\tau$
+
 GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
-net=readTopology
 ```@repl quartet
 symqProb=GetTrueProbsSymm(1.0,2.0,5.0,0.0025,4/3)
 ```

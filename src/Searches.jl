@@ -438,6 +438,11 @@ function simAnneal!(startT::HybridNetwork, p::Phylip, hmax::Integer, outgroup::S
             elseif newTLogLik>currTLogLik && !isnan(newTLogLik) && !isnan(currTLogLik)
                 ci=u/(1+(i*b))
                 prob=exp((-1*(newTLogLik-currTLogLik))/ci)
+                
+                #println("L1-L0=$(newTLogLik-currTLogLik)")
+                #println("ci=$ci")
+                #println("t=$prob\n")
+
                 items=[true,false]
                 weigh=[prob,1-prob]
                 accepted=sample(items, Weights(weigh))

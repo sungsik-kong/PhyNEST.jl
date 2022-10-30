@@ -9,6 +9,10 @@ Documentation for a julia package [PhyNE.jl](https://github.com/sungsik-kong/Phy
 
 ## Getting help
 Please use [google group](https://groups.google.com/g/phyne-users) to report bugs or make suggestions.
+
+## Quick Tutorial
+Please see [here](https://sungsik-kong.github.io/PhyNE.jl/) for more information.
+
 =======
 PhyNe (**Phy**logenetic **N**etwork **e**stimation) is a Julia package that can:
 
@@ -19,5 +23,3 @@ PhyNe (**Phy**logenetic **N**etwork **e**stimation) is a Julia package that can:
 - Estimate species networks directly from multilocus sequence alignment using hill-climbing or simulated annealing algorithms.
 - Detect hybridization using HyDe and the D-statistic.
 
-## Quick Tutorial
->>>>>>> 29889d88163a6ba1d3e8d373d807133ae53d2b25
