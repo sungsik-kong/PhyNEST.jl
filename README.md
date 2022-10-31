@@ -5,7 +5,7 @@
 
 ## Overview
 
-Documentation for a julia package [PhyNE.jl](https://github.com/sungsik-kong/PhyNE.jl): **Phy**logenetic **N**etwork **E**stimation using composite likelihood directly from the sequence data using site pattern frequency. 
+Documentation for a Julia package [PhyNE.jl](https://github.com/sungsik-kong/PhyNE.jl): **Phy**logenetic **N**etwork **E**stimation. 
 
 PhyNe (**Phy**logenetic **N**etwork **e**stimation) is a Julia package that can:
 
