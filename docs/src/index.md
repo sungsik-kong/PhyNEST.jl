@@ -1,56 +1,32 @@
 # PhyNE.jl
 
-Documentation for a julia package [PhyNE.jl](https://github.com/sungsik-kong/PhyNE.jl): **Phy**logenetic **N**etwork **E**stimation using composite likelihood directly from the sequence data using site pattern frequency. 
+Documentation for a julia package [PhyNE.jl](https://github.com/sungsik-kong/PhyNE.jl): **Phy**logenetic **N**etwork **E**stimation.
 
 ---
 
-
 ## References
-
 TBA
 
-
-
 ## Getting help
-Please use [google group](https://groups.google.com/g/phyne-users) to report bugs or make suggestions.
+Please use [google group](https://groups.google.com/g/phyne-users) to report bugs or post questions and/or suggestions.
 
 ## Manual
 ```@contents
 Pages = [
     "manual/installation.md",
     "manual/input.md",
-    "manual/quartet.md",
     "manual/networkest.md",
-    "manual/others.md",
     ]
 ```
 
 ## Functions
-
 ```@docs
     readPhylipFile!
     readCheckPoint
     writeSitePatternCounts
-    mrca
-    nature
     extractNQuartets
-    printQuarts
-    GetTrueProbsSymm
-    GetTrueProbsAsymm
-    GetTrueProbsNetTypes
-    simspcounts
-    momentEstimat
-    startTheta
-    Optimization
-    hillClimb
-    maxburnin
-    simAnneal
-
-    PhyNe!
-
-    Dstat
-    HyDe
-    LRT
+    printQuartets
+    PhyNE!
 ```
 ## Types
 ```@docs
@@ -65,11 +41,9 @@ Pages = [
     readCheckPoint
     writeSitePatternCounts
     extractNQuartets
-    printQuarts
+    printQuartets
     Phylip
-    mrca
-    nature
     nquartets
     Nquartets
-    PhyNe!
+    PhyNE!
 ```

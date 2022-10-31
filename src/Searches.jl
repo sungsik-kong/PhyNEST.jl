@@ -557,14 +557,14 @@ end
 
 
 """
-    PhyNe!(startT::HybridNetwork,inputFile::Phylip,outgroup::String)
+    PhyNE!(startT::HybridNetwork,inputFile::Phylip,outgroup::String)
 
 Estimates the network or tree to fit observed site pattern frequencies stored in a `Phylip` object,
 using composite likelihood. A level-1 network is assumed. The search begins from topolgoy `startT`,
 which can be a tree or a network (with less than `hmax` reticulation nodes). Usually, `startT` is
 expected to be a tree estiamted from data, but can also be randomly generated. The topology is rooted
 using the `outgroup` provided. This must be identical to the outgroup sequence provided in the 
-sequence alignment. By default, `PhyNe!` will search the network space using simulated annealing assuming 
+sequence alignment. By default, `PhyNE!` will search the network space using simulated annealing assuming 
 hmax=1.
 
 There are many optional arguments (values in parenthesis are defaults):
@@ -591,9 +591,8 @@ Miscellaneous:
 - `timestamp=false`
 - `filename=""`
 - `display=false`s
-
 """
-function PhyNe!(startT::HybridNetwork,inputFile::Phylip,outgroup::String; 
+function PhyNE!(startT::HybridNetwork,inputFile::Phylip,outgroup::String; 
     hmax=1::Integer, nruns=5::Integer,maxcount=100000::Integer,NumIter=1000::Integer,
     hillclimbing=false::Bool, nfail=75::Integer, burninn=25::Int64, k=10::Integer,
     ProbabilityOfNotSelectingNode=9.5e-45::Float64,cons=0.9::Float64,alph=0.8::Float64,
@@ -606,7 +605,7 @@ function PhyNe!(startT::HybridNetwork,inputFile::Phylip,outgroup::String;
 
     #filename
     if isempty(filename)
-        filename="PhyNe"
+        filename="PhyNE"
         if(hillclimbing) filename=filename*(".hc")
         else filename=filename*(".sa") end
     end
@@ -625,7 +624,7 @@ function PhyNe!(startT::HybridNetwork,inputFile::Phylip,outgroup::String;
     log=string(filename,".log")
     logfile=open(log,"w")
     str =
-"PhyNe: Estimating Maximum Pseudolikelihood Phylogenetic Network
+"PhyNE: Estimating Maximum Pseudolikelihood Phylogenetic Network
 ╔═══╦╗─────╔═╗─╔╗
 ║╔═╗║║─────║║╚╗║║
 ║╚═╝║╚═╦╗─╔╣╔╗╚╝╠══╗

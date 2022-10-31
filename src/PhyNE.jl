@@ -53,7 +53,7 @@ module PhyNE
         hillClimb,
         maxburnin,
         simAnneal!,
-        PhyNe!,
+        PhyNE!,
         Dstat, #Misc.
         HyDe,
         LRT
