@@ -10,9 +10,10 @@ Documentation for a Julia package [PhyNE.jl](https://github.com/sungsik-kong/Phy
 - Read multilocus sequence alignment (in a relaxed phylip format) and extract site pattern frequencies for all possible permutations of four individuals (i.e., quartet).
 - Estimate species networks directly from multilocus sequence alignment using hill-climbing or simulated annealing heuristic algorithms.
 
+## Quick Tutorial
+Please see [here](https://sungsik-kong.github.io/PhyNE.jl/) for more information.
+
 ## Getting help
 Please use [google group](https://groups.google.com/g/phyne-users) to report bugs or make suggestions.
 
-## Quick Tutorial
-Please see [here](https://sungsik-kong.github.io/PhyNE.jl/) for more information.
 
