@@ -5,16 +5,10 @@
 
 ## Overview
 
-Documentation for a Julia package [PhyNE.jl](https://github.com/sungsik-kong/PhyNE.jl): **Phy**logenetic **N**etwork **E**stimation. 
+Documentation for a Julia package [PhyNE.jl](https://github.com/sungsik-kong/PhyNE.jl)that can:
 
-PhyNe (**Phy**logenetic **N**etwork **e**stimation) is a Julia package that can:
-
-- Read multilocus sequence alignment (in relaxed phylip format) and extract site pattern frequencies for all possible permutations of quartet (i.e., four individuals).
-- Extract rooted quartet trees from phylogenetic trees and networks in newick (or extended newick for networks) format.
-- Compute expected site pattern frequencies for a quartet tree given the speciation times, effective population size parameter, and mutation rate.
-- Identify three speciation times for a quartet given the site pattern frequencies and effective population size parameter.
-- Estimate species networks directly from multilocus sequence alignment using hill-climbing or simulated annealing algorithms.
-- Detect hybridization using HyDe and the D-statistic.
+- Read multilocus sequence alignment (in a relaxed phylip format) and extract site pattern frequencies for all possible permutations of four individuals (i.e., quartet).
+- Estimate species networks directly from multilocus sequence alignment using hill-climbing or simulated annealing heuristic algorithms.
 
 ## Getting help
 Please use [google group](https://groups.google.com/g/phyne-users) to report bugs or make suggestions.
