@@ -1,4 +1,4 @@
-using PhyNE
+using PhyNEST
 using Test
 
 @testset "PhyNE.jl" begin
