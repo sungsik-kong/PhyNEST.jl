@@ -26,9 +26,13 @@ function extractNQuartets1(net::HybridNetwork)
 end
 
 """
-    extractNQuartets(net::HybridNetwork,p::Phylip)
+    extractNQuartets(net::HybridNetwork, phylip::Phylip)
 
-gege
+Extracts quartet information from a topology. Also stores the observed site patter frequency information for each quartet.
+
+## Input
+`net`   HybridNetwork object obtained using the function `readTopology`
+`phylip`    Phylip object obtained using the function `readPhylipFile!`
 """
 function extractNQuartets(net::HybridNetwork,p::Phylip)
     nq=Nquartets[]
@@ -52,6 +56,14 @@ function extractNQuartets(net::HybridNetwork,p::Phylip)
     return nq
 end
 
+"""
+    extractQuartets(net::HybridNetwork)
+
+Extracts quartet information from a topology.
+
+## Input
+`net`   HybridNetwork object obtained using the function `readTopology`
+"""
 function extractQuartets(net::HybridNetwork)
     nq=Nquartets[]
     if net.numHybrids==0
