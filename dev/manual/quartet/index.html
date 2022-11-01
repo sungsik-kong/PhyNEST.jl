@@ -74,33 +74,33 @@ Gamma for parental tree 2: 0.4
  3.011003732439706e-6
  6.429647968226454e-6
  2.6388794569464492e-8</code></pre><h2 id="Simulate-true-site-pattern-frequencies"><a class="docs-heading-anchor" href="#Simulate-true-site-pattern-frequencies">Simulate true site pattern frequencies</a><a id="Simulate-true-site-pattern-frequencies-1"></a><a class="docs-heading-anchor-permalink" href="#Simulate-true-site-pattern-frequencies" title="Permalink"></a></h2><p>function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPsym=simspcounts(0,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
- 958268
-   4800
-   4894
-  17082
-    105
-   7297
-     17
-     26
-     31
-   7214
+ 958777
+   4896
+   4711
+  16696
+    122
+   7229
+     29
      24
      28
-     28
-    184
-      2</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPasym=simspcounts(3,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
- 959007
-   4472
-   4579
-   2747
-     32
-   6849
-    370
+   7197
+     31
+     16
      30
-    364
-  21204
-     73
-     33
-     77
-    163
-      0</code></pre><h2 id="Method-of-moment-estimator-of-branch-lengths"><a class="docs-heading-anchor" href="#Method-of-moment-estimator-of-branch-lengths">Method-of-moment estimator of branch lengths</a><a id="Method-of-moment-estimator-of-branch-lengths-1"></a><a class="docs-heading-anchor-permalink" href="#Method-of-moment-estimator-of-branch-lengths" title="Permalink"></a></h2><p>function momentEstimat(type::Integer,spcounts::Array,theta::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstsym=momentEstimat(0,simSPsym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(1.0076502977345752, 2.0033196083338143, 5.038935069418972)</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstasym=momentEstimat(3,simSPasym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(1.0238157263342664, 1.9982696966728404, 4.96025172988706)</code></pre><h2 id="Estimating-theta"><a class="docs-heading-anchor" href="#Estimating-theta">Estimating theta</a><a id="Estimating-theta-1"></a><a class="docs-heading-anchor-permalink" href="#Estimating-theta" title="Permalink"></a></h2><p>function startTheta(q::Array{Nquartets, 1},net::HybridNetwork; lbound=0.00001::Float64,factor=2.0::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; datapath = joinpath(dirname(pathof(PhyNE)), &quot;..&quot;,&quot;example&quot;,&quot;n5h1_5k.txt&quot;);</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: PhyNE not defined</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; phydata = readPhylipFile!(datapath, showProgress=false)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: datapath not defined</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; theta=startTheta(network,phydata)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: phydata not defined</code></pre></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 1 November 2022 22:18">Tuesday 1 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+    214
+      0</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPasym=simspcounts(3,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
+ 959030
+   4458
+   4508
+   2789
+     28
+   6949
+    343
+     16
+    329
+  21237
+     62
+     21
+     64
+    166
+      0</code></pre><h2 id="Method-of-moment-estimator-of-branch-lengths"><a class="docs-heading-anchor" href="#Method-of-moment-estimator-of-branch-lengths">Method-of-moment estimator of branch lengths</a><a id="Method-of-moment-estimator-of-branch-lengths-1"></a><a class="docs-heading-anchor-permalink" href="#Method-of-moment-estimator-of-branch-lengths" title="Permalink"></a></h2><p>function momentEstimat(type::Integer,spcounts::Array,theta::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstsym=momentEstimat(0,simSPsym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(0.993867985296026, 1.9925058638558695, 4.950211125262)</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstasym=momentEstimat(3,simSPasym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(0.982054376175543, 2.00326009660045, 4.956852762571796)</code></pre><h2 id="Estimating-theta"><a class="docs-heading-anchor" href="#Estimating-theta">Estimating theta</a><a id="Estimating-theta-1"></a><a class="docs-heading-anchor-permalink" href="#Estimating-theta" title="Permalink"></a></h2><p>function startTheta(q::Array{Nquartets, 1},net::HybridNetwork; lbound=0.00001::Float64,factor=2.0::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; datapath = joinpath(dirname(pathof(PhyNE)), &quot;..&quot;,&quot;example&quot;,&quot;n5h1_5k.txt&quot;);</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: PhyNE not defined</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; phydata = readPhylipFile!(datapath, showProgress=false)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: datapath not defined</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; theta=startTheta(network,phydata)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: phydata not defined</code></pre></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 1 November 2022 22:38">Tuesday 1 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
