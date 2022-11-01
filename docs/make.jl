@@ -1,8 +1,8 @@
 using Documenter
-using PhyNE
+using PhyNEST
 
 makedocs(
-	sitename = "PhyNE.jl",
+	sitename = "PhyNEST.jl",
 	pages = [
 		"index.md",
 		"Manual" => [
@@ -16,7 +16,7 @@ makedocs(
 )
 
 deploydocs(
-	repo = "github.com/sungsik-kong/PhyNE.jl.git",
+	repo = "github.com/sungsik-kong/PhyNEST.jl.git",
 )
 
 # Documenter can also automatically deploy documentation to gh-pages.
