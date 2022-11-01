@@ -9,20 +9,20 @@ A sample DNA alignment file called `n5h1_5k.txt` is given in the `example` folde
 
 We begin with loading the package PhyNE in Julia.
 ```@example input
-using PhyNE
+using PhyNEST
 ```
 
 Assuming that you are working in the directory that contains the alignment file, the alignment file can be read using the function `readPhylipFile!(inputfile)`. Since the variable `inputfile` is expected to be a string, the file name should be in the quotation marks. The path of the file can be set as shown below or simply the name of the alignment file can be specified (e.g., `readPhylipFile!("n5h1_5k.txt")`). A checkpoint file with an extension `.ckp` is automatically created in the working directory upon completion of parsing the alignment. When the boolean option `showProgress` is set as `true`, PhyNE will show the progress bar during the data parsing process. Here, we set it as false for brevity.
 
 ```@repl input
-datapath = joinpath(dirname(pathof(PhyNE)), "..","example","n5h1_5k.txt");
+datapath = joinpath(dirname(pathof(PhyNEST)), "..","example","n5h1_5k.txt");
 phydata = readPhylipFile!(datapath, showProgress=false)
 ```
 
 ## Reading `.ckp` file
 Every time a sequence alignment is parsed, PhyNE creates a checkpoint file with the extension `.ckp`. Note the `.ckp` file will have the same name as the alignment file. In case multiple network analyses using the same data is planned, a user can bypass the (potentially time-consuming) data parsing process by using the function `readCheckPoint(ckpfile)` instead of the function `readPhylipFile!(inputfile)`. 
 ```@repl input
-ckppath = joinpath(dirname(pathof(PhyNE)), "..","example","n5h1_5k.txt.ckp");
+ckppath = joinpath(dirname(pathof(PhyNEST)), "..","example","n5h1_5k.txt.ckp");
 ckpdata = readCheckPoint(ckppath)
 ```
 
@@ -33,6 +33,6 @@ If a user forgot to set `writecsv=true`, the function `writeSitePatternCounts` c
 ```@repl input
 phydata = readPhylipFile!(datapath, showProgress=false,
                         writecsv=true, csvname="tutorial_n5h1")
-csvpath = joinpath(dirname(pathof(PhyNE)), "..","example","tutorial_n5h1.csv");
+csvpath = joinpath(dirname(pathof(PhyNEST)), "..","example","tutorial_n5h1.csv");
 csvdf = readCSVFile(csvpath)
 ```
