@@ -3,18 +3,17 @@
 # 1.Input
 
 """
-    readPhylipFile!(inputfile::AbstractString, writecsv::Bool)
     readPhylipFile!(inputfile::AbstractString)
-
-Takes in, read, and parse the input phylip file. File name is specified as a string. If `writecsv=true`, list of 
-site pattern frequencies from the input phylip for all permutations of four taxa is saved as a `.csv` file in the 
-working directory. The `writecsv` boolean is false by default. The function will perform assuming `writecsv=false` 
-if not specified.
+    readPhylipFile!(inputfile::AbstractString; writecsv=false::Bool, csvname=""::AbstractString, showProgress=true::Bool)
+    
+Takes in, read, and parse the input phylip file. File name must be specified, in string format. There are a number of 
+optional arguments (see below).
 
 ### Input
 `inputfile` Name of phylip file as a AbstractString\\
-`writecsv` Boolean to write site pattern frequencies in CSV file\\
-
+`writecsv`  A Boolean arguemtn to write site pattern frequencies in CSV file (Default=`false`)\\
+`csvname`   A string that will be name of the `.csv` file (Default=sitePatternCounts_`inputfile`.csv)\\
+`showProgress`  A boolean argument for visualizing the progress of alignment parsing process (Default=`true`)\\
 """
 function readPhylipFile!(inputfile::AbstractString;writecsv=false::Bool,csvname=""::AbstractString,showProgress=true::Bool)
     try
