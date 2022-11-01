@@ -44,63 +44,63 @@ Gamma for parental tree 2: 0.4
    3 │     3  [1, 2, 4, 6]  [-2, -2, -2, -3, -3, -7]  [-7, -3, -2]      3
    4 │     4  [1, 3, 4, 6]  [-2, -2, -2, -4, -4, -7]  [-7, -4, -2]      3
    5 │     5  [2, 3, 4, 6]  [-3, -3, -3, -4, -4, -7]  [-7, -4, -3]      3</code></pre><h2 id="True-site-pattern-probabilities-for-a-quartet"><a class="docs-heading-anchor" href="#True-site-pattern-probabilities-for-a-quartet">True site pattern probabilities for a quartet</a><a id="True-site-pattern-probabilities-for-a-quartet-1"></a><a class="docs-heading-anchor-permalink" href="#True-site-pattern-probabilities-for-a-quartet" title="Permalink"></a></h2><p>See <a href="https://www.sciencedirect.com/science/article/pii/S0022519315001095?via%3Dihub">Chifman and Kubatko (2015)</a> for more information.</p><h3 id="Symmetric-quartet"><a class="docs-heading-anchor" href="#Symmetric-quartet">Symmetric quartet</a><a id="Symmetric-quartet-1"></a><a class="docs-heading-anchor-permalink" href="#Symmetric-quartet" title="Permalink"></a></h3><p>True probabilities for the fifteen site pattern for a symmetric quartet can be computed using the function <code>GetTrueProbsSymm</code>. We need to specify five parameters, <span>$\tau$</span></p><p>GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; symqProb=GetTrueProbsSymm(1.0,2.0,5.0,0.0025,4/3)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Float64}:
- 0.23962355956839557
- 0.00040183279774349406
- 0.00040183279774349406
- 0.0014085244500744824
- 5.197947417551283e-6
- 0.0006035346691620966
- 2.0712667029507137e-6
- 1.0216168918508912e-6
- 2.0712667029507137e-6
- 0.0006035346691620966
- 1.0216168918508912e-6
- 1.0216168918508912e-6
- 1.0216168918508912e-6
- 8.390874669438053e-6
+ 0.23962355956839554
+ 0.00040183279774349704
+ 0.00040183279774349704
+ 0.0014085244500744755
+ 5.1979474175536895e-6
+ 0.0006035346691620996
+ 2.071266702951881e-6
+ 1.0216168918510621e-6
+ 2.071266702951881e-6
+ 0.0006035346691620996
+ 1.0216168918510621e-6
+ 1.0216168918510621e-6
+ 1.0216168918510621e-6
+ 8.390874669437423e-6
  3.0490300551329126e-8</code></pre><h3 id="Asymmetric-quartet"><a class="docs-heading-anchor" href="#Asymmetric-quartet">Asymmetric quartet</a><a id="Asymmetric-quartet-1"></a><a class="docs-heading-anchor-permalink" href="#Asymmetric-quartet" title="Permalink"></a></h3><p>function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; asymqProb=GetTrueProbsAsymm(1.0,2.0,5.0,0.0025,4/3)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Float64}:
- 0.23970140864994496
- 0.00037588310389369446
- 0.00037588310389369446
- 0.0002293195152703372
- 1.2232752423582682e-6
- 0.0005775849753122952
- 2.8069077819539365e-5
+ 0.2397014086499449
+ 0.00037588310389369246
+ 0.00037588310389369246
+ 0.00022931951527033523
+ 1.223275242360262e-6
+ 0.0005775849753122985
+ 2.8069077819539714e-5
  9.975582584582903e-7
- 2.8069077819539365e-5
- 0.0017866620573686737
+ 2.8069077819539714e-5
+ 0.0017866620573686648
  3.011003732439706e-6
  9.975582584582903e-7
  3.011003732439706e-6
- 6.429647968226454e-6
+ 6.429647968228448e-6
  2.6388794569464492e-8</code></pre><h2 id="Simulate-true-site-pattern-frequencies"><a class="docs-heading-anchor" href="#Simulate-true-site-pattern-frequencies">Simulate true site pattern frequencies</a><a id="Simulate-true-site-pattern-frequencies-1"></a><a class="docs-heading-anchor-permalink" href="#Simulate-true-site-pattern-frequencies" title="Permalink"></a></h2><p>function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPsym=simspcounts(0,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
- 958752
-   4898
-   4726
-  16877
-    123
-   7085
-     14
-     28
-     24
-   7213
-     19
-     23
-     26
-    191
-      1</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPasym=simspcounts(3,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
- 958743
-   4552
-   4575
-   2700
-     16
-   6928
-    319
+ 958414
+   4873
+   4841
+  16985
+    110
+   7113
      22
-    338
-  21453
-     95
+     32
+     22
+   7291
+     27
+     23
+     24
+    222
+      1</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPasym=simspcounts(3,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
+ 959181
+   4411
+   4424
+   2707
      26
-     78
+   7014
+    336
+     28
+    321
+  21222
+     66
+     30
+     79
     155
-      0</code></pre><h2 id="Method-of-moment-estimator-of-branch-lengths"><a class="docs-heading-anchor" href="#Method-of-moment-estimator-of-branch-lengths">Method-of-moment estimator of branch lengths</a><a id="Method-of-moment-estimator-of-branch-lengths-1"></a><a class="docs-heading-anchor-permalink" href="#Method-of-moment-estimator-of-branch-lengths" title="Permalink"></a></h2><p>function momentEstimat(type::Integer,spcounts::Array,theta::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstsym=momentEstimat(0,simSPsym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(0.9928546299481023, 1.9570096166363757, 4.969200399902252)</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstasym=momentEstimat(3,simSPasym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(1.0210115668083226, 1.9980996689356, 5.00444531522226)</code></pre><h2 id="Estimating-theta"><a class="docs-heading-anchor" href="#Estimating-theta">Estimating theta</a><a id="Estimating-theta-1"></a><a class="docs-heading-anchor-permalink" href="#Estimating-theta" title="Permalink"></a></h2><p>function startTheta(q::Array{Nquartets, 1},net::HybridNetwork; lbound=0.00001::Float64,factor=2.0::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; datapath = joinpath(dirname(pathof(PhyNE)), &quot;..&quot;,&quot;example&quot;,&quot;n5h1_5k.txt&quot;);</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: PhyNE not defined</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; phydata = readPhylipFile!(datapath, showProgress=false)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: datapath not defined</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; theta=startTheta(network,phydata)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: phydata not defined</code></pre></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 1 November 2022 23:19">Tuesday 1 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+      0</code></pre><h2 id="Method-of-moment-estimator-of-branch-lengths"><a class="docs-heading-anchor" href="#Method-of-moment-estimator-of-branch-lengths">Method-of-moment estimator of branch lengths</a><a id="Method-of-moment-estimator-of-branch-lengths-1"></a><a class="docs-heading-anchor-permalink" href="#Method-of-moment-estimator-of-branch-lengths" title="Permalink"></a></h2><p>function momentEstimat(type::Integer,spcounts::Array,theta::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstsym=momentEstimat(0,simSPsym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(1.0117041600521264, 1.9882213882788256, 5.018011264306102)</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstasym=momentEstimat(3,simSPasym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(0.9564965917532581, 1.9847700941709019, 4.939997797333334)</code></pre><h2 id="Estimating-theta"><a class="docs-heading-anchor" href="#Estimating-theta">Estimating theta</a><a id="Estimating-theta-1"></a><a class="docs-heading-anchor-permalink" href="#Estimating-theta" title="Permalink"></a></h2><p>function startTheta(q::Array{Nquartets, 1},net::HybridNetwork; lbound=0.00001::Float64,factor=2.0::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; datapath = joinpath(dirname(pathof(PhyNE)), &quot;..&quot;,&quot;example&quot;,&quot;n5h1_5k.txt&quot;);</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: PhyNE not defined</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; phydata = readPhylipFile!(datapath, showProgress=false)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: datapath not defined</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; theta=startTheta(network,phydata)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: phydata not defined</code></pre></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Tuesday 1 November 2022 23:23">Tuesday 1 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
