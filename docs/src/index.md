@@ -1,6 +1,6 @@
-# PhyNE.jl
+# PhyNEST.jl
 
-Documentation for a julia package [PhyNE.jl](https://github.com/sungsik-kong/PhyNE.jl): **Phy**logenetic **N**etwork **E**stimation.
+Documentation for a julia package [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl): **Phy**logenetic **N**etwork **E**stimation.
 
 ---
 
