@@ -31,7 +31,7 @@ end
 Extracts quartet information from a topology. Also stores the observed site patter frequency information for each quartet.
 
 ## Input
-`net`   HybridNetwork object obtained using the function `readTopology`
+`net`   HybridNetwork object obtained using the function `readTopology`\\
 `phylip`    Phylip object obtained using the function `readPhylipFile!`
 """
 function extractNQuartets(net::HybridNetwork,p::Phylip)
@@ -381,9 +381,12 @@ end
 end=#
 
 """
-    printQuartets
+    printQuartets(net::HybridNetwork)
 
-gegejaga may be use DataFrame
+Visualizes quartet information extracted from a topology in the form of DataFrame.
+
+## Input
+`net` HybridNetwork object obtained using the function `readTopology`\\
 """
 printQuartets(x) = printQuartets(stdout::IO, x)
 function printQuartets(io::IO, x::HybridNetwork)

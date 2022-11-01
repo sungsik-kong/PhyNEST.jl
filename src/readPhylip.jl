@@ -419,7 +419,7 @@ end
 """
     readCheckPoint(ckpfile::AbstractString)
 
-Reads in `.ckp` file. 
+Reads in `.ckp` file that is created every time function `readPhylipFile!` is complete.
 
 ### Input
 `ckpfile` Name of `checkpoint` file as a AbstractString\\
