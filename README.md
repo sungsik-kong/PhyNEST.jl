@@ -7,8 +7,8 @@
 
 Julia package [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) can:
 
-- Read multi-locus sequence alignment (in a relaxed phylip format) and parse site pattern frequencies for all possible permutations of four individuals (i.e., quartet).
-- Estimate species networks directly from the parsed site patterns extracted using hill-climbing or simulated annealing heuristic algorithms.
+- Read multi-locus sequence alignment (in a relaxed Phylip format) and parse site pattern frequencies for all possible permutations of four individuals (i.e., quartet).
+- Estimate maximum composite likelihood species networks from the parsed site patterns extracted using hill climbing or simulated annealing heuristic algorithms.
 
 ## Quick Tutorial
 Please see [here](https://sungsik-kong.github.io/PhyNEST.jl/) for more information.
