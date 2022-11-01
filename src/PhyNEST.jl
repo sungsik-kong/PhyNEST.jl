@@ -1,5 +1,5 @@
 #written by Sungsik Kong 2021-2022
-module PhyNE
+module PhyNEST
 
 #   ENV["JULIA_DEBUG"] = "all"/"PhyNE"
 #   ENV["JULIA_DEBUG"] = " "
