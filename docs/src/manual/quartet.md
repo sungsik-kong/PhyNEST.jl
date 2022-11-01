@@ -8,7 +8,7 @@ An extended Newick string can be read by the function `readTopology` from `Phylo
 PhyNE uses the same the extended Newick format as in `PhyloNetworks`. Branch lengths can be specified using colon (`:`) as in a regular Newick string. For reticulation nodes, relevant information are specified in the order of ':length:bootstrap:gamma'. PhyNE does *not* require branch lengths to be specified, however, if gamma is specified, it will be set as 0.5 .
 
 ```@repl quartet
-using PhyNE
+using PhyNEST
 network = readTopology("(5,(4,((3,(2)#H6:::0.6),(1,#H6:::0.4))));")
 ```
 ## Extract quartet(s)
