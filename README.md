@@ -1,4 +1,4 @@
-# PhyNE: Phylogenetic Network Estimation using SiTe patterns
+# PhyNEST: Phylogenetic Network Estimation using SiTe patterns
 
 [![Build Status](https://github.com/sungsik-kong/PhyNE.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/sungsik-kong/PhyNEST.jl/actions/workflows/CI.yml?query=branch%3Amain)
 
