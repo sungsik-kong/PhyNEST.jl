@@ -305,23 +305,14 @@ Set [display=true] to see both quartets and coresponding site pattern frequencie
 end
 
 """
-    writeSitePatternCounts(p::Phylip,write::Bool,inputfile::AbstractString)
-    writeSitePatternCounts(p::Phylip,inputfile::AbstractString)
-    writeSitePatternCounts(inputfile::AbstractString)
-    writeSitePatternCounts(p::Phylip)
-    
+    writeSitePatternCounts(phylip::Phylip,csvname::AbstractString)
 
-Writes the observed site pattern frequencies from the phylip file as .csv file in the working 
-directory and name it as sitePatternCounts_inputfile.csv. 
-Although it requires an attribute `inputfile`, it does not actually read the file as long as
-the Phylip object in memory is provided. (i.e., any `AbstractString` can be provided here that 
-is used as a suffix of the ) However, if only the input file name is provided, 
-it runs `readPhylipFile!` first then write csv. file.
+Exports the site pattern frequencies parsed frin the sequence alignment in a `.csv` file. The output is stored in
+the worksing directory unless specified, and named as sitePatternCounts_`csvname`.csv. 
 
 ### Input
-`p` A Type Phylip object\\
-`write`  Boolean variable to export site pattern frequences in .csv\\
-`inputfile` Name of phylip file as a AbstractString\\
+`phylip` A Phylip object that is obtained using the function `readPhylipFile!()`\\
+`csvname`  A string that specifies the name of the `.csv` file\\
 """
 function writeSitePatternCounts(p::Phylip,write::Bool,csvname::AbstractString,inputfile::AbstractString)
     
@@ -428,10 +419,10 @@ end
 """
     readCheckPoint(ckpfile::AbstractString)
 
-Reads in `.ckp` file. gegeege
+Reads in `.ckp` file. 
 
-
-
+### Input
+`ckpfile` Name of `checkpoint` file as a AbstractString\\
 """
 function readCheckPoint(ckpfile::AbstractString)
     p=Phylip()
