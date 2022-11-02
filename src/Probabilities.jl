@@ -335,19 +335,27 @@ function GetTrueProbsNetTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Fl
 end
 
 """ 
+    simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64)
     simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)
 
-This function simulates the 15 site pattern probabilities for a quartet.
+This function simulates the 15 site pattern probabilities for five quartet tree topologies, 
+one symmetric and four asymmetric: 
 
-    - `type`   specify the type of a quartet. 
-    - `myt1`   Branch length
-    - `myt2`   Branch length
-    - `myt3`   Branch length from the root
-    - `theta`  Theta value (default=0.01)
-    - `alpha`  Alpha value (default=4/3)
-    - `length` Sequence lengths in integers (default=1000000)
+    -Type **0**: ((1,2),(3,4));
+    -Type **1**: (1,((2,3),4));
+    -Type **2**: ((1,(2,3)),4);
+    -Type **3**: (1,(2,(3,4)));
+    -Type **4**: (((1,2),3),4);
+
+## Input
+`type`   Specify the type of a quartet (use integer)\\
+`myt1`   Speciation time for the most recent internal tree node. Common ancestor of species 1 and 2 in symmetric quartet\\
+`myt2`   Speciation time for the internal tree node closer to the root\\
+`myt3`   Root age\\
+`theta`  Effective population size parameter (default=0.01)\\
+`alpha`  Alpha (default=4/3)\\
+`length` Sequence lengths (default=1000000)
 """
-simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64)=simspcounts(type,myt1,myt2,myt3,0.01,4/3,1000000)
 function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)
     weights=[4,12,12,12,24,12,12,24,12,12,24,24,24,24,24]
     if type==0
@@ -359,3 +367,4 @@ function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,the
     sim=rand(Multinomial(n,prob))
     return sim
 end
+simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64)=simspcounts(type,myt1,myt2,myt3,0.01,4/3,1000000)

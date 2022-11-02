@@ -29,6 +29,7 @@ Pages = [
     printQuartets
     TrueSitePatternSymm
     TrueSitePatternAsymm
+    simspcounts
     PhyNE!
 ```
 ## Types

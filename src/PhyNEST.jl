@@ -38,7 +38,8 @@ module PhyNEST
         writeSitePatternCounts,
         readCSVFile,
         readTopology,#from PhyloNetworks
-        mrca, #Quartets
+        
+        #Quartets
         extractNQuartets,
         extractQuartets,
         printQuartets,
