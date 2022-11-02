@@ -7,11 +7,11 @@
 
 gege
 """
-TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
 function TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
     ps=GetTrueProbsSymm(myt1,myt2,myt3,theta,alpha)
     return ps
 end
+TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
 
 function GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 

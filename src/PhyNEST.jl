@@ -42,7 +42,9 @@ module PhyNEST
         extractNQuartets,
         extractQuartets,
         printQuartets,
+        
         GetTrueProbsSymm, #Probabilities
+        TrueSitePatternSymm,
         GetTrueProbsAsymm,
         GetTrueProbsNetTypes,
         simspcounts,
