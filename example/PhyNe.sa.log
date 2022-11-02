@@ -82,4 +82,6 @@ The best network found in this run: (5:10.143246111976964,(4:5.128207274589672,(
 
 (3/5) Searching for the best network using the simulated annealing algorithm...
 Starting topology modified to (5,(4,(3,(2,1))));
-Running 25 runs of burn-in...
+Running 25 runs of burn-in...Complete 
+(Cooling schedule)U=295486.555525701
+(Cooling schedule)beta=0.8999957157391261
