@@ -339,7 +339,7 @@ end
     simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,length::Integer)
 
 This function simulates the 15 site pattern probabilities for five quartet tree topologies, 
-one symmetric and four asymmetric quartets: 
+one symmetric and four asymmetric quartets, which we categorize them into five types: 
 
 - Type **0**: ((1,2),(3,4));
 - Type **1**: (1,((2,3),4));
