@@ -5,10 +5,19 @@
 """
     TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 
-gege
+Computes true site pattern probabilities for the symmetric quartet tree, ((1,2),(3,4));. 
+Three speciation times (or node ages) and theta must be provided. 
+
+## Input
+`myt1` Speciation time for the common ancestor of species 1 and 2\\
+`myt2` Speciation time for the common ancestor of species 3 and 4\\
+`myt3` Root age\\
+`theta` Effective population size parameter\\
+`alpha` 4/3 by default
 """
 function TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
     ps=GetTrueProbsSymm(myt1,myt2,myt3,theta,alpha)
+
     return ps
 end
 TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
