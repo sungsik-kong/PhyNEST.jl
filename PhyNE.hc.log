@@ -1,0 +1,38 @@
+PhyNE: Estimating Maximum Pseudolikelihood Phylogenetic Network
+╔═══╦╗─────╔═╗─╔╗
+║╔═╗║║─────║║╚╗║║
+║╚═╝║╚═╦╗─╔╣╔╗╚╝╠══╗
+║╔══╣╔╗║║─║║║╚╗║║║═╣
+║║──║║║║╚═╝║║─║║║║═╣
+╚╝──╚╝╚╩═╗╔╩╝─╚═╩══╝
+───────╔═╝║ 
+───────╚══╝   
+Analysis start: 2022-11-02 at 14:08:24
+Input filename: example/n5h1_5k.txt
+Number of sequences: 5 
+Sequence length: 2500000
+Starting Topology: (5,(4,(3,(1,2))));
+Outgroup specified for rooting: 5
+Number of maximum reticulation(s): 1
+The maximum number of iterations for each optimization: 1000
+Search algorithm selected: Hill-climbing
+The maximum number of steps during search: 100000
+
+Initiating 5 iterations...
+(1/5) Searching for the best network using the hill-climbing algorithm...
+Starting topology modified to (5,(4,(3,(1,2))));
+The search terminated at step 80 and at 75th consecutive failures.
+Summary of each move:
+Insertion of reticulation edge: 2 proposed, 1 accepted.
+Tail move of reticulation edge: 25 proposed, 0 accepted. 
+Head move of reticulation edge: 25 proposed, 0 accepted.
+Change the direction of reticulation edge: 4 proposed, 0 accepted.
+Deletion of reticulation edge: 0 proposed, 0 accepted.
+Nearest-neighbor interchange (NNI): 24 proposed, 1 accepted.
+On the current topology, 89 moves were made, including 14 unsuccessful moves.
+Terminated because it reached the maximum number of failures (current nfail=75).
+The best network found in this run: (5:10.143246111976964,(4:5.128207274589672,((3:1.7832993566222581,(2)#H6:::0.5947475713189532):1.3303497322531534,(1:1.1961994949262897,#H6:::0.40525242868104683):1.9174495939491218):2.01455818571426):5.0150388373872925);
+-Log Pseudolikelihood: 2.8836099473859896e6 
+
+(2/5) Searching for the best network using the hill-climbing algorithm...
+Starting topology modified to (5,(4,(3,(1,2))));
