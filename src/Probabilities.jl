@@ -3,6 +3,7 @@
 # 3.Probabilities
 
 """
+    TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)
     TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 
 Computes true site pattern probabilities for the symmetric quartet tree, ((1,2),(3,4));. 
