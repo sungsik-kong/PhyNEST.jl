@@ -7,7 +7,9 @@
     TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 
 Computes true site pattern probabilities for the symmetric quartet tree, ((1,2),(3,4));. 
-Three speciation times (or node ages) and theta must be provided. 
+Three speciation times (or node ages) in coalescent unit and theta must be provided. Alhpa is not
+an essential argument for the function and if not provided, it isssumed to be 4/3 by default. 
+See manuscript or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006] for more information.
 
 ## Input
 `myt1` Speciation time for the common ancestor of species 1 and 2\\
@@ -112,10 +114,28 @@ function GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float
 end
 
 """
-    GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+    TrueSitePatternAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)
+    TrueSitePatternAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 
-gege
+Computes true site pattern probabilities for the asymmetric quartet tree, (1,(2,(3,4)));. 
+Three speciation times (or node ages) in coalescent unit and theta must be provided. Alhpa is not
+an essential argument for the function and if not provided, it isssumed to be 4/3 by default. 
+See manuscript or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006] for more information.
+
+## Input
+`myt1` Speciation time for the common ancestor of species 3 and 4\\
+`myt2` Speciation time for the common ancestor of species 2, 3 and 4\\
+`myt3` Root age\\
+`theta` Effective population size parameter\\
+`alpha` 4/3 by default
 """
+function TrueSitePatternAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+    pa=GetTrueProbsAsymm(myt1,myt2,myt3,theta,alpha)
+
+    return pa
+end
+TrueSitePatternAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=TrueSitePatternAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
+
 function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 
     t1 = myt1*theta
