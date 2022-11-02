@@ -25,6 +25,7 @@ Pages = [
     readCheckPoint
     writeSitePatternCounts
     extractNQuartets
+    extractQuartets
     printQuartets
     PhyNE!
 ```
