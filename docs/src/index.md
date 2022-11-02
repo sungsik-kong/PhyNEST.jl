@@ -1,6 +1,6 @@
 # PhyNEST.jl
 
-Documentation for a julia package [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl): **Phy**logenetic **N**etwork **E**stimation using *S*i*T*e patterns.
+Documentation for a julia package [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl): **Phy**logenetic **N**etwork **E**stimation using **S**i**T**e patterns.
 
 ---
 
@@ -8,7 +8,7 @@ Documentation for a julia package [PhyNEST.jl](https://github.com/sungsik-kong/P
 TBA
 
 ## Getting help
-Please use [google group](https://groups.google.com/g/phyne-users) to report bugs or post questions and/or suggestions.
+Please use [google group](https://groups.google.com/g/phynest-users) to report bugs or post questions and/or suggestions.
 
 ## Manual
 ```@contents
@@ -27,6 +27,7 @@ Pages = [
     extractNQuartets
     extractQuartets
     printQuartets
+    TrueSitePatternSymm
     PhyNE!
 ```
 ## Types
@@ -43,8 +44,9 @@ Pages = [
     writeSitePatternCounts
     extractNQuartets
     printQuartets
+    TrueSitePatternSymm
+    PhyNE!
     Phylip
     nquartets
     Nquartets
-    PhyNE!
 ```
