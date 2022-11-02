@@ -28,6 +28,7 @@ Pages = [
     extractQuartets
     printQuartets
     TrueSitePatternSymm
+    TrueSitePatternAsymm
     PhyNE!
 ```
 ## Types
@@ -45,6 +46,7 @@ Pages = [
     extractNQuartets
     printQuartets
     TrueSitePatternSymm
+    TrueSitePatternAsymm
     PhyNE!
     Phylip
     nquartets

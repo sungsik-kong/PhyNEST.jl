@@ -43,9 +43,9 @@ module PhyNEST
         extractQuartets,
         printQuartets,
         
-        GetTrueProbsSymm, #Probabilities
+        #Probabilities
         TrueSitePatternSymm,
-        GetTrueProbsAsymm,
+        TrueSitePatternAsymm,
         GetTrueProbsNetTypes,
         simspcounts,
         momentEstimat,#Method-of-moment Estimates
