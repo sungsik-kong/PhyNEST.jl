@@ -336,20 +336,20 @@ end
 
 """ 
     simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64)
-    simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)
+    simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,length::Integer)
 
 This function simulates the 15 site pattern probabilities for five quartet tree topologies, 
-one symmetric and four asymmetric: 
+one symmetric and four asymmetric quartets: 
 
-    -Type **0**: ((1,2),(3,4));
-    -Type **1**: (1,((2,3),4));
-    -Type **2**: ((1,(2,3)),4);
-    -Type **3**: (1,(2,(3,4)));
-    -Type **4**: (((1,2),3),4);
+- Type **0**: ((1,2),(3,4));
+- Type **1**: (1,((2,3),4));
+- Type **2**: ((1,(2,3)),4);
+- Type **3**: (1,(2,(3,4)));
+- Type **4**: (((1,2),3),4);
 
 ## Input
 `type`   Specify the type of a quartet (use integer)\\
-`myt1`   Speciation time for the most recent internal tree node. Common ancestor of species 1 and 2 in symmetric quartet\\
+`myt1`   Speciation time for the most recent internal tree node. Common ancestor of 1 and 2 in the symmetric case\\
 `myt2`   Speciation time for the internal tree node closer to the root\\
 `myt3`   Root age\\
 `theta`  Effective population size parameter (default=0.01)\\
