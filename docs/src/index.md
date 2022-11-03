@@ -17,7 +17,6 @@ Pages = [
     "manual/input.md",
     "manual/networkest.md",
     "manual/quartet.md",
-
     ]
 ```
 
