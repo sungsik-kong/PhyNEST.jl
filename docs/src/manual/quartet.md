@@ -20,11 +20,14 @@ printQuartets(network)
 ## True site pattern probabilities for a quartet
 See [Chifman and Kubatko (2015)](https://www.sciencedirect.com/science/article/pii/S0022519315001095?via%3Dihub) for more information.
 ### Symmetric quartet
-True probabilities for the fifteen site pattern for a symmetric quartet can be computed using the function `GetTrueProbsSymm`. We need to specify five parameters, $\tau$
+True site pattern probabilities for the fifteen site pattern for a symmetric quartet can be computed using the function `TrueSitePatternSymm`. We need to specify at least four parameters, three values of node ages, $\tau$, in the order of [MRCA of species 1 and 2, MRCA of species 3 and 4, root age] and population size parameter $\theta$. In the following block, we computed the probabilities for $\tau_1=1.0$, $\tau_2=2.0$, $\tau_3=5.0$, and $\theta=0.0025$. The 15 patterns appear in the order of [AAAA,AAAB,AABA,AABB,AABC,ABAA,ABAB,ABAC,ABBA,BAAA,ABBC,CABC,BACA,BCAA,ABCD]. 
 
-GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+We assure that the computation is on the right track by multiplying the weight for each site pattern, and sum all of them together to get 1.0.
+
 ```@repl quartet
-symqProb=TrueSitePatternSymm(1.0,2.0,5.0,0.0025,4/3)
+symqProb=TrueSitePatternSymm(1.0,2.0,5.0,0.0025)
+weights=[4,12,12,12,24,12,12,24,12,12,24,24,24,24,24]
+sum(symqProb.*weights)
 ```
 ### Asymmetric quartet
 function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
