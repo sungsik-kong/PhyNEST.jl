@@ -38,11 +38,9 @@ weights=[4,12,12,12,24,12,12,24,12,12,24,24,24,24,24]
 sum(symqProb.*weights)
 ```
 ## Simulate true site pattern frequencies
-function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)
+Function `simspcounts` generates the site-pattern frequencies for the symmetric and asymmetric quartets, modeled as a multinomial random variables assuming the observed sites are independent from each other. The length of sequence is 1000000 bp by default. Three speciation times for the quartet must be specified by the user. Theta and alpha are set as 0.0025 and 4/3, respectively, by default.
 ```@repl quartet
 simSPsym=simspcounts(0,1.0,2.0,5.0,0.0025,4/3,1000000)
-```
-```@repl quartet
 simSPasym=simspcounts(3,1.0,2.0,5.0,0.0025,4/3,1000000)
 ```
 ## Method-of-moment estimator of branch lengths
