@@ -44,20 +44,20 @@ Gamma for parental tree 2: 0.4
    3 │     3  [1, 2, 4, 6]  [-2, -2, -2, -3, -3, -7]  [-7, -3, -2]      3
    4 │     4  [1, 3, 4, 6]  [-2, -2, -2, -4, -4, -7]  [-7, -4, -2]      3
    5 │     5  [2, 3, 4, 6]  [-3, -3, -3, -4, -4, -7]  [-7, -4, -3]      3</code></pre><h2 id="True-site-pattern-probabilities-for-a-quartet"><a class="docs-heading-anchor" href="#True-site-pattern-probabilities-for-a-quartet">True site pattern probabilities for a quartet</a><a id="True-site-pattern-probabilities-for-a-quartet-1"></a><a class="docs-heading-anchor-permalink" href="#True-site-pattern-probabilities-for-a-quartet" title="Permalink"></a></h2><p>See <a href="https://www.sciencedirect.com/science/article/pii/S0022519315001095?via%3Dihub">Chifman and Kubatko (2015)</a> for more information.</p><h3 id="Symmetric-quartet"><a class="docs-heading-anchor" href="#Symmetric-quartet">Symmetric quartet</a><a id="Symmetric-quartet-1"></a><a class="docs-heading-anchor-permalink" href="#Symmetric-quartet" title="Permalink"></a></h3><p>True site pattern probabilities for the fifteen site pattern for a symmetric quartet under the JC69 model can be computed using the function <code>TrueSitePatternSymm</code>. We need to specify at least four parameters, three values of node ages, <span>$\tau$</span>, in the order of [MRCA of species 1 and 2, MRCA of species 3 and 4, root age] and population size parameter <span>$\theta$</span>. In the following block, we computed the probabilities for <span>$\tau_1=1.0$</span>, <span>$\tau_2=2.0$</span>, <span>$\tau_3=5.0$</span>, and <span>$\theta=0.0025$</span>. The 15 patterns appear in the order of [AAAA,AAAB,AABA,AABB,AABC,ABAA,ABAB,ABAC,ABBA,BAAA,ABBC,CABC,BACA,BCAA,ABCD]. </p><p>We assure that the computation is on the right track by multiplying the weight for each site pattern, and sum all of them together to get 1.0.</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; symqProb=TrueSitePatternSymm(1.0,2.0,5.0,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Float64}:
- 0.23962355956839554
- 0.00040183279774349704
- 0.00040183279774349704
- 0.0014085244500744755
- 5.1979474175536895e-6
- 0.0006035346691620996
- 2.071266702951881e-6
- 1.0216168918510621e-6
- 2.071266702951881e-6
- 0.0006035346691620996
- 1.0216168918510621e-6
- 1.0216168918510621e-6
- 1.0216168918510621e-6
- 8.390874669437423e-6
+ 0.23962355956839557
+ 0.00040183279774349406
+ 0.00040183279774349406
+ 0.0014085244500744824
+ 5.197947417551283e-6
+ 0.0006035346691620966
+ 2.0712667029507137e-6
+ 1.0216168918508912e-6
+ 2.0712667029507137e-6
+ 0.0006035346691620966
+ 1.0216168918508912e-6
+ 1.0216168918508912e-6
+ 1.0216168918508912e-6
+ 8.390874669438053e-6
  3.0490300551329126e-8</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; weights=[4,12,12,12,24,12,12,24,12,12,24,24,24,24,24]</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
   4
  12
@@ -73,21 +73,21 @@ Gamma for parental tree 2: 0.4
  24
  24
  24
- 24</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; sum(symqProb.*weights)</code><code class="nohighlight hljs ansi" style="display:block;">0.9999999999999999</code></pre><h3 id="Asymmetric-quartet"><a class="docs-heading-anchor" href="#Asymmetric-quartet">Asymmetric quartet</a><a id="Asymmetric-quartet-1"></a><a class="docs-heading-anchor-permalink" href="#Asymmetric-quartet" title="Permalink"></a></h3><p>PhyNEST also computes true site pattern probabilities for the asymmetric quartet under the JC69 model using the function <code>TrueSitePatternAsymm</code>. The asymmetric quartet that we consider here can be written as (4,(3,(2,1))); in a Newick format. Similar to the symmetric quartet case above, three speciation times should be specified in the order of [MRCA of (1,2), MRCA of (1,2,3), root age], plus <span>$\theta$</span>. </p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; asymqProb=TrueSitePatternAsymm(1.0,2.0,5.0,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Float64}:
- 0.2397014086499449
- 0.00037588310389369246
- 0.00037588310389369246
- 0.00022931951527033523
- 1.223275242360262e-6
- 0.0005775849753122985
- 2.8069077819539714e-5
+ 24</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; sum(symqProb.*weights)</code><code class="nohighlight hljs ansi" style="display:block;">0.9999999999999996</code></pre><h3 id="Asymmetric-quartet"><a class="docs-heading-anchor" href="#Asymmetric-quartet">Asymmetric quartet</a><a id="Asymmetric-quartet-1"></a><a class="docs-heading-anchor-permalink" href="#Asymmetric-quartet" title="Permalink"></a></h3><p>PhyNEST also computes true site pattern probabilities for the asymmetric quartet under the JC69 model using the function <code>TrueSitePatternAsymm</code>. The asymmetric quartet that we consider here can be written as (4,(3,(2,1))); in a Newick format. Similar to the symmetric quartet case above, three speciation times should be specified in the order of [MRCA of (1,2), MRCA of (1,2,3), root age], plus <span>$\theta$</span>. </p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; asymqProb=TrueSitePatternAsymm(1.0,2.0,5.0,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Float64}:
+ 0.23970140864994496
+ 0.00037588310389369446
+ 0.00037588310389369446
+ 0.0002293195152703372
+ 1.2232752423582682e-6
+ 0.0005775849753122952
+ 2.8069077819539365e-5
  9.975582584582903e-7
- 2.8069077819539714e-5
- 0.0017866620573686648
+ 2.8069077819539365e-5
+ 0.0017866620573686737
  3.011003732439706e-6
  9.975582584582903e-7
  3.011003732439706e-6
- 6.429647968228448e-6
+ 6.429647968226454e-6
  2.6388794569464492e-8</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; weights=[4,12,12,12,24,12,12,24,12,12,24,24,24,24,24]</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
   4
  12
@@ -103,39 +103,39 @@ Gamma for parental tree 2: 0.4
  24
  24
  24
- 24</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; sum(symqProb.*weights)</code><code class="nohighlight hljs ansi" style="display:block;">0.9999999999999999</code></pre><h2 id="Simulate-true-site-pattern-frequencies"><a class="docs-heading-anchor" href="#Simulate-true-site-pattern-frequencies">Simulate true site pattern frequencies</a><a id="Simulate-true-site-pattern-frequencies-1"></a><a class="docs-heading-anchor-permalink" href="#Simulate-true-site-pattern-frequencies" title="Permalink"></a></h2><p>Function <code>simspcounts</code> generates the site-pattern frequencies for the symmetric and asymmetric quartets, modeled as a multinomial random variables assuming the observed sites are independent from each other. The length of sequence is 1000000 bp by default. Three speciation times for the quartet must be specified by the user. Theta and alpha are set as 0.0025 and 4/3, respectively, by default.</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPsym=simspcounts(0,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
- 958533
-   4865
-   4802
-  16887
-    114
-   7109
+ 24</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; sum(symqProb.*weights)</code><code class="nohighlight hljs ansi" style="display:block;">0.9999999999999996</code></pre><h2 id="Simulate-true-site-pattern-frequencies"><a class="docs-heading-anchor" href="#Simulate-true-site-pattern-frequencies">Simulate true site pattern frequencies</a><a id="Simulate-true-site-pattern-frequencies-1"></a><a class="docs-heading-anchor-permalink" href="#Simulate-true-site-pattern-frequencies" title="Permalink"></a></h2><p>Function <code>simspcounts</code> generates the site-pattern frequencies for the symmetric and asymmetric quartets, modeled as a multinomial random variables assuming the observed sites are independent from each other. The length of sequence is 1000000 bp by default. Three speciation times for the quartet must be specified by the user. Theta and alpha are set as 0.0025 and 4/3, respectively, by default.</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPsym=simspcounts(0,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
+ 958473
+   4710
+   4740
+  16950
+    120
+   7384
      25
-     37
-     35
-   7304
-     31
-     29
-     26
-    201
-      2</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPasym=simspcounts(3,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
- 958856
-   4496
-   4526
-   2818
-     29
-   6974
-    329
+     15
+     21
+   7296
+     11
+     24
+     28
+    203
+      0</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; simSPasym=simspcounts(3,1.0,2.0,5.0,0.0025,4/3,1000000)</code><code class="nohighlight hljs ansi" style="display:block;">15-element Vector{Int64}:
+ 959034
+   4385
+   4546
+   2782
+     25
+   6905
+    315
      17
-    328
-  21311
-     65
-     27
-     70
-    154
-      0</code></pre><h2 id="Method-of-moment-estimator-of-branch-lengths"><a class="docs-heading-anchor" href="#Method-of-moment-estimator-of-branch-lengths">Method-of-moment estimator of branch lengths</a><a id="Method-of-moment-estimator-of-branch-lengths-1"></a><a class="docs-heading-anchor-permalink" href="#Method-of-moment-estimator-of-branch-lengths" title="Permalink"></a></h2><p>function momentEstimat(type::Integer,spcounts::Array,theta::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstsym=momentEstimat(0,simSPsym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(1.0098799084513232, 1.9927098895549844, 4.994644593665969)</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstasym=momentEstimat(3,simSPasym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(0.9944337783435364, 2.019193080817397, 4.9803002672639565)</code></pre><h2 id="Estimating-theta"><a class="docs-heading-anchor" href="#Estimating-theta">Estimating theta</a><a id="Estimating-theta-1"></a><a class="docs-heading-anchor-permalink" href="#Estimating-theta" title="Permalink"></a></h2><p>function startTheta(q::Array{Nquartets, 1},net::HybridNetwork; lbound=0.00001::Float64,factor=2.0::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; datapath = joinpath(dirname(pathof(PhyNEST)), &quot;..&quot;,&quot;example&quot;,&quot;n5h1_5k.txt&quot;);</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; phydata = readPhylipFile!(datapath, showProgress=false)</code><code class="nohighlight hljs ansi" style="display:block;">Summary: Phylip File
-Parsing the file [/home/runner/work/PhyNEST.jl/PhyNEST.jl/src/../example/n5h1_5k.txt] took [53.271] seconds.
+    356
+  21304
+     84
+     19
+     78
+    150
+      0</code></pre><h2 id="Method-of-moment-estimator-of-branch-lengths"><a class="docs-heading-anchor" href="#Method-of-moment-estimator-of-branch-lengths">Method-of-moment estimator of branch lengths</a><a id="Method-of-moment-estimator-of-branch-lengths-1"></a><a class="docs-heading-anchor-permalink" href="#Method-of-moment-estimator-of-branch-lengths" title="Permalink"></a></h2><p>function momentEstimat(type::Integer,spcounts::Array,theta::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstsym=momentEstimat(0,simSPsym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(0.9547574359664363, 2.0351532680590014, 5.005728996978818)</code></pre><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; momEstasym=momentEstimat(3,simSPasym,0.0025)</code><code class="nohighlight hljs ansi" style="display:block;">(0.9815392935862514, 1.9890714729075827, 4.96781297423362)</code></pre><h2 id="Estimating-theta"><a class="docs-heading-anchor" href="#Estimating-theta">Estimating theta</a><a id="Estimating-theta-1"></a><a class="docs-heading-anchor-permalink" href="#Estimating-theta" title="Permalink"></a></h2><p>function startTheta(q::Array{Nquartets, 1},net::HybridNetwork; lbound=0.00001::Float64,factor=2.0::Float64)</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; datapath = joinpath(dirname(pathof(PhyNEST)), &quot;..&quot;,&quot;example&quot;,&quot;n5h1_5k.txt&quot;);</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; phydata = readPhylipFile!(datapath, showProgress=false)</code><code class="nohighlight hljs ansi" style="display:block;">Summary: Phylip File
+Parsing the file [/home/runner/work/PhyNEST.jl/PhyNEST.jl/src/../example/n5h1_5k.txt] took [74.897] seconds.
 Number of taxa: 5
 Species names: [&quot;5&quot;, &quot;4&quot;, &quot;3&quot;, &quot;1&quot;, &quot;2&quot;]
 Sequence length (b.p): 2500000
-Site patterns frequencies for [120] quartets computed and stored.</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; theta=startTheta(network,phydata)</code><code class="nohighlight hljs ansi" style="display:block;">0.002559999924257746</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../networkest/">« Network estimation</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Friday 4 November 2022 23:47">Friday 4 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+Site patterns frequencies for [120] quartets computed and stored.</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; theta=startTheta(network,phydata)</code><code class="nohighlight hljs ansi" style="display:block;">0.002559999924257746</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../networkest/">« Network estimation</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.23 on <span class="colophon-date" title="Friday 4 November 2022 23:49">Friday 4 November 2022</span>. Using Julia version 1.8.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
