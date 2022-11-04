@@ -21,8 +21,6 @@ or
 ```@julia
 ] add PhyNEST
 ```
-Either command installs the package.
-
 To check the currently installed version of PhyNEST, run the following command:
 ```@julia
 ] status PhyNEST
