@@ -11,11 +11,11 @@ To install the package, type in Julia prompt:
 ```@julia install
 using Pkg
 Pkg.add("PhyNEST")
-``
+```
 
 ## Test example
 Once the installation is complete, execute PhyNEST and run function `greet()` to see if the package has been added to the local machine. A greet message with current time should appear.
 ```@repl install
 using PhyNEST
 greet()
-``
+```
