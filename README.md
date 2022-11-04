@@ -22,7 +22,7 @@ or
 ] add PhyNEST
 ```
 Either command installs the package.
-## Quick test
+## A quick test
 Once the installation is complete, execute PhyNEST and run function `greet()` to see if the package has been added to the local machine. A greet message with current time should appear.
 ```@repl install
 using PhyNEST
