@@ -6,13 +6,22 @@ Julia aims to create an unprecedented combination of ease-of-use, power, and eff
 
 Julia: A Fresh Approach to Numerical Computing. Jeff Bezanson, Alan Edelman, Stefan Karpinski, Viral B. Shah. (2017) SIAM Review, 59: 65–98. doi: 10.1137/141000671.
 
-## Installation of the package PhyNE
-To install the package, type in Julia prompt:
+## Installation of the package PhyNEST
+To install PhyNEST run the following command in Julia prompt:
 ```@julia install
 using Pkg
 Pkg.add("PhyNEST")
 ```
+or
+```@julia install
+] add PhyNEST
+```
+Either command installs the package.
 
+To check the installed version of PhyNEST, run the following command:
+```@julia install
+] status PhyNEST
+```
 ## Test example
 Once the installation is complete, execute PhyNEST and run function `greet()` to see if the package has been added to the local machine. A greet message with current time should appear.
 ```@repl install

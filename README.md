@@ -22,6 +22,11 @@ or
 ] add PhyNEST
 ```
 Either command installs the package.
+
+To check the installed version of PhyNEST, run the following command:
+```@julia install
+] status PhyNEST
+```
 ## A quick test
 Once the installation is complete, execute PhyNEST and run function `greet()` to see if the package has been added to the local machine. A greet message with current time should appear.
 ```@repl install
