@@ -12,7 +12,7 @@ Julia package [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) can:
 - Estimate maximum composite likelihood species networks from the parsed site patterns extracted using hill climbing or simulated annealing heuristic algorithms.
 
 ## Installation
-To install PhyNEST run the following command in Julia prompt:
+To install PhyNEST, run the following command in Julia prompt:
 ```@julia install
 using Pkg
 Pkg.add("PhyNEST")
