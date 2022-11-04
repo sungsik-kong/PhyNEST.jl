@@ -1,8 +1,8 @@
 # PhyNEST: Phylogenetic Network Estimation using SiTe patterns
 
 [![Build Status](https://github.com/sungsik-kong/PhyNE.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/sungsik-kong/PhyNEST.jl/actions/workflows/CI.yml?query=branch%3Amain)
-[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://sungsik-kong.github.io/PhyNEST.jl/stable)
-[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://sungsik-kong.github.io/PhyNEST.jl/dev)
+[![Stable-Docs](https://img.shields.io/badge/docs-stable-blue.svg)](https://sungsik-kong.github.io/PhyNEST.jl/stable)
+[![Dev-Docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://sungsik-kong.github.io/PhyNEST.jl/dev)
 
 ## Overview
 
@@ -13,23 +13,23 @@ Julia package [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) can:
 
 ## Installation
 To install PhyNEST, run the following command in Julia prompt:
-```@julia install
+```@julia
 using Pkg
 Pkg.add("PhyNEST")
 ```
 or
-```@julia install
+```@julia
 ] add PhyNEST
 ```
 Either command installs the package.
 
 To check the installed version of PhyNEST, run the following command:
-```@julia install
+```@julia
 ] status PhyNEST
 ```
 ## A quick test
 Once the installation is complete, execute PhyNEST and run function `greet()` to see if the package has been added to the local machine. A greet message with current time should appear.
-```@repl install
+```@julia
 using PhyNEST
 greet()
 ```
