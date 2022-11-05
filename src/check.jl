@@ -1,8 +1,6 @@
 function greet()
     now=Dates.now()
-    msg=println("
-    Thank you for using PhyNEST!
-    Current time is: $now.")
+    msg=println("Thank you for using PhyNEST! Current time is $now.")
     return msg
 end
 
