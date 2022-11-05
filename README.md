@@ -23,7 +23,7 @@ or
 ```@julia
 ] add PhyNEST
 ```
-To check the currently installed version of PhyNEST, run the following command:
+To check the installed version of PhyNEST, run the following command:
 ```@julia
 ] status PhyNEST
 ```
