@@ -1,11 +1,13 @@
 # Input
 
-Current version of PhyNEST takes a relaxed, sequential, PHYLIP formatted DNA alignment file. Extensions can be either `.phy` or `.txt`. For more information on PHYLIP, see [here](https://en.wikipedia.org/wiki/PHYLIP). After the PHYLIP file has been parsed, PhyNEST creates a checkpoint file with the extension `.ckp`, which can be called later to prevent repetition of parsing the same data and save time. Moreover, the observed site pattern frequencies of every quartet from the alignment can be exported into a `.csv` file, for a user to explore for other purposes (e.g., manually computation of Patterson's D-statistic etc.). The following sections explain above procedures in detail.
+Current version of PhyNEST takes a relaxed, sequential, [PHYLIP](https://en.wikipedia.org/wiki/PHYLIP) formatted DNA alignment file. PhyNEST automatically creates `FILENAME.ckp` and has a option for a user to export the observed site pattern frequencies as `FILENAME.csv`. The following sections explain above procedures in detail.
 
 ## Parsing DNA alignment data
-A sample DNA alignment file called `n5h1_5k.txt` is given in the `example` folder of the package PhyNE (or can be downloaded [here](https://github.com/sungsik-kong/PhyNE.jl/blob/main/example/n5h1_5k.txt)). This alignment is 750,000 base pairs (bp) long and contains five sequences, named as  `[1, 2, 3, 4, 5]`. The alignment is generated using *ms* and *seq-gen*. The true relationship of the five taxa is written in the extended Newick format as (branch lengths omittted): 
+A sample DNA alignment named `n5h1_5k.txt` is provided in the `/example` folder of the package PhyNEST (or can be downloaded [here](https://github.com/sungsik-kong/PhyNE.jl/blob/main/example/n5h1_5k.txt)). The alignment contains five sequences and is 750,000 base pairs (bp) long. Species are named as `[1, 2, 3, 4, 5]`. The true relationship of the five taxa is written in the extended Newick format as (branch lengths not shown): 
 
 `(5,(4,((3,(2)#H6:::0.6),(1,#H6:::0.4))));`.
+
+(here) 
 
 We begin with loading the package PhyNEST in Julia.
 ```@example input
