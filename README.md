@@ -8,7 +8,7 @@
 
 Julia package **[PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl): Phylogenetic Network Estimation using SiTe patterns** can:
 
-- Read multi-locus sequence alignment (in a relaxed `PHYLIP` format) and parse site pattern frequencies for all permutations of four individuals (i.e., sequences).
+- Read multi-locus sequence alignment (in a relaxed PHYLIP format) and parse site pattern frequencies for all permutations of four individuals (i.e., sequences).
 - Estimate maximum composite likelihood species networks using the parsed site pattern frequencies using hill climbing sor simulated annealing heuristic algorithms.
 
 ## Installation
