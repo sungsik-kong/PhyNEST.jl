@@ -12,6 +12,8 @@ Julia package [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl): Phylogen
 - Estimate maximum composite likelihood species networks using the parsed site pattern frequencies using hill climbing sor simulated annealing heuristic algorithms.
 
 ## Installation
+To use PhyNEST, you need to have Julia >= v1.7. This package was developed in Julia 1.7.2, and has been tested for Julia >= v1.7 in OSX distributions.
+
 To install PhyNEST, run the following command in Julia prompt:
 ```@julia
 using Pkg
@@ -25,7 +27,6 @@ To check the currently installed version of PhyNEST, run the following command:
 ```@julia
 ] status PhyNEST
 ```
-To use PhyNEST, you need to have Julia >= v1.7. This package was developed in Julia 1.7.2, and has been tested for Julia >= v1.7 in OSX distributions.
 
 ## A quick test
 Once the installation is complete, execute PhyNEST and run function `greet()` to see if the package has been added to the local machine. A greet message with current time should appear.
