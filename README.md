@@ -29,7 +29,7 @@ To check the currently installed version of PhyNEST, run the following command:
 ```
 
 ## A quick test
-Once the installation is complete, execute PhyNEST and run function `greet()` to see if the package has been added to the local machine. A greet message with current time should appear.
+Once the installation is complete, load PhyNEST and execute function `greet()` to see if the package has been added to the local machine. A greet message with current time should appear.
 ```@julia
 using PhyNEST
 greet()
