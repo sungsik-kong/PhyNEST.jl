@@ -11,26 +11,25 @@ Julia package [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl): Phylogen
 - Read multi-locus sequence alignment (in a relaxed `PHYLIP` format) and parse site pattern frequencies for all permutations of four individuals (i.e., sequences).
 - Estimate maximum composite likelihood species networks using the parsed site pattern frequencies using hill climbing sor simulated annealing heuristic algorithms.
 
-## Installation
-To use PhyNEST, you need to have Julia >= v1.7. This package was developed in Julia 1.7.2, and has been tested for Julia >= v1.7 in OSX distributions.
-
-To install PhyNEST, run the following command in Julia prompt:
-```@julia
+## Installation of the package PhyNEST
+To install [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) run the following command in Julia prompt:
+```@julia install
 using Pkg
 Pkg.add("PhyNEST")
 ```
 or
-```@julia
+```@julia install
 ] add PhyNEST
 ```
-To check the currently installed version of PhyNEST, run the following command:
-```@julia
+Either command installs the package.
+
+To check the current version of installed [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl), run the following command:
+```@julia install
 ] status PhyNEST
 ```
-
-## A quick test
-Once the installation is complete, load PhyNEST and execute function `greet()` to see if the package has been added to the local machine. A greet message with current time should appear.
-```@julia
+## Test example
+Once the installation is complete, load [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) and run function `greet()` to see if the package has been added to the local machine. A greet message with current time should appear.
+```@repl install
 using PhyNEST
 greet()
 ```
@@ -40,5 +39,3 @@ Please see [here](https://sungsik-kong.github.io/PhyNEST.jl/) for detailed docum
 
 ## Getting help
 Please use [google group](https://groups.google.com/g/phynest-users) to report bugs or make suggestions.
-
-
