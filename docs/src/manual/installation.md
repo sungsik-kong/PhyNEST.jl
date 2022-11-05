@@ -20,6 +20,8 @@ Either command installs the package. To check the current version of installed [
 ```@julia
 ] status PhyNEST
 ```
+
+### Update PhyNEST
 To update [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) to the most recent version, run:
 ```@julia
 Pkg.update("PhyNEST")
