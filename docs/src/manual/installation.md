@@ -8,8 +8,10 @@ Jeff Bezanson, Alan Edelman, Stefan Karpinski, Viral B. Shah. (2017) Julia: A Fr
 ---
 
 ## Installation of the package PhyNEST
+To use [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl), Julia >= v1.7 is recommended. This package was developed in Julia 1.7.2, and has been tested for Julia >= v1.7 in OSX distributions.
+
 To install [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) run the following command in Julia prompt:
-```@julia install
+```@julia
 using Pkg
 Pkg.add("PhyNEST")
 ```
@@ -17,10 +19,8 @@ or
 ```@julia install
 ] add PhyNEST
 ```
-Either command installs the package.
-
-To check the current version of installed [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl), run the following command:
-```@julia install
+Either command installs the package. To check the current version of installed [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl), run the following command:
+```@julia
 ] status PhyNEST
 ```
 ## Test example
