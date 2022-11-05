@@ -24,9 +24,9 @@ or
 To check the currently installed version of PhyNEST, run the following command:
 ```@julia
 ] status PhyNEST
-
-To use PhyNEST.jl, you need to have Julia >= v1.7. This package was developed in Julia 1.7.2, and has been tested for Julia >= v1.7 in OSX distributions.
 ```
+To use PhyNEST.jl, you need to have Julia >= v1.7. This package was developed in Julia 1.7.2, and has been tested for Julia >= v1.7 in OSX distributions.
+
 ## A quick test
 Once the installation is complete, execute PhyNEST and run function `greet()` to see if the package has been added to the local machine. A greet message with current time should appear.
 ```@julia
