@@ -20,6 +20,10 @@ Either command installs the package. To check the current version of installed [
 ```@julia
 ] status PhyNEST
 ```
+To update [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) to the most recent version, run:
+```@julia
+Pkg.update("PhyNEST")
+```
 ## Test example
 Once the installation is complete, load [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) and run function `greet()` to see if the package has been added to the local machine. A greet message with current time should appear.
 ```@repl install
