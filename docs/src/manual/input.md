@@ -1,18 +1,23 @@
 # Input
 
-Current version of PhyNEST takes a relaxed, sequential, [PHYLIP](https://en.wikipedia.org/wiki/PHYLIP) formatted DNA alignment file. PhyNEST automatically creates `FILENAME.ckp` and has a option for a user to export the observed site pattern frequencies as `FILENAME.csv`. The following sections explain above procedures in detail.
+Current version of [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) takes a relaxed, sequential, [PHYLIP](https://en.wikipedia.org/wiki/PHYLIP) formatted DNA alignment file. [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) automatically creates `FILENAME.ckp` upon the completion of reading in the alignment, and has an option for a user to export the observed site pattern frequencies as `.csv` file. The following sections explain these in detail.
 
 ## Parsing DNA alignment data
-A sample DNA alignment named `n5h1_5k.txt` is provided in the `/example` folder of the package PhyNEST (or can be downloaded [here](https://github.com/sungsik-kong/PhyNE.jl/blob/main/example/n5h1_5k.txt)). The alignment contains five sequences and is 750,000 base pairs (bp) long. Species are named as `[1, 2, 3, 4, 5]`. The true relationship of the five taxa is written in the extended Newick format as (branch lengths not shown): 
+A sample DNA alignment named `n5h1_5k.txt` is provided in the `/example` folder of the package [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) (or can be downloaded [here](https://github.com/sungsik-kong/PhyNE.jl/blob/main/example/n5h1_5k.txt)). The alignment contains five sequences named `[1, 2, 3, 4, 5]` and is 2,500,000 base pairs (bp) long. The true relationship of the five taxa is written in the extended Newick format as (branch lengths not shown): 
 
 `(5,(4,((3,(2)#H6:::0.6),(1,#H6:::0.4))));`.
 
-(here) 
-
-We begin with loading the package PhyNEST in Julia.
+First, load [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) in Julia.
 ```@example input
 using PhyNEST
 ```
+
+
+
+
+
+
+
 
 Assuming that you are working in the directory that contains the alignment file, the alignment file can be read using the function `readPhylipFile!(inputfile)`. Since the variable `inputfile` is expected to be a string, the file name should be in the quotation marks. The path of the file can be set as shown below or simply the name of the alignment file can be specified (e.g., `readPhylipFile!("n5h1_5k.txt")`). A checkpoint file with an extension `.ckp` is automatically created in the working directory upon completion of parsing the alignment. When the boolean option `showProgress` is set as `true`, PhyNEST will show the progress bar during the data parsing process. Here, we set it as false for brevity.
 
