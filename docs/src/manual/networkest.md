@@ -1,4 +1,6 @@
-# Getting ready for network estimation
+# Network estimation
+
+## Getting ready for network estimation
 To start the network analysis, (1) sequence alignment file is required and (2) starting topology and (3) an outgroup must be specified.
 
 We use the `PHYLIP` alignment file in `/example` folder of PhyNEST package. The sequence alignment is parsed using function `readPhylipFile!` as shown [here](https://sungsik-kong.github.io/PhyNEST.jl/dev/manual/input/#Parsing-DNA-alignment-data). 
@@ -88,4 +90,4 @@ At the end of the search, the output file with an extension `.out` is created in
         -Log Composite Likelihood: 2.8836099473859877e6.
     end
 
-Two extended Newick strings are identical, but formatted for visualization using the Julia package [`PhyloPlots`](https://github.com/cecileane/PhyloPlots.jl) (top) or [Dendroscope 3](https://uni-tuebingen.de/en/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/algorithms-in-bioinformatics/software/dendroscope/)(bottom).
+Two extended Newick strings represent the identical network topology, but formatted for visualization using the Julia package [`PhyloPlots`](https://github.com/cecileane/PhyloPlots.jl) (top) or [Dendroscope 3](https://uni-tuebingen.de/en/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/algorithms-in-bioinformatics/software/dendroscope/)(bottom).
