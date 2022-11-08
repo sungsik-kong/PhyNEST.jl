@@ -16,6 +16,7 @@ Pages = [
     "manual/installation.md",
     "manual/input.md",
     "manual/networkest.md",
+    "manual/quartets.md",
     ]
 ```
 ## Functions
