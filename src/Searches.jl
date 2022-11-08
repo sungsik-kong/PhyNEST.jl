@@ -720,7 +720,7 @@ Starting topology modified to $(writeTopologyLevel1(T))\n"
     write(outfile,str); flush(outfile)
     str =
     "―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-    MPL network: \n$(bT)
+    MCL network: \n$(bT)
     Analysis complete: $(Dates.format(e, "yyyy-mm-dd at HH:MM:SS"))
     Time Taken: $(round(deltatsec,digits=5)) second(s)\nend\n\n"; print(stdout,str)
     write(logfile,str); flush(logfile)      
