@@ -5,7 +5,7 @@ To start the network analysis, (1) sequence alignment file is required and (2) s
 
 We use the `PHYLIP` alignment file in `/example` folder of PhyNEST package. The sequence alignment is parsed using function `readPhylipFile!` as shown [here](https://sungsik-kong.github.io/PhyNEST.jl/dev/manual/input/#Parsing-DNA-alignment-data). 
 
-Then, we specify the starting tree (or network) stored in the `HybridNetwork` object using function [`readTopology()`](https://crsl4.github.io/PhyloNetworks.jl/latest/lib/public/#PhyloNetworks.readTopology). The starting tree can be either estimated from the data or randomly generated. We use a random tree topology.
+Then, we specify the starting tree (or network) stored in the `HybridNetwork` object using function [`readTopology()`](https://crsl4.github.io/PhyloNetworks.jl/latest/lib/public/#PhyloNetworks.readTopology) from the package `PhyloNetworks`. The starting tree can be either estimated from the data or randomly generated. Here, we use an arbitrarily generated tree topology.
 
 ```@julia netest
 using PhyNEST
