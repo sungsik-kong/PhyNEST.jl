@@ -1,5 +1,9 @@
-# Network estimation
-To start the network analysis, we need sequence alignment file, starting topology (that can be either randomly generated or estimated from the data using PhyNEST or other method), and an outgroup. In this example, we are going to use the Phylip alignment in the `/example` folder of PhyNEST package. First, we parse the alignment using `readPhylipFile!` function followed by reading in a random topology using `readTopology` function (see below).
+# Getting ready for network estimation
+To start the network analysis, (1) sequence alignment file is required and (2) starting topology and (3) an outgroup must be specified.
+
+We use the `PHYLIP` alignment file in `/example` folder of PhyNEST package. The sequence alignment is parsed using function `readPhylipFile!` as shown [here](https://sungsik-kong.github.io/PhyNEST.jl/dev/manual/input/#Parsing-DNA-alignment-data). 
+
+Then, we specify the starting tree (or network) stored in the `HybridNetwork` object using function [`readTopology()`](https://crsl4.github.io/PhyloNetworks.jl/latest/lib/public/#PhyloNetworks.readTopology). The starting tree can be either estimated from the data or randomly generated. We use a random tree topology.
 
 ```@julia netest
 using PhyNEST
