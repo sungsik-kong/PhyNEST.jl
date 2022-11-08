@@ -105,4 +105,4 @@ At the end of the search either using simulated annealing or hill climbing algor
         -Log Composite Likelihood: 2.8836099473859877e6.
     end
 
-Two extended Newick strings represent the identical network topology, but formatted for visualization using the Julia package [`PhyloPlots.jl`](https://github.com/cecileane/PhyloPlots.jl) (top) or [`Dendroscope 3`](https://uni-tuebingen.de/en/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/algorithms-in-bioinformatics/software/dendroscope/) (bottom).
+Two extended Newick strings represent the identical network topology, but formatted for visualization using the Julia package [`PhyloPlots.jl`](https://github.com/cecileane/PhyloPlots.jl) (top Newick) or [`Dendroscope 3`](https://uni-tuebingen.de/en/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/algorithms-in-bioinformatics/software/dendroscope/) (bottom Newick).
