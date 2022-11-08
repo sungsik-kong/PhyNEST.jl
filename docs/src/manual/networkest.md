@@ -35,7 +35,7 @@ To visualize the progress, the optional argument `display=true` can be used, whi
 
     Initiating 5 iterations...
 
-One of two output files `PhyNEST.sa.log` records all log throughout the search. For each iteration (or independent run) using simulated annealing search, PhyNEST records *k* best networks searched along with other relevant information as shown below:
+`PhyNEST.sa.out` reports the maximum composite likelihood network found during the multiple runs of searches (see [below](https://sungsik-kong.github.io/PhyNEST.jl/dev/manual/networkest/#Network-visualization) for visualization). `PhyNEST.sa.log` records the log throughout the searches. For each iteration (or independent run) using simulated annealing search, PhyNEST records *k* best networks searched along with other relevant information as shown below:
 
     (1/5) Searching for the best network using the simulated annealing algorithm...
     Starting topology modified to (5,(4,(3,(2,1))));
@@ -90,4 +90,4 @@ At the end of the search, the output file with an extension `.out` is created in
         -Log Composite Likelihood: 2.8836099473859877e6.
     end
 
-Two extended Newick strings represent the identical network topology, but formatted for visualization using the Julia package [`PhyloPlots`](https://github.com/cecileane/PhyloPlots.jl) (top) or [Dendroscope 3](https://uni-tuebingen.de/en/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/algorithms-in-bioinformatics/software/dendroscope/)(bottom).
+Two extended Newick strings represent the identical network topology, but formatted for visualization using the Julia package [`PhyloPlots.jl`](https://github.com/cecileane/PhyloPlots.jl) (top) or [`Dendroscope 3`](https://uni-tuebingen.de/en/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/algorithms-in-bioinformatics/software/dendroscope/) (bottom).
