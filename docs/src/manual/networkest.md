@@ -35,7 +35,7 @@ To visualize the progress, the optional argument `display=true` can be used, whi
 
     Initiating 5 iterations...
 
-`PhyNEST.sa.out` reports the maximum composite likelihood network found during the multiple runs of searches (see [below](https://sungsik-kong.github.io/PhyNEST.jl/dev/manual/networkest/#Network-visualization) for visualization). `PhyNEST.sa.log` records the log throughout the searches. For each iteration (or independent run) using simulated annealing search, PhyNEST records *k* best networks searched along with other relevant information as shown below:
+`PhyNEST.sa.log` records the log throughout the searches. For each iteration (or independent run) using simulated annealing search, PhyNEST records *k* best networks searched along with other relevant information as shown below:
 
     (1/5) Searching for the best network using the simulated annealing algorithm...
     Starting topology modified to (5,(4,(3,(2,1))));
@@ -67,6 +67,7 @@ To visualize the progress, the optional argument `display=true` can be used, whi
     The best network found in this run: (5:10.143244413452512,(4:5.128206352203117,((1:1.1962000978367888,(2)#H6:::0.4052526191450872):1.9174483823877784,(#H6:::0.5947473808549129,3:1.783298580712527):1.3303498995120402):2.0145578719785497):5.015038061249395);
     -Log Composite Likelihood: 2.8836099473859877e6 
 
+`PhyNEST.sa.out` reports the maximum composite likelihood network found during the multiple runs of searches (see [below](https://sungsik-kong.github.io/PhyNEST.jl/dev/manual/networkest/#Network-visualization) for visualization). 
 ## Hill climbing
 Network search using hill climbing algorithm can be initiated using an option `hillclimbing=true`.
 
