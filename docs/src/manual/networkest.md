@@ -1,6 +1,6 @@
 # Network estimation
 
-## Getting ready for network estimation
+## Getting ready for the network estimation
 To start the network analysis, (1) sequence alignment file is required and (2) starting topology and (3) an outgroup must be specified.
 
 We use the `PHYLIP` alignment file in `/example` folder of PhyNEST package. The sequence alignment is parsed using function `readPhylipFile!` as shown [here](https://sungsik-kong.github.io/PhyNEST.jl/dev/manual/input/#Parsing-DNA-alignment-data). 
