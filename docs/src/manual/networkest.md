@@ -33,26 +33,14 @@ To visualize the progress, the optional argument `display=true` can be used, whi
 
     Initiating 5 iterations...
 
-At the end of the search, the output file `PhyNEST.sa.out` is created in the working directory that should look something similar to below:
-
-    The best network found from 5 runs using the simulated annealing algorithm
-    MCL network: 
-    (5:10.143244413452512,(4:5.128206352203117,((1:1.1962000978367888,#H6:::0.4052526191450872):1.9174483823877784,((2)#H6:::0.5947473808549129,3:1.783298580712527):1.3303498995120402):2.0145578719785497):5.015038061249395);
-        Dendroscope: 
-    (5:10.143244413452512,(4:5.128206352203117,((1:1.1962000978367888,#H6):1.9174483823877784,((2)#H6,3:1.783298580712527):1.3303498995120402):2.0145578719785497):5.015038061249395);
-        -Log Pseudolikelihood: 2.8836099473859877e6.
-    end
-
-Two extended Newick strings are identical, but formatted for visualization using the Julia package [`PhyloPlots`](https://github.com/cecileane/PhyloPlots.jl) (top) or [Dendroscope 3](https://uni-tuebingen.de/en/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/algorithms-in-bioinformatics/software/dendroscope/)(bottom).
-
-Another output file `PhyNEST.sa.log` records all log throughout the search. For each iteration (or independent run) using simulated annealing search, PhyNEST records *k* best networks searched along with other information as shown below:
+One of two output files `PhyNEST.sa.log` records all log throughout the search. For each iteration (or independent run) using simulated annealing search, PhyNEST records *k* best networks searched along with other relevant information as shown below:
 
     (1/5) Searching for the best network using the simulated annealing algorithm...
     Starting topology modified to (5,(4,(3,(2,1))));
     Running 25 runs of burn-in...Complete 
     (Cooling schedule)U=299136.023507182
     (Cooling schedule)beta=0.8999957157391261
-    Rank   Pseudolikelihood    Network
+    Rank   Composite Likelihood    Network
     1	2.88360994739e6         (5:10.143244413452512,(4:5.128206352203117,((1:1.1962000978367888,(2)#H6:::0.4052526191450872):1.9174483823877784,(#H6:::0.5947473808549129,3:1.783298580712527):1.3303498995120402):2.0145578719785497):5.015038061249395);
     2	2.88360994739e6         (5:10.143246111976964,(4:5.128207274589672,((3:1.7832993566222581,(2)#H6:::0.5947475713189532):1.3303497322531534,(#H6:::0.40525242868104683,1:1.1961994949262897):1.9174495939491218):2.01455818571426):5.0150388373872925);
     3	2.88362151446e6         (5:10.694491971616939,(4:5.43212278921928,((3:2.485548434584157,(#H6:::0.32538307301269104,2:6.112907457836508e-13):2.4855484345835457):1.2278094075673045,(1)#H6:::0.674616926987309):1.7187649470678181):5.262369182397659);
@@ -75,7 +63,7 @@ Another output file `PhyNEST.sa.log` records all log throughout the search. For 
     On the current topology, 60 moves were made, including 10 unsuccessful moves.
     Terminated because it reached the maximum number of failures (current nfail=50).
     The best network found in this run: (5:10.143244413452512,(4:5.128206352203117,((1:1.1962000978367888,(2)#H6:::0.4052526191450872):1.9174483823877784,(#H6:::0.5947473808549129,3:1.783298580712527):1.3303498995120402):2.0145578719785497):5.015038061249395);
-    -Log Pseudolikelihood: 2.8836099473859877e6 
+    -Log Composite Likelihood: 2.8836099473859877e6 
 
 ## Hill climbing
 Network search using hill climbing algorithm can be initiated using an option `hillclimbing=true`.
@@ -84,3 +72,20 @@ Network search using hill climbing algorithm can be initiated using an option `h
 netHC = PhyNE!(startingtree,data,"5",hillclimbing=true)
 ```
 Similar to the simulation annealing, it will create two output files named `PhyNe.hc.log` and `PhyNe.hc.out`
+
+
+
+
+
+## Network visualization
+At the end of the search, the output file with an extension `.out` is created in the working directory that should look something similar to below:
+
+    The best network found from 5 runs using the simulated annealing algorithm
+    MCL network: 
+    (5:10.143244413452512,(4:5.128206352203117,((1:1.1962000978367888,#H6:::0.4052526191450872):1.9174483823877784,((2)#H6:::0.5947473808549129,3:1.783298580712527):1.3303498995120402):2.0145578719785497):5.015038061249395);
+        Dendroscope: 
+    (5:10.143244413452512,(4:5.128206352203117,((1:1.1962000978367888,#H6):1.9174483823877784,((2)#H6,3:1.783298580712527):1.3303498995120402):2.0145578719785497):5.015038061249395);
+        -Log Composite Likelihood: 2.8836099473859877e6.
+    end
+
+Two extended Newick strings are identical, but formatted for visualization using the Julia package [`PhyloPlots`](https://github.com/cecileane/PhyloPlots.jl) (top) or [Dendroscope 3](https://uni-tuebingen.de/en/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/algorithms-in-bioinformatics/software/dendroscope/)(bottom).

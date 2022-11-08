@@ -506,7 +506,7 @@ function simAnneal!(startT::HybridNetwork, p::Phylip, hmax::Integer, outgroup::S
 
     rank=0
     str =
-"Rank   Pseudolikelihood    Network\n"
+"Rank   Composite Likelihood    Network\n"
     for i in ktrees
         rank+=1
     str *=
@@ -658,7 +658,7 @@ Starting topology modified to $(writeTopologyLevel1(T))\n"
                 push!(net,[mpl,BestNet])
                 str = 
 "The best network found in this run: $bT
--Log Pseudolikelihood: $mpl \n\n"
+-Log Composite Likelihood: $mpl \n\n"
                 if(display) print(str) end
                 write(logfile,str); flush(logfile)    
             catch(error)
@@ -682,7 +682,7 @@ Starting topology modified to $(writeTopologyLevel1(T))\n"
                 push!(net,[mpl,BestNet])
                 str = 
 "The best network found in this run: $BestNet
--Log Pseudolikelihood: $mpl \n\n"
+-Log Composite Likelihood: $mpl \n\n"
                 if(display) print(str) end
                 write(logfile,str); flush(logfile)    
             catch(error)
@@ -713,9 +713,9 @@ Starting topology modified to $(writeTopologyLevel1(T))\n"
     else str = "The best network found from $nruns runs using the simulated annealing algorithm\n"; end
     write(outfile,str); flush(outfile)      
     str = 
-    "MPL network: \n$(bT)
+    "MCL network: \n$(bT)
     Dendroscope: \n$(dscopeT)
-    -Log Pseudolikelihood: $(net[1][1]).\nend\n"
+    -Log Composite Likelihood: $(net[1][1]).\nend\n"
     write(logfile,str); flush(logfile)      
     write(outfile,str); flush(outfile)
     str =
