@@ -605,7 +605,7 @@ function PhyNE!(startT::HybridNetwork,inputFile::Phylip,outgroup::String;
 
     #filename
     if isempty(filename)
-        filename="PhyNE"
+        filename="PhyNEST"
         if(hillclimbing) filename=filename*(".hc")
         else filename=filename*(".sa") end
     end
@@ -624,15 +624,7 @@ function PhyNE!(startT::HybridNetwork,inputFile::Phylip,outgroup::String;
     log=string(filename,".log")
     logfile=open(log,"w")
     str =
-"PhyNE: Estimating Maximum Pseudolikelihood Phylogenetic Network
-╔═══╦╗─────╔═╗─╔╗
-║╔═╗║║─────║║╚╗║║
-║╚═╝║╚═╦╗─╔╣╔╗╚╝╠══╗
-║╔══╣╔╗║║─║║║╚╗║║║═╣
-║║──║║║║╚═╝║║─║║║║═╣
-╚╝──╚╝╚╩═╗╔╩╝─╚═╩══╝
-───────╔═╝║ 
-───────╚══╝   
+"PhyNEST: Phylogenetic Network Estimation using SiTe patterns
 Analysis start: $(Dates.format(t, "yyyy-mm-dd at HH:MM:SS"))
 Input filename: $(p.filename)
 Number of sequences: $(p.numtaxa) 
