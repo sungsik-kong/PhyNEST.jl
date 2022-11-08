@@ -74,14 +74,28 @@ Network search using hill climbing algorithm can be initiated using an option `h
 ```@julia netest
 netHC = PhyNE!(startingtree,data,"5",hillclimbing=true)
 ```
-Similar to the simulation annealing, it will create two output files named `PhyNe.hc.log` and `PhyNe.hc.out`
 
+Similar to the simulation annealing, it will create two output files named `PhyNe.hc.log` and `PhyNe.hc.out` Unlike the simulated annealing that provided *k* best networks per independent run, hill climbing yields a single maximum composite likelihood network for each run. The best network found at each run is logged in the output file `PhyNEST.hc.log`.
 
+    (1/5) Searching for the best network using the hill-climbing algorithm...
+    Starting topology modified to (5,(4,(3,(2,1))));
+    The search terminated at step 85 and at 75th consecutive failures.
+    Summary of each move:
+    Insertion of reticulation edge: 1 proposed, 1 accepted.
+    Tail move of reticulation edge: 26 proposed, 1 accepted. 
+    Head move of reticulation edge: 28 proposed, 0 accepted.
+    Change the direction of reticulation edge: 8 proposed, 1 accepted.
+    Deletion of reticulation edge: 0 proposed, 0 accepted.
+    Nearest-neighbor interchange (NNI): 22 proposed, 0 accepted.
+    On the current topology, 96 moves were made, including 21 unsuccessful moves.
+    Terminated because it reached the maximum number of failures (current nfail=75).
+    The best network found in this run: (5:10.694492301887275,(4:5.43212302522998,((3:2.485548536348796,(2:3.738582439844855e-12,(1)#H6:::0.32538305925513744):2.4855485363450573):1.2278094281091798,#H6:::0.6746169407448626):1.7187650607720037):5.262369276657295);
+    -Log Composite Likelihood: 2.883621514463323e6 
 
-
+`PhyNEST.hc.out` reports the maximum composite likelihood network found during the multiple runs of searches (see [below](https://sungsik-kong.github.io/PhyNEST.jl/dev/manual/networkest/#Network-visualization) for visualization). 
 
 ## Network visualization
-At the end of the search, the output file with an extension `.out` is created in the working directory that should look something similar to below:
+At the end of the search either using simulated annealing or hill climbing algorithm, the output file with an extension `.out` is created in the working directory that should look something similar to below:
 
     The best network found from 5 runs using the simulated annealing algorithm
     MCL network: 

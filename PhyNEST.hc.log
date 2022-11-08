@@ -1,0 +1,102 @@
+PhyNEST: Phylogenetic Network Estimation using SiTe patterns
+Analysis start: 2022-11-08 at 09:39:10
+Input filename: example/n5h1_5k.txt
+Number of sequences: 5 
+Sequence length: 2500000
+Starting Topology: (5,(4,(3,(2,1))));
+Outgroup specified for rooting: 5
+Number of maximum reticulation(s): 1
+The maximum number of iterations for each optimization: 1000
+Search algorithm selected: Hill-climbing
+The maximum number of steps during search: 100000
+
+Initiating 5 iterations...
+(1/5) Searching for the best network using the hill-climbing algorithm...
+Starting topology modified to (5,(4,(3,(2,1))));
+The search terminated at step 85 and at 75th consecutive failures.
+Summary of each move:
+Insertion of reticulation edge: 1 proposed, 1 accepted.
+Tail move of reticulation edge: 26 proposed, 1 accepted. 
+Head move of reticulation edge: 28 proposed, 0 accepted.
+Change the direction of reticulation edge: 8 proposed, 1 accepted.
+Deletion of reticulation edge: 0 proposed, 0 accepted.
+Nearest-neighbor interchange (NNI): 22 proposed, 0 accepted.
+On the current topology, 96 moves were made, including 21 unsuccessful moves.
+Terminated because it reached the maximum number of failures (current nfail=75).
+The best network found in this run: (5:10.694492301887275,(4:5.43212302522998,((3:2.485548536348796,(2:3.738582439844855e-12,(1)#H6:::0.32538305925513744):2.4855485363450573):1.2278094281091798,#H6:::0.6746169407448626):1.7187650607720037):5.262369276657295);
+-Log Composite Likelihood: 2.883621514463323e6 
+
+(2/5) Searching for the best network using the hill-climbing algorithm...
+Starting topology modified to (5,(4,(3,(2,1))));
+The search terminated at step 81 and at 75th consecutive failures.
+Summary of each move:
+Insertion of reticulation edge: 2 proposed, 1 accepted.
+Tail move of reticulation edge: 26 proposed, 1 accepted. 
+Head move of reticulation edge: 26 proposed, 0 accepted.
+Change the direction of reticulation edge: 5 proposed, 0 accepted.
+Deletion of reticulation edge: 0 proposed, 0 accepted.
+Nearest-neighbor interchange (NNI): 22 proposed, 1 accepted.
+On the current topology, 96 moves were made, including 21 unsuccessful moves.
+Terminated because it reached the maximum number of failures (current nfail=75).
+The best network found in this run: (5:7.865019604823481,(#H6:::0.05425469405729436,(((3:1.6147699778282265,2:1.6147699778282265):8.717471189356729e-13,(1)#H6:::0.9457453059427057):2.1460220057399075,4:3.760791983569006):4.104227621205054):4.942091180737407e-11);
+-Log Composite Likelihood: 2.8873822720876136e6 
+
+(3/5) Searching for the best network using the hill-climbing algorithm...
+Starting topology modified to (5,(4,(3,(2,1))));
+The search terminated at step 87 and at 75th consecutive failures.
+Summary of each move:
+Insertion of reticulation edge: 2 proposed, 1 accepted.
+Tail move of reticulation edge: 26 proposed, 1 accepted. 
+Head move of reticulation edge: 25 proposed, 0 accepted.
+Change the direction of reticulation edge: 10 proposed, 1 accepted.
+Deletion of reticulation edge: 0 proposed, 0 accepted.
+Nearest-neighbor interchange (NNI): 24 proposed, 0 accepted.
+On the current topology, 96 moves were made, including 21 unsuccessful moves.
+Terminated because it reached the maximum number of failures (current nfail=75).
+The best network found in this run: (5:10.694492301887275,(4:5.43212302522998,((3:2.485548536348796,(2:3.738582439844855e-12,(1)#H6:::0.32538305925513744):2.4855485363450573):1.2278094281091798,#H6:::0.6746169407448626):1.7187650607720037):5.262369276657295);
+-Log Composite Likelihood: 2.883621514463323e6 
+
+(4/5) Searching for the best network using the hill-climbing algorithm...
+Starting topology modified to (5,(4,(3,(2,1))));
+The search terminated at step 82 and at 75th consecutive failures.
+Summary of each move:
+Insertion of reticulation edge: 1 proposed, 1 accepted.
+Tail move of reticulation edge: 26 proposed, 1 accepted. 
+Head move of reticulation edge: 25 proposed, 0 accepted.
+Change the direction of reticulation edge: 4 proposed, 0 accepted.
+Deletion of reticulation edge: 0 proposed, 0 accepted.
+Nearest-neighbor interchange (NNI): 26 proposed, 1 accepted.
+On the current topology, 96 moves were made, including 21 unsuccessful moves.
+Terminated because it reached the maximum number of failures (current nfail=75).
+The best network found in this run: (5:7.2752744923402215,(4:3.5437778029807485,(((2:5.252549628610324e-14,(3)#H6:::0.22620591464476664):1.5013371859532256,1:1.5013371859532783):0.41098772041129306,#H6:::0.7737940853552334):1.6314528966161772):3.731496689359473);
+-Log Composite Likelihood: 2.8871640509092947e6 
+
+(5/5) Searching for the best network using the hill-climbing algorithm...
+Starting topology modified to (5,(4,(3,(2,1))));
+The search terminated at step 82 and at 75th consecutive failures.
+Summary of each move:
+Insertion of reticulation edge: 1 proposed, 1 accepted.
+Tail move of reticulation edge: 27 proposed, 1 accepted. 
+Head move of reticulation edge: 26 proposed, 0 accepted.
+Change the direction of reticulation edge: 5 proposed, 1 accepted.
+Deletion of reticulation edge: 0 proposed, 0 accepted.
+Nearest-neighbor interchange (NNI): 23 proposed, 0 accepted.
+On the current topology, 89 moves were made, including 14 unsuccessful moves.
+Terminated because it reached the maximum number of failures (current nfail=75).
+The best network found in this run: (5:10.143244413452512,(4:5.128206352203117,((1:1.1962000978367888,(2)#H6:::0.4052526191450872):1.9174483823877784,(3:1.783298580712527,#H6:::0.5947473808549129):1.3303498995120402):2.0145578719785497):5.015038061249395);
+-Log Composite Likelihood: 2.8836099473859877e6 
+
+Summary:
+MCL network: 
+(5:10.143244413452512,(4:5.128206352203117,((1:1.1962000978367888,(2)#H6:::0.4052526191450872):1.9174483823877784,(3:1.783298580712527,#H6:::0.5947473808549129):1.3303498995120402):2.0145578719785497):5.015038061249395);
+    Dendroscope: 
+(5:10.143244413452512,(4:5.128206352203117,((1:1.1962000978367888,(2)#H6):1.9174483823877784,(3:1.783298580712527,#H6):1.3303498995120402):2.0145578719785497):5.015038061249395);
+    -Log Composite Likelihood: 2.8836099473859877e6.
+end
+―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+    MCL network: 
+(5:10.143244413452512,(4:5.128206352203117,((1:1.1962000978367888,(2)#H6:::0.4052526191450872):1.9174483823877784,(3:1.783298580712527,#H6:::0.5947473808549129):1.3303498995120402):2.0145578719785497):5.015038061249395);
+    Analysis complete: 2022-11-08 at 09:41:59
+    Time Taken: 169.108 second(s)
+end
+
