@@ -15,7 +15,7 @@ Please use [google group](https://groups.google.com/g/phynest-users) to report b
 Pages = [
     "manual/installation.md",
     "manual/input.md",
-    "manual/networkest.md"
+    "manual/networkest.md",
     ]
 ```
 ## Functions
