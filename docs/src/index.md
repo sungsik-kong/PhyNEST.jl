@@ -5,7 +5,7 @@ Documentation for a Julia package **[PhyNEST.jl](https://github.com/sungsik-kong
 ---
 
 ## References
-TBA
+Sungsik Kong, David Swofford, and Laura Kubatko (2022) Inference of Phylogenetic Networks from Sequence Data using Composite Likelihood. Currently available on *BioRxiv* at [https://doi.org/10.1101/2022.11.14.516468](https://doi.org/10.1101/2022.11.14.516468).
 
 ## Getting help
 Please use [google group](https://groups.google.com/g/phynest-users) to report bugs or post questions and/or suggestions.
