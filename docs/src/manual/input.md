@@ -2,7 +2,7 @@
 
 Current version of [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) takes a relaxed, sequential, [PHYLIP](https://en.wikipedia.org/wiki/PHYLIP) formatted DNA alignment file. 
 
-A sample DNA alignment file `n5h1_5k.txt` is provided in the `/example` folder of the package [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) (or can be downloaded [here](https://github.com/sungsik-kong/PhyNE.jl/blob/main/example/n5h1_5k.txt)). The alignment contains five sequences `1, 2, 3, 4, and 5` and is 2,500,000 base pairs (bp) long. The true relationship of the five taxa is written in the extended Newick format as (branch lengths not shown): `(5,(4,((3,(2)#H6:::0.6),(1,#H6:::0.4))));`. 
+A sample DNA alignment file `n5h1_5k.txt` is provided in the `/example` folder of the package [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) (or can be downloaded [here](https://github.com/sungsik-kong/PhyNE.jl/blob/main/example/n5h1_5k.txt)). The alignment contains five sequences `1, 2, 3, 4, and 5` and is 2,500,000 base pairs (bp) long. The true relationship of the five taxa is written in the extended Newick format as (branch lengths not shown): `(5,(4,((3,(2)#H6:::0.6),(1,#H6:::0.4))));`.
 
 ## Parsing DNA alignment data
 
