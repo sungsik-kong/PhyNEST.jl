@@ -13,7 +13,7 @@ data = readPhylipFile!("n5h1_5k.txt")
 startingtree = readTopology("(5,(4,(3,(2,1))));")
 ```
 
-## Simulated Annealing
+## Simulated annealing
 Function `PhyNE!()` executes the network analysis. By default, it uses simulated annealing algorithm to search the network space. `PhyNE!()` has a number of optional arguments (see [here](https://sungsik-kong.github.io/PhyNEST.jl/dev/#PhyNEST.PhyNE!)), but specifying the starting tree, data, and an outgroup and initiate the search as shown below: 
 ```@julia netest
 netSA = PhyNE!(startingtree,data,"5")

@@ -590,7 +590,7 @@ Optimization stuff:
 Miscellaneous:
 - `timestamp=false`
 - `filename=""`
-- `display=false`s
+- `display=false`
 """
 function PhyNE!(startT::HybridNetwork,inputFile::Phylip,outgroup::String; 
     hmax=1::Integer, nruns=5::Integer,maxcount=100000::Integer,NumIter=1000::Integer,
