@@ -319,7 +319,7 @@ function spRearrange(p::Phylip)
     end
     return p
 end
-
+#=
 """
     binaryIndexforQuartet(p::Phylip)
 
@@ -338,7 +338,7 @@ function binaryIndexforQuartet(p::Phylip)
     end
     return p
 end
-
+=#
 
 
 "###---DISPLAYING AND EXPORTING QUARTET SITE PATTERN FREQUENCIES---###"

@@ -276,6 +276,11 @@ function backtransform_parameters(average_momest::Array,
     return Taus, theta, gammas, nodes_of_hybrid_edge_in_net
 end
 
+"""
+    update_topology(net_before_update::HybridNetwork,Taus, theta, gammas, nodes_of_hybrid_edge_in_net)
+
+Update optimized parameters on topology
+"""
 function update_topology(net_before_update::HybridNetwork,Taus, theta, gammas, nodes_of_hybrid_edge_in_net)
     #printEdges(net)
     #println(writeTopologyLevel1(net))
