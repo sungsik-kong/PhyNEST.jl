@@ -9,3 +9,11 @@ Sungsik Kong, David Swofford, and Laura Kubatko (2022) Inference of Phylogenetic
 
 ## Getting help
 Please use [google group](https://groups.google.com/g/phynest-users) to report bugs or post questions and/or suggestions.
+
+## Manual
+```@contents
+Pages = [
+    "manual/installation.md",
+    "manual/input.md",
+    ]
+```
