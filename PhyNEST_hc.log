@@ -1,0 +1,54 @@
+PhyNEST: Phylogenetic Network Estimation using SiTe patterns
+Analysis start: 2023-03-24 at 08:10:42
+Input sequence file: example/scn2andgt20000.39.txt
+Number of sequences: 7 
+Sequence length: 2000000
+Starting Topology: (7,6,5,4,3,2,1);
+Outgroup specified for rooting: 7
+Number of maximum reticulation(s): 2
+The maximum number of iterations for each optimization: 1000
+Search algorithm selected: Hill climbing
+The maximum number of steps during search: 1000000
+
+(1/15) Searching for the best network using the hill climbing algorithm...The search terminated at step 180 and at 100th consecutive failures.
+Summary of each move:
+Insertion of reticulation edge: 2 proposed, 2 accepted.
+Tail move of reticulation edge: 56 proposed, 2 accepted. 
+Head move of reticulation edge: 52 proposed, 0 accepted.
+Change the direction of reticulation edge: 27 proposed, 1 accepted.
+Deletion of reticulation edge: 0 proposed, 0 accepted.
+Nearest-neighbor interchange (NNI): 43 proposed, 1 accepted.
+On the current topology, 115 moves were made, including 15 unsuccessful moves.
+Terminated because it reached the maximum number of failures (current maximum_number_of_failures=100).
+(1/15) Estimated topology in this run: (7:5.858901865538142,(((((1:0.4895402649806814,(2:1.263190463023415)#H12:0.0::0.4954631266401886):0.7736501980427335,(3:0.4872669126554865,#H12:0.0::0.5045368733598115):0.7759235503679285):1.2442147399714147,4:2.5074052029948297):0.0,(5:0.0)#H9:0.0::0.4084401391767469):0.0,(6:0.325378144365268,#H9:0.0::0.5915598608232531):2.182027058629562):3.3514966625433122);
+(1/15) Composite likelihood of the estimated topology in this run: 6.405284917395862e7
+
+(2/15) Searching for the best network using the hill climbing algorithm...(2/15) Terminated due to error
+
+(3/15) Searching for the best network using the hill climbing algorithm...(3/15) Terminated due to error
+
+(4/15) Searching for the best network using the hill climbing algorithm...(4/15) Terminated due to error
+
+(5/15) Searching for the best network using the hill climbing algorithm...(5/15) Terminated due to error
+
+(6/15) Searching for the best network using the hill climbing algorithm...(6/15) Terminated due to error
+
+(7/15) Searching for the best network using the hill climbing algorithm...(7/15) Terminated due to error
+
+(8/15) Searching for the best network using the hill climbing algorithm...(8/15) Terminated due to error
+
+(9/15) Searching for the best network using the hill climbing algorithm...(9/15) Terminated due to error
+
+(10/15) Searching for the best network using the hill climbing algorithm...(10/15) Terminated due to error
+
+(11/15) Searching for the best network using the hill climbing algorithm...(11/15) Terminated due to error
+
+(12/15) Searching for the best network using the hill climbing algorithm...(12/15) Terminated due to error
+
+(13/15) Searching for the best network using the hill climbing algorithm...(13/15) Terminated due to error
+
+(14/15) Searching for the best network using the hill climbing algorithm...(14/15) Terminated due to error
+
+(15/15) Searching for the best network using the hill climbing algorithm...(15/15) Terminated due to error
+-----end of analysis
+Best topology: (7:5.858901865538142,(((((1:0.4895402649806814,(2:1.263190463023415)#H12:0.0::0.4954631266401886):0.7736501980427335,(3:0.4872669126554865,#H12:0.0::0.5045368733598115):0.7759235503679285):1.2442147399714147,4:2.5074052029948297):0.0,(5:0.0)#H9:0.0::0.4084401391767469):0.0,(6:0.325378144365268,#H9:0.0::0.5915598608232531):2.182027058629562):3.3514966625433122);

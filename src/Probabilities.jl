@@ -1,30 +1,23 @@
-#written by Sungsik Kong 2021-2022
-
-# 3.Probabilities
+#Written by Sungsik Kong 2021-2022
+#Last updated by Sungsik Kong 2023
 
 """
-    TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)
-    TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+    GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)
+    GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 
-Computes true site pattern probabilities for the symmetric quartet tree, ((1,2),(3,4));. 
-Three speciation times (or node ages) in coalescent unit and theta must be provided. Alhpa is not
-an essential argument for the function and if not provided, it isssumed to be 4/3 by default. 
-See manuscript or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006] for more information.
+Computes true site pattern probabilities for the symmetric quartet tree, ((1,2),(3,4));. \\
+Three speciation times (or node ages) in coalescent unit and theta must be provided. Alhpa is not \\
+an essential argument for the function and if not provided, it isssumed to be 4/3 by default. \\
+See manuscript or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006] for more information.\\
 
 ## Input
-`myt1` Speciation time for the common ancestor of species 1 and 2\\
-`myt2` Speciation time for the common ancestor of species 3 and 4\\
-`myt3` Root age\\
-`theta` Effective population size parameter\\
-`alpha` 4/3 by default
+`myt1`      Speciation time for the common ancestor of species 1 and 2\\
+`myt2`      Speciation time for the common ancestor of species 3 and 4\\
+`myt3`      Root node age\\
+`theta`     Effective population size parameter\\
+`alpha`     4/3 by default
 """
-function TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
-    ps=GetTrueProbsSymm(myt1,myt2,myt3,theta,alpha)
-
-    return ps
-end
-TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=TrueSitePatternSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
-
+GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
 function GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 
     t1=myt1*theta
@@ -113,29 +106,28 @@ function GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float
     return p1
 end
 
+#function TrueSitePatternAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+#    pa=GetTrueProbsAsymm(myt1,myt2,myt3,theta,alpha)
+#    return pa
+#end
+#TrueSitePatternAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=TrueSitePatternAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
 """
-    TrueSitePatternAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)
-    TrueSitePatternAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+    GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)
+    GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 
-Computes true site pattern probabilities for the asymmetric quartet tree, (1,(2,(3,4)));. 
-Three speciation times (or node ages) in coalescent unit and theta must be provided. Alhpa is not
-an essential argument for the function and if not provided, it isssumed to be 4/3 by default. 
-See manuscript or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006] for more information.
+Computes true site pattern probabilities for the asymmetric quartet tree, (1,(2,(3,4)));. \\
+Three speciation times (or node ages) in coalescent unit and theta must be provided. Alhpa is not\\
+an essential argument for the function and if not provided, it isssumed to be 4/3 by default. \\
+See manuscript or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006] for more information.\\
 
 ## Input
-`myt1` Speciation time for the common ancestor of species 3 and 4\\
-`myt2` Speciation time for the common ancestor of species 2, 3 and 4\\
-`myt3` Root age\\
-`theta` Effective population size parameter\\
-`alpha` 4/3 by default
+`myt1`      Speciation time for the common ancestor of species 3 and 4\\
+`myt2`      Speciation time for the common ancestor of species 2, 3 and 4\\
+`myt3`      Root node age\\
+`theta`     Effective population size parameter\\
+`alpha`     4/3 by default
 """
-function TrueSitePatternAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
-    pa=GetTrueProbsAsymm(myt1,myt2,myt3,theta,alpha)
-
-    return pa
-end
-TrueSitePatternAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=TrueSitePatternAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
-
+GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
 function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 
     t1 = myt1*theta
@@ -308,11 +300,28 @@ function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Floa
 end
 
 """
-    GetTrueProbsNetTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+    GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)
+    GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
 
-gege
+Computes true site pattern probabilities for any of the four the asymmetric quartet trees: \\
+
+- Type 1: (i,((j,k),l));
+- Type 2: ((i,(j,k)),l); 
+- Type 3: (i,(j,(k,l))); 
+- Type 4: (((i,j),k),l).\\
+Three speciation times (or node ages) in coalescent unit and theta must be provided. \\
+Alhpa is not an essential argument for the function and if not provided, it isssumed to be 4/3 by default. \\
+See manuscript or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006] for more information.\\
+
+## Input
+`myt1`      Speciation time for the common ancestor of species 3 and 4\\
+`myt2`      Speciation time for the common ancestor of species 2, 3 and 4\\
+`myt3`      Root node age\\
+`theta`     Effective population size parameter\\
+`alpha`     4/3 by default
 """
-function GetTrueProbsNetTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
+function GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
     p=GetTrueProbsAsymm(myt1,myt2,myt3,theta,alpha)
     newp=zeros(Float64,15)#1432
     if type==1
@@ -324,39 +333,43 @@ function GetTrueProbsNetTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Fl
     elseif type==4
         i=[1,10,6,4,14,3,7,13,9,2,11,12,8,5,15]
     else
-        error("There is no quartet type $type.")
+        error("There is no asymmetric quartet type $type. It should be between 1 and 4.")
     end
 
     for n in 1:15
         newp[n]=p[i[n]]
     end
     return newp 
-
 end
 
+#shame to the bad function naming skill...
+function GetTrueProbsNetTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+    GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64) end
+
 """ 
-    simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64)
-    simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,length::Integer)
+    sim_sp_counts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64)
+    sim_sp_counts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,length::Integer)
 
-This function simulates the 15 site pattern probabilities for five quartet tree topologies, 
-one symmetric and four asymmetric quartets, which we categorize them into five types: 
+This function simulates the 15 site pattern probabilities for five quartet tree topologies, \\
+one symmetric and four asymmetric quartets: 
 
-- Type **0**: ((1,2),(3,4));
-- Type **1**: (1,((2,3),4));
-- Type **2**: ((1,(2,3)),4);
-- Type **3**: (1,(2,(3,4)));
-- Type **4**: (((1,2),3),4);
+- Type 0: ((i,j),(k,l));
+- Type 1: (i,((j,k),l));
+- Type 2: ((i,(j,k)),l); 
+- Type 3: (i,(j,(k,l))); 
+- Type 4: (((i,j),k),l).\\
 
 ## Input
 `type`   Specify the type of a quartet (use integer)\\
 `myt1`   Speciation time for the most recent internal tree node. Common ancestor of 1 and 2 in the symmetric case\\
 `myt2`   Speciation time for the internal tree node closer to the root\\
-`myt3`   Root age\\
+`myt3`   Root node age\\
 `theta`  Effective population size parameter (default=0.01)\\
 `alpha`  Alpha (default=4/3)\\
 `length` Sequence lengths (default=1000000)
 """
-function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)
+sim_sp_counts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64)=sim_sp_counts(type,myt1,myt2,myt3,0.01,4/3,1000000)
+function sim_sp_counts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)
     weights=[4,12,12,12,24,12,12,24,12,12,24,24,24,24,24]
     if type==0
         p=GetTrueProbsSymm(myt1,myt2,myt3,theta,alpha)
@@ -367,4 +380,3 @@ function simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,the
     sim=rand(Multinomial(n,prob))
     return sim
 end
-simspcounts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64)=simspcounts(type,myt1,myt2,myt3,0.01,4/3,1000000)

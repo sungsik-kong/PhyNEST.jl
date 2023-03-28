@@ -1,42 +1,52 @@
 #written by Sungsik Kong 2021-2022
-
-# 1.Input
+"###---READING INPUT PHYLIP FILE---###"
 
 """
-    readPhylipFile!(inputfile::AbstractString)
-    readPhylipFile!(inputfile::AbstractString; writecsv=false::Bool, csvname=""::AbstractString, showProgress=true::Bool)
+    readPhylip(inputfile::AbstractString)
+    readPhylip(inputfile::AbstractString; writecsv=false::Bool, csvname=""::AbstractString, showProgress=true::Bool,tdigits=3::Integer)
     
-Takes in, read, and parse the input phylip file. File name must be specified, in string format. There are a number of 
-optional arguments (see below).
+Import, read, and parse the input phylip file. File name must be specified as string. \\
+By default, .csv and .ckp files are NOT produced. See below for the optional arguments.
 
 ### Input
-`inputfile` Name of phylip file as a AbstractString\\
-`writecsv`  A Boolean arguemtn to write site pattern frequencies in CSV file (Default=`false`)\\
-`csvname`   A string that will be name of the `.csv` file (Default=sitePatternCounts_`inputfile`.csv)\\
+`inputfile`     Name of the phylip file as a String [mandatory]\\
+`writecsv`      A Boolean arguemtn to write site pattern frequencies in CSV file (Default=`false`)\\
+`csvname`       A string that will be name of the `.csv` file (Default=sitePatternCounts_`inputfile`.csv)\\
 `showProgress`  A boolean argument for visualizing the progress of alignment parsing process (Default=`true`)\\
+`tdigits`       Number of decimal points to record timme taken to parse the file in seconds (Default=3) \\
+`checkpoint`    A boolean argument to store Phylip object as a .ckp file. (Warning: File size of the resulting .ckp can be large. Default=false)
 """
-function readPhylipFile!(inputfile::AbstractString;writecsv=false::Bool,csvname=""::AbstractString,showProgress=true::Bool)
+function readPhylip(inputfile::AbstractString; writecsv=false::Bool,
+                                                csvname=""::AbstractString,
+                                                showProgress=true::Bool,
+                                                tdigits=3::Integer,
+                                                checkpoint=false::Bool)
     try
-        p=@timed readPhylipFile(inputfile,writecsv,csvname,showProgress)
-        p[1].time=round(p[2],digits=3)
-        printCheckPoint(p[1])
-        return p[1]
-    catch(err)
-        display(err)
+        #@timed is a macro to execute an expression, and return the value of the expression, elapsed time, 
+            #total bytes allocated, garbage collection time, and an object with various memory allocation counters.
+        pset=@timed readPhylipFile(inputfile,writecsv,csvname,showProgress)
+        Phylip=pset[1]
+        Phylip.time=round(pset[2],digits=tdigits)#update phylip.time attribute
+        if(checkpoint) storeCheckPoint(Phylip) end #store phylip as a checkpoint file IF a user wants.
+        return Phylip
+    catch(error)
+        display(error)
     end
 end
-#readPhylipFile!(inputfile::AbstractString;showProgress::Bool)=readPhylipFile!(inputfile;writecsv=false,showProgress=showProgress)
-#readPhylipFile!(inputfile::AbstractString;writecsv::Bool)=readPhylipFile!(inputfile;writecsv=writecsv,showProgress=false)
 
-readPhylipFile(inputfile::AbstractString)=readPhylipFile(inputfile,false,"",true)
+"""
+    readPhylipFile(inputfile::AbstractString,writecsv::Bool,csvname::AbstractString,showProgress::Bool)
+
+Exceuted while running the function readPhylip. Fills in all attributes in the Phylip object, except for the time. 
+"""
 function readPhylipFile(inputfile::AbstractString,writecsv::Bool,csvname::AbstractString,showProgress::Bool)
 
-    p=Phylip(inputfile)
-    UniqueBase,BaseCounts=PhylipFileInfo(inputfile, p, showProgress)
-    getUniqueQuartets(p)
-    sitePatternCounts(p,UniqueBase,BaseCounts)
-    spRearrange(p)
-    binaryIndexforQuartet(p)
+    p=Phylip(inputfile)#create a Phylip object with only Phylip.filename attribute filled
+    UniqueBase,BaseCounts=PhylipFileInfo(inputfile, p, showProgress) #fills in p.seqleng, p.nametaxa attributes
+    p=getUniqueQuartets(p) #fills in p.numtaxa, p.counttaxa, and p.allquartet attributes
+    p=sitePatternCounts(p,UniqueBase,BaseCounts) #fills in p.spcounts for whatever quartet we have atm
+    p=spRearrange(p) #shuffles quartet, rearrange spcounts for that quartet and fills in p.allquartet and p.spcounts
+    p=binaryIndexforQuartet(p) #fills in p.index attribute
     
     #write site pattern counts for all quartets into .csv
     if(writecsv) writeSitePatternCounts(p,writecsv,csvname,inputfile) end
@@ -44,6 +54,13 @@ function readPhylipFile(inputfile::AbstractString,writecsv::Bool,csvname::Abstra
     return p
 end
 
+"""
+    PhylipFileInfo(inputfile::AbstractString, p::Phylip)
+    PhylipFileInfo(inputfile::AbstractString, p::Phylip, showProgress::Bool)    
+
+Function that shortens?summarizes? the sequence alignment into two matrices: the one with unique sites and \\
+another with how many times each column in the previous matrix occurs throughout the alignment.
+"""
 PhylipFileInfo(inputfile::AbstractString, p::Phylip)=PhylipFileInfo(inputfile,p,true)
 function PhylipFileInfo(inputfile::AbstractString, p::Phylip, showProgress::Bool)
     #taxaMatch=false
@@ -132,13 +149,19 @@ function PhylipFileInfo(inputfile::AbstractString, p::Phylip, showProgress::Bool
     end
 end
 
+
+"""
+    getUniqueQuartets(p::Phylip)
+
+Getting some combinations for four sequences (quartets). This will result in X! quartets where X is the number of sequences \\
+in the input phylip file. I am sure there is a better way to do this.
+"""
 function getUniqueQuartets(p::Phylip)
-    
     numind=p.numtaxa
-    numind!==0 || error("There is no sequence taht we can parse.")
+    numind!==0 || error("There is no sequence we can parse.")
     typeof(numind)==Int64 || error("Error while getting all posible quartets using Type Phylip . Number of individuals stored is not Integer but $(typeof(numind))")
     taxa=p.counttaxa #list of integers assigned for each taxa stored in Type Phylip
-    
+
     for i in 1:numind
         for j in i+1:numind
             for k in j+1:numind
@@ -150,8 +173,14 @@ function getUniqueQuartets(p::Phylip)
     end
 
     length(p.allquartet)==binomial(numind,4) || error("There are only $(length(p.allquartet)) quartets when there should be $(binomial(numind,4)).")    
+    return p
 end
 
+"""
+    sitePatternCounts(p::Phylip,ppbase::Array,counts::Array)
+
+Computes observed site pattern frequencies from ppbase and counts obtained from PhylipFileInfo.
+"""
 function sitePatternCounts(p::Phylip,ppbase::Array,counts::Array)
     Allquartet=p.allquartet
     numquartet=length(p.allquartet) 
@@ -203,8 +232,15 @@ function sitePatternCounts(p::Phylip,ppbase::Array,counts::Array)
         end
         push!(p.spcounts,spcount)
     end 
+    return p
 end
 
+"""
+    spRearrange(p::Phylip)
+
+Rearranges the elemetns of each unique quartet obtained using getUniqueQuartets, and also suffles the site pattern frequencies \\
+accordingly. This prevents 24 redundant computation, saving computation time.
+"""
 function spRearrange(p::Phylip)
     Allquartet=p.allquartet
     numQuarts=length(Allquartet)
@@ -281,41 +317,53 @@ function spRearrange(p::Phylip)
         spc=[AAAA,ABAA,BAAA,AABB,BCAA,AABA,ABBA,CABC,ABAB,AAAB,ABAC,BACA,ABBC,AABC,ABCD]; push!(p.spcounts,spc)#23
         spc=[AAAA,BAAA,ABAA,AABB,BCAA,AABA,ABAB,BACA,ABBA,AAAB,ABBC,CABC,ABAC,AABC,ABCD]; push!(p.spcounts,spc)#24
     end
-end
-
-function spRearrangeCHECK(inputfile::AbstractString,display=false::Bool)
-    p=Phylip(inputfile)
-    UniqueBase,BaseCounts=PhylipFileInfo(inputfile, p)
-    getUniqueQuartets(p)
-    sitePatternCounts(p,UniqueBase,BaseCounts)
-    laq0=length(p.allquartet)
-    lsp0=length(p.spcounts)
-    spRearrange(p)
-    laq1=length(p.allquartet)
-    lsp1=length(p.spcounts)
-    println("
-There were $laq0 quartets and $lsp0 site pattern frequenciesy before the function spRearrange,
-and now there are $laq1 quartets and $lsp1 site pattern frequencies after excuting the function spRearrange.
-The two numbers (number of quartes and site pattern frequencies)
-Set [display=true] to see both quartets and coresponding site pattern frequencies results.")
-    if(display)
-        println("p.allquartet: $(p.allquartet)")
-        println("p.spcounts: $(p.spcounts)")
-    end
+    return p
 end
 
 """
-    writeSitePatternCounts(phylip::Phylip,csvname::AbstractString)
+    binaryIndexforQuartet(p::Phylip)
 
-Exports the site pattern frequencies parsed frin the sequence alignment in a `.csv` file. The output is stored in
-the worksing directory unless specified, and named as sitePatternCounts_`csvname`.csv. 
+Creates a binary index number for each quartet, hoping to speed up the computation. \\
+Not really sure if this is an effective strategy, may be will be gone in the next version.
+"""
+function binaryIndexforQuartet(p::Phylip)
+    Allquartet=p.allquartet
+    numQuarts=length(Allquartet)
+    for n in 1:numQuarts
+        i=bitstring(Int8(Allquartet[n][1]))
+        j=bitstring(Int8(Allquartet[n][2]))
+        k=bitstring(Int8(Allquartet[n][3]))
+        l=bitstring(Int8(Allquartet[n][4]))
+        push!(p.index,[i*j*k*l])
+    end
+    return p
+end
+
+
+
+"###---DISPLAYING AND EXPORTING QUARTET SITE PATTERN FREQUENCIES---###"
+
+"""
+    show_sp(p::Phylip)
+
+Pretty name for displaying all quartet and the corresponding site pattern frequencies on screen in the DataFrame format. \\
+It may result in excessively long table when there are many sequences in the input file.
 
 ### Input
-`phylip` A Phylip object that is obtained using the function `readPhylipFile!()`\\
-`csvname`  A string that specifies the name of the `.csv` file\\
+`p`     Phylip object [mandatory]
 """
-function writeSitePatternCounts(p::Phylip,write::Bool,csvname::AbstractString,inputfile::AbstractString)
-    
+function show_sp(p::Phylip)
+    df=sitePatternsToDF(p)
+    return df
+end
+
+"""
+    sitePatternsToDF(p::Phylip)
+
+Extracts the quartet and site pattern information from the Phyliip object, and reorganizes them in the DataFrame format.\\
+This function does all hard work work for show_sp.
+"""
+function sitePatternsToDF(p::Phylip)
     df=DataFrame(i=Any[],j=Any[],k=Any[],l=Any[], 
                 AAAA=Int[], AAAB=Int[], AABA=Int[], AABB=Int[], AABC=Int[], 
                 ABAA=Int[], ABAB=Int[], ABAC=Int[], ABBA=Int[], BAAA=Int[], 
@@ -348,6 +396,30 @@ function writeSitePatternCounts(p::Phylip,write::Bool,csvname::AbstractString,in
         push!(df.BCAA,p.spcounts[n][14])
         push!(df.ABCD,p.spcounts[n][15])
     end
+    return df
+end
+
+"""
+    write_sp(p::Phylip)
+
+Pretty name for exporting all quartet and the corresponding site pattern frequencies in a .csv format. \\
+
+### Input
+`p`         Phylip object [mandatory]
+`csvname`   Filename for the .csv output can be given, otherwise we use PhyNEST_sp.csv by default.
+"""
+function write_sp(p::Phylip; csvname="PhyNEST_sp"::AbstractString)
+    writeSitePatternCounts(p,csvname)
+end
+
+"""
+    writeSitePatternCounts(phylip::Phylip,csvname::AbstractString)
+
+The function that actually stores the DataFrame with quartet and site pattern frequencies into a .csv file. \\
+This function does all hard work work for write_sp.
+"""
+function writeSitePatternCounts(p::Phylip,write::Bool,csvname::AbstractString,inputfile::AbstractString)
+    df=sitePatternsToDF(p)
     if write==true 
         if isempty(csvname)
             CSV.write("sitePatternCounts_$inputfile.csv",df)
@@ -358,23 +430,25 @@ function writeSitePatternCounts(p::Phylip,write::Bool,csvname::AbstractString,in
         end
     end
 end
-#function writeSitePatternCounts(inputfile::AbstractString) readPhylipFile!(inputfile,true) end
 writeSitePatternCounts(p::Phylip,csvname::AbstractString)=writeSitePatternCounts(p,true,csvname,csvname)
 #writeSitePatternCounts(p::Phylip,inputfile::AbstractString)=writeSitePatternCounts(p,true,inputfile)
+#function writeSitePatternCounts(inputfile::AbstractString) readPhylip(inputfile,true) end
 
-function binaryIndexforQuartet(p::Phylip)
-    Allquartet=p.allquartet
-    numQuarts=length(Allquartet)
-    for n in 1:numQuarts
-        i=bitstring(Int8(Allquartet[n][1]))
-        j=bitstring(Int8(Allquartet[n][2]))
-        k=bitstring(Int8(Allquartet[n][3]))
-        l=bitstring(Int8(Allquartet[n][4]))
-        push!(p.index,[i*j*k*l])
-    end
-end
 
-function printCheckPoint(p::Phylip)
+
+"###---STORING AND READING CHECKPOINT FILES---###"
+
+"""
+    storeCheckPoint(p::Phylip)
+
+Stores the phylip object into a .ckp file so a user does not have to repeat the phylip parsing again if working with the \\
+same dataset next time. By default it creates a .ckp file that has the same filename as the input phylip file.\\
+File size can get pretty large... 
+
+### Input
+`p`         Phylip object [mandatory]
+"""
+function storeCheckPoint(p::Phylip)
     open("$(p.filename).ckp", "w") do file
         write(file, "$(p.filename)\n")
         write(file, "$(p.time)\n")
@@ -419,10 +493,10 @@ end
 """
     readCheckPoint(ckpfile::AbstractString)
 
-Reads in `.ckp` file that is created every time function `readPhylipFile!` is complete.
+Reads in .ckp file and creates a filled in phylip object.
 
 ### Input
-`ckpfile` Name of `checkpoint` file as a AbstractString\\
+`ckpfile`   Name of the checkpoint file\\
 """
 function readCheckPoint(ckpfile::AbstractString)
     p=Phylip()
@@ -496,10 +570,4 @@ function readCheckPoint(ckpfile::AbstractString)
 
     end
     return p
-end
-
-
-function readCSVFile(inputfile::AbstractString)
-    df=DataFrame(CSV.File(inputfile))
-    return df
 end

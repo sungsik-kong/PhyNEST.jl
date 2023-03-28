@@ -1,3 +1,87 @@
+#Written by Sungsik Kong 2021-2022
+#Last updated by Sungsik Kong 2023
+
+"""
+    get_average(i::Array)
+
+Compute average of the values in an array. Did not want to add Statistics dependency for this...
+"""
+function get_average(i::Array)
+    average=sum(i)/length(i)
+    return average
+end
+
+"""
+    greet()
+
+Displays a simple greet message with citation information. No input argument is needed. 
+"""
+function greet()
+    now=Dates.now()
+    println("""
+    Thank you for using PhyNEST: Phylogenetic Network Estimation using SiTe patterns (current time: $now). 
+    Please report bugs or make suggestions to https://groups.google.com/g/phynest-users.
+    If you conduct an analysis using PhyNEST, please cite:
+    Sungsik Kong, David Swofford, and Laura Kubatko (2022) Inference of Phylogenetic Networks from Sequence Data using Composite Likelihood.
+    Preprint available online on BioRxiv at https://doi.org/10.1101/2022.11.14.516468.
+    """)
+end
+
+"""
+    checkDEBUG()
+
+Just a simple function to check if debugging message is being displayed. If debugging message is not being displayed, try:
+- ENV["JULIA_DEBUG"] = "PhyNEST" or 
+- ENV["JULIA_DEBUG"] = "All".
+To turn it off, try:
+- ENV["JULIA_DEBUG"] = " ".
+"""
+function checkDEBUG()
+    println("Function is being executed. Do you see a message on next line? If not try ?checkDEBUG().")
+    @debug "Debugging message is being displayed."
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Dstat(outgroup::String,p::Phylip)=Dstat(outgroup::String,p::Phylip,0.05,false)
 Dstat(outgroup::String,p::Phylip,pval::Float64)=Dstat(outgroup::String,p::Phylip,pval::Float64,false)
 function Dstat(outgroup::String,p::Phylip,pval::Float64,displayall::Bool)

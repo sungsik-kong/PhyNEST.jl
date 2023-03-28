@@ -1,9 +1,6 @@
-#written by Sungsik Kong 2021-2022
+#Written by Sungsik Kong 2021-2022
+#Last updated by Sungsik Kong 2023
 module PhyNEST
-
-#   ENV["JULIA_DEBUG"] = "all"/"PhyNE"
-#   ENV["JULIA_DEBUG"] = " "
-
     using DataFrames
     using DelimitedFiles
     using CSV    
@@ -16,60 +13,52 @@ module PhyNEST
     using Suppressor
     import PhyloNetworks: 
         readTopology, 
+        displayedTrees,
         Edge, 
         HybridNetwork,
-        displayedTrees,
         NNIRepeat!,
         PhyloNetworks.calculateNmov!,
         whichMove,
         readTopologyUpdate,
         writeTopologyLevel1,
-        proposedTop!
-
+        proposedTop!,
+        printEverything,
+        printEdges
     export 
+        readTopology,
+        displayedTrees,
         greet,
         checkDEBUG,
-        Phylip, #Objects
-        Nquartets,
-        nquartets,
-        #readPhylip
-        readPhylipFile!, 
+        Phylip,
+        readPhylip, 
+        show_sp,
+        write_sp,
+        storeCheckPoint,
         readCheckPoint,
-        writeSitePatternCounts,
-        readCSVFile,
-        readTopology,#from PhyloNetworks
-        
-        #Quartets
-        extractNQuartets,
-        extractQuartets,
+        GetTrueProbsSymm,
+        GetTrueProbsAsymm,
+        GetTrueProbsAsymmTypes,
+        sim_sp_counts,
+        Network,
+        quartets,
+        get_quartets,
         printQuartets,
-        
-        #Probabilities
-        TrueSitePatternSymm,
-        TrueSitePatternAsymm,
-        GetTrueProbsNetTypes,
-        simspcounts,
-        momentEstimat,#Method-of-moment Estimates
-        startTheta, #Theta
-        Optimization, #Optimization
-        nature, #Searches
-        hillClimb,
-        maxburnin,
-        simAnneal!,
-        PhyNE!,
-        Dstat, #Misc.
-        HyDe,
-        LRT
+        get_start_theta,
+        do_optimization,
+        hill_climbing,
+        simulated_annealing,
+        phyne!
 
     include("check.jl")
     include("Objects.jl")
     include("readPhylip.jl")
-    include("Quartets.jl")
     include("Probabilities.jl")
+    include("Quartets.jl")
     include("MomentEstimat.jl")
     include("Theta.jl")
     include("Optimization.jl")
     include("Searches.jl")
     include("miscellaneous.jl")
+
 end
 

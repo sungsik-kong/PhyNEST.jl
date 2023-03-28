@@ -1,39 +1,171 @@
 #written by Sungsik Kong 2021-2022
+#Shame on my bad naming sense...again!
+function get_start_theta(net::HybridNetwork, p::Phylip; lower_bound=0.00001::Float64,factor=2.0::Float64,tolerance=0.01::Float64)
+    N=get_quartets(net,p)
+    theta=get_start_theta(N; lower_bound=lower_bound,factor=factor,tolerance=tolerance)
+    return theta
+end
 
-function upperLower(q::Array{Nquartets, 1};lbound=0.00001::Float64, factor=2.0::Float64)
-    
-    i=1
-    lower=lbound
-#   upper=lower*10^i
-    upper=lower*((factor)^i)
-    positive=true
+"""
+    get_start_theta(N::Network; 
+                    lower_bound=0.00001::Float64,factor=2.0::Float64,tolerance=0.01::Float64)
+Using the Network object that contains information on quartets extracted from the topology and\\
+site pattern frequencies from the data, estimates the `reasonable' theta value that can be\\
+used as the starting point for the composite likelihood optimization. \\
+Approximate interval where the true theta may lie is estimated through two procedures:\\
+somewhat loose interval that keeps the branch lengths positive from the moment estimator,\\
+and then further tightens the interval using the golden section seach.
+"""
+function get_start_theta(N::Network; 
+                        lower_bound=0.00001::Float64,factor=2.0::Float64,tolerance=0.01::Float64)
+    function find_theta(theta::Float64)
+        new_topology=deepcopy(N)
+        new_topology.theta=theta
 
-    while (positive=true)
-        f=[]
-        for eachT in q
-            for eachQ in eachT.nquartet
-#               upper=lower*10^i
-                upper=lower*((factor)^i)
-                t1,t2,t3=momentEstimat(eachQ,upper)
-                taus=[t1,t2,t3]
-                push!(f,taus)
-            end
+        for each_quartet in new_topology.quartet
+            each_quartet.momestlength=momentEstimate(each_quartet,theta)
+        end
+        average_momest=get_average_moment_branch_length(new_topology)
+        for each_quartet in new_topology.quartet
+            each_quartet.average_mom_est_bl=(average_momest[each_quartet.ntau[1]],average_momest[each_quartet.ntau[2]],average_momest[each_quartet.ntau[3]])
         end
         
-        for g in 1:length(f)
-            if all(.>=(0), f[g])
+        neg_log_composite_likelihood=get_negative_log_clikelihood(new_topology)#Then compute pseudolikelihood
+        
+        return neg_log_composite_likelihood
+    end
+
+    lower,upper=get_upper_lower_theta(N, lower_bound=lower_bound, factor=factor)
+    new_lower,new_upper=golden_section_search(find_theta,lower,upper,tolerance)
+    res=Optim.optimize(find_theta,new_lower,new_upper)
+    theta=res.minimizer
+
+    return theta
+end
+
+"""
+    get_negative_log_clikelihood(N::Network)
+
+Computes the negative log coposite likelihood from the Network object. It first computes\\
+the true site pattern probabilities for each quartet extracted from the network,\\
+which can be computed as sum of all the true site pattern probabilities for a quartet extracted from\\
+each parental tree multiplies by the inheritance probability assigned to that quartet (i.e., the\\
+probability that is assigned to the parental tree that the quartet is extracted from.\\
+Then, it computes quartet likelihood, followed by multiplification of the likelihoods\\
+for every quartet that is extracted from the network. This will be a very small number, so we\\
+use BigFloat(). Finally we cat Float64 value by multiplying -1.0 for the log of that value. 
+"""
+function get_negative_log_clikelihood(N::Network)
+    
+    theta=N.theta
+    alpha=4/3
+
+    #get prob for each quartet
+    probs=[]
+    how_many_trees=length(N.gamma)
+    all_quartets=N.quartet
+    how_many_quartets=length(N.quartet)/how_many_trees
+    how_many_quartets=Int(how_many_quartets)
+    for i in 1:how_many_quartets
+        site_pattern_prababilities=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        this_quartet=all_quartets[i].quartet
+        for each_quartet in all_quartets
+            if each_quartet.quartet==this_quartet
+
+                site_pattern_prababilities+=get_true_probabilities(each_quartet,theta,alpha)
+            else continue
+            end
+        end
+        weights=[4,12,12,12,24,12,12,24,12,12,24,24,24,24,24]
+        site_pattern_prababilities = (weights .* site_pattern_prababilities)
+        push!(probs,site_pattern_prababilities)
+    end
+
+    qliks=[]
+    for i in 1:how_many_quartets
+        site_pattern_frequencies=all_quartets[i].mspcountsNET
+        site_pattern_probs=probs[i]
+        if (sum(ismissing.(site_pattern_probs))!=0) 
+            likelihood=-10^308
+        elseif (sum(any(t->t<=0,site_pattern_probs))==0)
+            likelihood=BigFloat(1.0)
+            for i in 1:15
+                likelihood*=BigFloat(site_pattern_probs[i])^site_pattern_frequencies[i]
+            end
+        else 
+            likelihood=-10^308
+        end 
+        push!(qliks,likelihood)
+    end
+
+    #get clikelihood
+    clikelihood=prod(qliks)
+
+    #make it negative log and back to Float from BigFloat
+    neg_log_clik=Float64(-1.0*log(clikelihood))
+
+    return neg_log_clik
+end
+
+"""
+    get_true_probabilities(each_quartet::quartets,theta::Float64,alpha::Float64)
+
+Computes the tru site pattern probabilities for each quartet in a network,\\
+multiplied by the inheritance probability of that quartet.
+"""
+function get_true_probabilities(each_quartet::quartets,theta::Float64,alpha::Float64)
+    
+    t1=each_quartet.average_mom_est_bl[1]
+    t2=each_quartet.average_mom_est_bl[2]
+    t3=each_quartet.average_mom_est_bl[3]
+
+    if each_quartet.symtype==0 
+        probabilities=each_quartet.gamma*GetTrueProbsSymm(t1,t2,t3,theta,alpha)
+    else probabilities=each_quartet.gamma*GetTrueProbsAsymmTypes(each_quartet.symtype,t1,t2,t3,theta,alpha)
+    end
+    
+    return probabilities
+end
+
+"""
+    get_upper_lower_theta(N::Network;lower_bound=0.00001::Float64, factor=2.0::Float64)
+
+Get somewhat loose intherval of theta. In particular, the interval is initially determined as\\
+the user specified lower bound (default=0.00001) and the lower bound * user specified factor (dafault=2.0).\\
+If all branch lengths estimated using the theta=upper bound happens to be positive, the upper bound\\
+is `feasible` theta value, and we iterate this process for multiple iterations (i) until using \\
+theta=upper bound becomes infeasible i.e., at least one of the branch lengths estimated for \\
+each quartet is negative. The the largest upper bound used is returned.
+"""
+function get_upper_lower_theta(N::Network;lower_bound=0.00001::Float64, factor=2.0::Float64)
+    i=1
+    positive=true
+    lower=lower_bound
+    upper=lower*((factor)^i)
+    
+    while (positive=true)
+        f=[]
+        for each_quartet in N.quartet
+            upper=lower*((factor)^i)
+            t1,t2,t3=momentEstimate(each_quartet,upper)
+            taus=(t1,t2,t3)
+            push!(f,taus)
+        end
+        
+        for each_tau in 1:length(f)
+            if all(.>=(0), f[each_tau])
                 positive=true
             else    
                 positive=false
             end
         end
+
         if positive==true
             i=i+1
         elseif i==1
             upper=0.1
             break
         else
-#           upper=lower*10^(i-1)
             upper=lower*((factor)^(i-1))
             break
         end
@@ -42,13 +174,13 @@ function upperLower(q::Array{Nquartets, 1};lbound=0.00001::Float64, factor=2.0::
     return lower,upper
 end
 
-function upperLower(p::Phylip,net::HybridNetwork;lbound=0.00001::Float64,factor=2.0::Float64)
-    q=extractNQuartets(net,p)
-    lower,upper=upperLower(q,lbound=lbound,factor=factor)
-    return lower,upper
-end
+"""
+    golden_section_search(f,lower::Float64,upper::Float64,tolerance::Float64)
 
-function goldenSectionSearch(f,lower::Float64,upper::Float64,tolerance::Float64)
+Using the loose interval for theta estimated from get_upper_lower_theta(), \\
+here, we further tighten the interval for the feasible theta using the golden ratio.
+"""
+function golden_section_search(f,lower::Float64,upper::Float64,tolerance::Float64)
     goldenratio=2/(sqrt(5)+1)
     
     #Use the golden ratio to set the initial test points
@@ -81,179 +213,4 @@ function goldenSectionSearch(f,lower::Float64,upper::Float64,tolerance::Float64)
     end
 
     return lower,upper
-end
-
-pushMomEstlength(newT::Array{Nquartets, 1},theta::Float64)=pushMomEstlength(newT,theta,false)
-pushMomEstlength(net::HybridNetwork,p::Phylip,theta::Float64)=pushMomEstlength(net,p,theta,true)
-function pushMomEstlength(newT::Array{Nquartets, 1},theta::Float64,check::Bool)
-    for eachT in newT
-        for eachQ in eachT.nquartet
-            t1,t2,t3=momentEstimat(eachQ,theta)
-            push!(eachQ.momestlength,[t1,t2,t3])
-            if(check) println(eachQ.momestlength) end
-        end
-    end
-
-    return newT
-end
-
-function pushMomEstlength(net::HybridNetwork,p::Phylip,theta::Float64,check::Bool)
-    q=extractNQuartets(net,p)
-    pushMomEstlength(q,theta,check)
-end
-
-function getmomBLAve(newT::Array{Nquartets, 1},net::HybridNetwork)
-    numTaus=net.numNodes-net.numTaxa-net.numHybrids
-    for n in 1:length(net.node)
-        if net.node[n].number<0
-            if tauNum(net.node[n].number) > numTaus
-                numTaus=tauNum(net.node[n].number)
-            else continue
-            end
-        else continue
-        end
-    end
-
-    ave=Array[]
-    for eachT in newT
-        for eachQ in eachT.nquartet
-            taus=zeros(Float64,(numTaus,1))
-            i=eachQ.ntau[1][1]
-            j=eachQ.ntau[1][2]
-            k=eachQ.ntau[1][3]
-            
-            taus[i]=eachQ.momestlength[1][1]
-            taus[j]=eachQ.momestlength[1][2]
-            taus[k]=eachQ.momestlength[1][3]
-            push!(ave,taus)               
-        end
-    end
-    #then get a average in the end
-    avef=Float64[]
-    for eacht in 1:numTaus
-        avee=Float64[]
-        for eachQ in ave
-            if !iszero(eachQ[eacht]); push!(avee,eachQ[eacht]) end
-        end
-        push!(avef,mean(avee))
-    end
-    return avef
-end
-
-function getmomBLAve(net::HybridNetwork,p::Phylip)
-    q=extractNQuartets(net,p)
-    q=pushMomEstlength(x,p,theta,false)
-    avef=getmomBLAve(q,net)
-    println(avef)
-    return avef
-end
-
-#check
-#ave=getmomBLAve(x,p)
-
-pushMomBL(newT::Array{Nquartets, 1},avef::Array)=pushMomBL(newT,avef,false)
-function pushMomBL(newT::Array{Nquartets, 1},avef::Array,check::Bool)
-    for eachT in newT
-        for eachQ in eachT.nquartet
-            push!(eachQ.mombl,[avef[eachQ.ntau[1][1]],avef[eachQ.ntau[1][2]],avef[eachQ.ntau[1][3]]])
-            if(check) println(eachQ.mombl) end
-        end
-    end
-
-    return newT
-end
-
-pushMomBL(newT::Array{Nquartets, 1},net::HybridNetwork)=pushMomBL(newT,net,false)
-function pushMomBL(newT::Array{Nquartets, 1},net::HybridNetwork,check::Bool)
-    avef=getmomBLAve(newT,net)
-    newT=pushMomBL(newT,avef,check)
-    return newT
-end
-
-pushMomBL(net::HybridNetwork,p::Phylip)=pushMomBL(net,p,true)
-function pushMomBL(net::HybridNetwork,p::Phylip,check::Bool)
-    q=extractNQuartets(net,p)
-    q=pushMomEstlength(x,p,theta,false)
-    pushMomBL(q,net,check)
-end
-
-function GetTrueProbsTh(q::nquartets,theta::Float64,alpha::Float64,gamma::Float64)
-    
-    type=q.symtype[1]
-    t1=q.mombl[1][1]
-    t2=q.mombl[1][2]
-    t3=q.mombl[1][3]
-    
-    if type==0 p=gamma*GetTrueProbsSymm(t1,t2,t3,theta,alpha)
-            else p=gamma*GetTrueProbsNetTypes(type,t1,t2,t3,theta,alpha)
-    end
-
-    return p
-    
-end
-
-function getLikelihoodTh(q::Array{Nquartets, 1},theta1::Float64,alpha::Float64)
-#    printQuarts(q)
-    weights=[4,12,12,12,24,12,12,24,12,12,24,24,24,24,24]
-    for eachT in q
-        gam=1/length(q)
-
-        for eachQ in eachT.nquartet
-
-            myprobvec1 = GetTrueProbsTh(eachQ,theta1,alpha,gam)
-
-            probs = (weights .* myprobvec1)    
-            sitefreq=eachQ.mspcountsNET[1]
-            if (sum(ismissing.(probs))!=0) 
-                eachQ.logLik=-10^308
-            elseif (sum(any(t->t<=0,probs))==0)
-                lik=BigFloat(1.0)
-                for i in 1:15
-                    lik*=BigFloat(probs[i])^sitefreq[i]
-                end
-                eachQ.logLik=BigFloat(lik)
-            else 
-                eachQ.logLik=-10^308
-            end 
-        end
-    end
-    return q
-end
-
-function getLogPseudoLik(newT::Array{Nquartets, 1})
-    Pseudolikelihood=BigFloat(0)
-    for eachT in newT
-        for eachQ in eachT.nquartet
-            Pseudolikelihood+=eachQ.logLik
-        end
-    end
-
-    y=-1.0*(log(Pseudolikelihood))
-
-    return Float64(y)
-end
-
-function startTheta(net::HybridNetwork,p::Phylip; lbound=0.00001::Float64,factor=2.0::Float64)
-    q=extractNQuartets(net,p)
-    theta=startTheta(q,net,lbound=lbound,factor=factor) 
-    return theta
-end
-
-function startTheta(q::Array{Nquartets, 1},net::HybridNetwork; lbound=0.00001::Float64,factor=2.0::Float64)
-    
-    function findTheta(theta::Float64)
-        newT=deepcopy(q)
-        newT=pushMomEstlength(newT,theta)#push momest branch lengths for each quartet
-        newT=pushMomBL(newT,net)#push averaged momest branch length for the whole tree
-        newT=getLikelihoodTh(newT,theta,4/3)#Then use theta, mombl, gamma; get likelihoods for each quartet
-        Pseudolikelihood=getLogPseudoLik(newT)#Then compute pseudolikelihood
-        return Pseudolikelihood
-    end
-
-    lower,upper=upperLower(q,lbound=lbound,factor=factor)
-    lower1,upper1=goldenSectionSearch(findTheta,lower,upper,0.01)
-    res=Optim.optimize(findTheta,lower1,upper1)
-    theta=res.minimizer
-    
-    return theta
 end
