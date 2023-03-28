@@ -6,13 +6,13 @@ A sample DNA alignment file `n5h1_5k.txt` is provided in the `/example` folder o
 
 ## Parsing DNA alignment data
 
-Load [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) in Julia and move to the working directory that contains the alignment. The alignment is parsed with the function `readPhylipFile!()`. The progress can be visualized with `showProgress` option that takes a boolean argument (set as `false` in this example for brevity). 
+Load [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) in Julia and move to the working directory that contains the alignment. The alignment is parsed with the function `readPhylip()`. The progress can be visualized with `showProgress` option that takes a boolean argument (set as `false` in this example for brevity). 
 
 Once the parsing the alignment is complete, a checkpoint file `n5h1_5k.txt.ckp` should appear in the directory. Note the `.ckp` file will have the same name as the alignment file. 
 ```@repl input
 using PhyNEST
-datapath = joinpath(dirname(pathof(PhyNEST)), "..","example","n5h1_5k.txt");
-phydata = readPhylipFile!(datapath, showProgress=false)
+datapath = joinpath(dirname(pathof(PhyNEST)), "..","example","sample_n5h1.txt");
+phydata = readPhylip(datapath, showProgress=false, checkpoint=true)
 ```
 
 ## Reading `.ckp` file
@@ -20,7 +20,7 @@ In case of multiple network analyses using the same alignment, a user can bypass
 
 Reading a checkpoint file using the function `readCheckPoint()` as shown below.
 ```@repl input
-ckppath = joinpath(dirname(pathof(PhyNEST)), "..","example","n5h1_5k.txt.ckp");
+ckppath = joinpath(dirname(pathof(PhyNEST)), "..","example","sample_n5h1.txt.ckp");
 ckpdata = readCheckPoint(ckppath)
 ```
 
@@ -30,10 +30,9 @@ The observed quartet site pattern frequencies can be exported in `.csv` file. Wh
 Here, we set the name as `tutorial_n5h1`. The produced `.csv` file can be visualized using function `readCSVFile(csvfile)`. 
 
 ```@repl input
-phydata = readPhylipFile!(datapath, showProgress=false,
+phydata = readPhylip(datapath, showProgress=false,
                         writecsv=true, csvname="tutorial_n5h1")
-csvpath = joinpath(dirname(pathof(PhyNEST)), "..","example","tutorial_n5h1.csv");
-csvdf = readCSVFile(csvpath)
+csvpath = joinpath(dirname(pathof(PhyNEST)), "..","example","tutorial_n5h1.txt.csv");
 ```
 
 If a user forgot to set `writecsv=true`, the function `writeSitePatternCounts` can be used to export. See [here](https://sungsik-kong.github.io/PhyNE.jl/dev/#PhyNE.writeSitePatternCounts) for more information.
