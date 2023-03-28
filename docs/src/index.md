@@ -18,3 +18,46 @@ Pages = [
     "manual/networkest.md",
     ]
 ```
+
+## Functions
+```@docs
+    greet
+    readPhylip
+    show_sp
+    write_sp
+    storeCheckPoint
+    readCheckPoint
+    GetTrueProbsSymm
+    GetTrueProbsAsymm
+    GetTrueProbsAsymmTypes
+    sim_sp_counts
+    get_quartets
+    printQuartets
+    get_start_theta
+    do_optimization
+    hill_climbing
+    simulated_annealing
+    phyne!
+```
+## Types
+```@docs
+    Phylip
+    Network
+    quartets
+```
+
+## Index
+```@index
+    readPhylip
+    readPhylipFile
+    PhylipFileInfo
+    getUniqueQuartets
+    sitePatternCounts
+    spRearrange
+    show_sp
+    sitePatternsToDF
+    write_sp
+    writeSitePatternCounts
+    storeCheckPoint
+    readCheckPoint
+```
