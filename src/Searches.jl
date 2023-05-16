@@ -377,7 +377,7 @@ function initiate_search(starting_topology::HybridNetwork,p::Phylip,outgroup::St
     i=0
 
     if (do_hill_climbing)
-        Distributed.pmap(1:number_of_runs) do following
+        while i < number_of_runs
             i+=1
             str="\n($i/$number_of_runs) Searching for the best network using the hill climbing algorithm..."
             print(str)

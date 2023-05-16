@@ -1,5 +1,5 @@
 PhyNEST: Phylogenetic Network Estimation using SiTe patterns
-Analysis start: 2023-05-16 at 11:55:29
+Analysis start: 2023-05-16 at 16:29:21
 Input sequence file: example/sample_n5h1.txt
 Number of sequences: 5 
 Sequence length: 1000000
@@ -10,10 +10,13 @@ The maximum number of iterations for each optimization: 1000
 Search algorithm selected: Hill climbing
 The maximum number of steps during search: 100000
 
-(1/2) Searching for the best network using the hill climbing algorithm...(1/2) Estimated topology in this run: (5:9.873012640463793,(4:4.978556362717051,((1:1.4303333981774915,#H6:1.4303333981774915::0.1):1.5674936103141652,((2:1.57039670220237)#H6:1.57039670220237::0.4753677704837127,3:1.57039670220237):1.4274303062892868):1.9807293542253945):4.894456277746742);
-(1/2) Composite likelihood of the estimated topology in this run: 4.7413446340573225e6
+(1/4) Searching for the best network using the hill climbing algorithm...
+(2/4) Searching for the best network using the hill climbing algorithm...
+(3/4) Searching for the best network using the hill climbing algorithm...(3/4) Terminated due to error
+(3/4) Terminated due to error
 
-(2/2) Searching for the best network using the hill climbing algorithm...(2/2) Estimated topology in this run: (5:10.2697095060683,(4:5.196775556882685,((3:2.357955465993553,(2:0.38031557369091684,(1:1.0000000000000006e-10)#H6:0.38031557369091684::0.3802733495916154):1.9776398923026361):1.2727612494513463,#H6:3.6307167154448994::0.6197266504083846):1.566058841437786):5.072933949185615);
-(2/2) Composite likelihood of the estimated topology in this run: 4.7413522473478215e6
+(4/4) Searching for the best network using the hill climbing algorithm...(4/4) Terminated due to error
+(4/4) Estimated topology in this run: (5:10.279852508216186,(4:5.202396348480912,(#H6:3.630835704958133::0.1,(1:2.3633048477476857,(2:0.37557495918111433,(3:2.3633048477476857)#H6:0.37557495918111433::0.6205325825895515):1.9877298885665713):1.2675308572104473):1.571560643522779):5.077456159735274);
+(4/4) Composite likelihood of the estimated topology in this run: 4.741362031645941e6
 -----end of analysis
-Best topology: (5:9.873012640463793,(4:4.978556362717051,((1:1.4303333981774915,#H6:1.4303333981774915::0.1):1.5674936103141652,((2:1.57039670220237)#H6:1.57039670220237::0.4753677704837127,3:1.57039670220237):1.4274303062892868):1.9807293542253945):4.894456277746742);
+Best topology: (5:10.279852508216186,(4:5.202396348480912,(#H6:3.630835704958133::0.1,(1:2.3633048477476857,(2:0.37557495918111433,(3:2.3633048477476857)#H6:0.37557495918111433::0.6205325825895515):1.9877298885665713):1.2675308572104473):1.571560643522779):5.077456159735274);
