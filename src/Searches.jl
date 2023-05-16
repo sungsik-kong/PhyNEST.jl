@@ -98,8 +98,8 @@ possibly because there was no more move to make.\n"
 end
 
 print(str)
-write(logfile,str)
-flush(logfile)
+#write(logfile,str)
+#flush(logfile)
 
 return current_t_clikelihood,current_topology
 
@@ -375,8 +375,9 @@ function initiate_search(starting_topology::HybridNetwork,p::Phylip,outgroup::St
 
     search_results=[]
     i=0
+
     if (do_hill_climbing)
-        while i < number_of_runs
+        Distributed.pmap(1:number_of_runs) do following
             i+=1
             str="\n($i/$number_of_runs) Searching for the best network using the hill climbing algorithm..."
             print(str)
@@ -499,7 +500,7 @@ The maximum number of steps during search: $maximum_number_of_steps\n"
     write(logfile,str)
     flush(logfile)
     @debug "[$(Dates.now())] Network searching using PhyNEST is starting"
-    
+   
     search_results=initiate_search(starting_topology,p,outgroup,
                         hmax,
                         maximum_number_of_steps,
@@ -528,4 +529,33 @@ str="Best topology: $(writeTopologyLevel1(best_topology))"
     flush(logfile)
 
     return best_topology
+end
+
+
+
+
+
+#=
+julia
+using Distributed
+addprocs(3)
+@everywhere using Revise
+cd("/Users/khaosan/Dropbox/PhyNEST.jl")
+]
+activate .
+@everywhere using PhyNEST
+PhyNEST.i(4)
+=#
+function trial(n::Int64)
+    nprocs()
+    procs()
+    workers()
+    nworkers()
+    myid()
+
+    pmap(i -> println("I'm worker $(myid()), working on i=$i"), 1:n)
+    @sync @distributed for i in 1:n
+    println("I'm worker $(myid()), working on i=$i")
+    end
+
 end

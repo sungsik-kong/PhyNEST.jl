@@ -9,5 +9,4 @@ INPUT
 [8] in function get_quartets, makes sure gamma in N is correctly rounded
 [9] parallelization
 [10] make optimization 2 -- only optimize those that are different in t1 and t2
-[11]user can set number of burn in
 

@@ -3,6 +3,7 @@
 module PhyNEST
     using DataFrames
     using DelimitedFiles
+    using Distributed
     using CSV    
     using ProgressMeter
     using Distributions

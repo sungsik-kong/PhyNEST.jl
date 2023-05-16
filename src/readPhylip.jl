@@ -3,24 +3,32 @@
 
 """
     readPhylip(inputfile::AbstractString)
-    readPhylip(inputfile::AbstractString; writecsv=false::Bool, csvname=""::AbstractString, showProgress=true::Bool,tdigits=3::Integer)
     
 Import, read, and parse the input phylip file. File name must be specified as string. \\
-By default, .csv and .ckp files are NOT produced. See below for the optional arguments.
+By default, .csv and .ckp files are **NOT** produced. See below for the optional arguments.\\ 
+
+To save the observed quartet site pattern frequencies in a .csv file, set the optional argument\\
+`writecsv=true`. The .csv file will be stored in the working directory, with a filename \\
+`"sitePatternCounts_inputfile.csv"`. If a user would like to modify the filename, it can be done\\
+by providing preferred name using the optional argument `csvname="preferred_file_name.csv"`. \\
 
 ### Input
-`inputfile`     Name of the phylip file as a String [mandatory]\\
-`writecsv`      A Boolean arguemtn to write site pattern frequencies in CSV file (Default=`false`)\\
-`csvname`       A string that will be name of the `.csv` file (Default=sitePatternCounts_`inputfile`.csv)\\
-`showProgress`  A boolean argument for visualizing the progress of alignment parsing process (Default=`true`)\\
-`tdigits`       Number of decimal points to record timme taken to parse the file in seconds (Default=3) \\
-`checkpoint`    A boolean argument to store Phylip object as a .ckp file. (Warning: File size of the resulting .ckp can be large. Default=false)
+## Mandatory
+- `inputfile`     Name of the phylip file as a String [mandatory]\\ \n
+
+## Optional
+- `writecsv       (default=false)` A Boolean arguement to write site pattern frequencies in CSV file\\
+- `csvname        (default=sitePatternCounts_inputfile.csv)` A string that will be name of the `.csv` file \\
+- `showProgress   (default=true)` A boolean argument for visualizing the progress of alignment parsing process\\
+- `tdigits        (default=3)` Number of decimal points to record timme taken to parse the file in seconds\\
+- `checkpoint     (default=false)` A boolean argument to store Phylip object as a .ckp file. (Warning: .ckp can be large).
 """
-function readPhylip(inputfile::AbstractString; writecsv=false::Bool,
-                                                csvname=""::AbstractString,
-                                                showProgress=true::Bool,
-                                                tdigits=3::Integer,
-                                                checkpoint=false::Bool)
+function readPhylip(inputfile::AbstractString; 
+                    writecsv=false::Bool,
+                    csvname=""::AbstractString,
+                    showProgress=true::Bool,
+                    tdigits=3::Integer,
+                    checkpoint=false::Bool)
     try
         #@timed is a macro to execute an expression, and return the value of the expression, elapsed time, 
             #total bytes allocated, garbage collection time, and an object with various memory allocation counters.
@@ -46,9 +54,10 @@ function readPhylipFile(inputfile::AbstractString,writecsv::Bool,csvname::Abstra
     p=getUniqueQuartets(p) #fills in p.numtaxa, p.counttaxa, and p.allquartet attributes
     p=sitePatternCounts(p,UniqueBase,BaseCounts) #fills in p.spcounts for whatever quartet we have atm
     p=spRearrange(p) #shuffles quartet, rearrange spcounts for that quartet and fills in p.allquartet and p.spcounts
-    p=binaryIndexforQuartet(p) #fills in p.index attribute
+    #p=binaryIndexforQuartet(p) #fills in p.index attribute
     
     #write site pattern counts for all quartets into .csv
+    
     if(writecsv) writeSitePatternCounts(p,writecsv,csvname,inputfile) end
     
     return p

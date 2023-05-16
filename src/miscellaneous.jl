@@ -115,6 +115,7 @@ function Dstat(outgroup::String,p::Phylip,pval::Float64,displayall::Bool)
             ABBA=sitepattern[n][2]
             d=(ABBA-ABAB)/(ABBA+ABAB)
             z=d/(2*sqrt((0.25/(ABBA+ABAB))))
+            println([ABAB, ABBA, d, z])
             
             pv=1-cdf(ndist,z)
             if displayall==true
