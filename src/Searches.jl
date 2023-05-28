@@ -15,6 +15,7 @@ function hill_climbing(starting_topology::HybridNetwork,p::Phylip,outgroup::Stri
                         maximum_number_of_steps::Integer,
                         maximum_number_of_failures::Integer,
                         number_of_itera::Integer,
+                        write_log::Bool,
                         logfile::IO)
 #set some necessary stuff for search
 steps = 0
@@ -38,12 +39,20 @@ while(steps<maximum_number_of_steps && failures<maximum_number_of_failures && st
     calculateNmov!(new_topology,Nmov)# function to calculate Nmov, number max of tries per move2int [0,0,0,0,0,0]=>[122,25,25,4,10000,42]
     move = whichMove(new_topology,hmax,movesfail,Nmov) #selects which move to take
     if move != :none
+        outgroup_rooted=false
         accepted=false
+        
         new_topology=@suppress begin readTopologyUpdate(writeTopologyLevel1(new_topology,di=true)) end #change to unrooted, plus update branch lengths to 1.0, we change to unrooted because proposedTop! requires it
         proposedTop!(move,new_topology,true,steps,10, movescount,movesfail,false) #unrooted, make modification on newT accroding to move
         new_topology=@suppress begin readTopology(writeTopologyLevel1(new_topology,outgroup)) end#Roots the network
-        res,new_topology=do_optimization(new_topology,p,number_of_itera=number_of_itera,update_parameters=true)
-        new_t_clikelihood=res.minimum
+        outgroup_rooted=correct_outgroup(new_topology,outgroup)
+             
+        if(outgroup_rooted)
+            res,new_topology=do_optimization(new_topology,p,number_of_itera=number_of_itera,update_parameters=true)
+            new_t_clikelihood=res.minimum
+        else
+            new_t_clikelihood=Inf
+        end
         
         if(new_t_clikelihood<current_t_clikelihood)
             accepted=true
@@ -97,9 +106,11 @@ else
 possibly because there was no more move to make.\n"
 end
 
-print(str)
-#write(logfile,str)
-#flush(logfile)
+if(write_log)
+    print(str)
+    write(logfile,str)
+    flush(logfile)
+end
 
 return current_t_clikelihood,current_topology
 
@@ -176,8 +187,9 @@ function simulated_annealing(starting_topology::HybridNetwork, p::Phylip, outgro
                                 number_of_itera::Integer,
                                 k::Integer,
                                 cons::Float64,
-                                alph::Float64
-                                )
+                                alph::Float64,
+                                write_log::Bool,
+                                logfile::IO)
     
     #set some necessary stuff for search
     steps = 0
@@ -204,9 +216,17 @@ function simulated_annealing(starting_topology::HybridNetwork, p::Phylip, outgro
     #Burn in
     str="Running $number_of_burn_in burn ins...\n"
     print(str)
+    if (write_log)
+        write(logfile,str)
+        flush(logfile)
+    end
     u=burn_in(current_topology,p,outgroup,hmax,number_of_burn_in,number_of_itera) 
     str="Burn in complete. At most -log likelihood value can change $u at a single step.\n"
     print(str)
+    if (write_log)
+        write(logfile,str)
+        flush(logfile)
+    end
     l=current_t_clikelihood
     b=cons/(((1-alph)*p.numtaxa)+((alph)*(log.(l)/p.seqleng)))
     
@@ -305,9 +325,11 @@ Rank   Composite Likelihood    Network\n"
     if(rank<k) str *="The total length of best trees can be shorter than k.\n" end
     str *="Speciation times for some newicks may not have updated if estimates are weird (e.g., NaN).\n"
     print(str)
-
+    if(write_log)
+        write(logfile,str)
+        flush(logfile)
+    end
     mpl=ktrees[1][1]
-    #bestnet=ktrees[1][2]
     bestnet=readTopology(ktrees[1][2])
     
     #determine the reason for termination
@@ -339,7 +361,12 @@ It is recommended to increase the number of maximum_number_of_steps and rerun th
 "Terminated although it neither reached the maximum number of steps or failures,
 possibly because there was no more move to make.\n"
     end
-    print(str)
+
+    if(write_log)
+        print(str)
+        write(logfile,str)
+        flush(logfile)
+    end
     
     return mpl,bestnet
 
@@ -371,45 +398,62 @@ function initiate_search(starting_topology::HybridNetwork,p::Phylip,outgroup::St
     k::Integer,
     cons::Float64,
     alph::Float64,
+    write_log::Bool,
     logfile::IO)
 
     search_results=[]
-    i=0
+    #i=1
 
     if (do_hill_climbing)
-        while i < number_of_runs
-            i+=1
-            str="\n($i/$number_of_runs) Searching for the best network using the hill climbing algorithm..."
+        #while i < number_of_runs
+        #for i in 1:number_of_runs
+        search_results = Distributed.pmap(1:number_of_runs) do i
+            str="\n($i/$number_of_runs) Searching for the best network using the hill climbing algorithm, $(Dates.format(Dates.now(), "yyyy-mm-dd H:M:S.s"))\n"
             print(str)
-            write(logfile,str)
-            flush(logfile)
+            if (write_log)
+                write(logfile,str)
+                flush(logfile)
+            end
             try
                 current_t_clikelihood,current_topology=hill_climbing(starting_topology,p,outgroup,
                                                                     hmax,
                                                                     maximum_number_of_steps,
                                                                     maximum_number_of_failures,
                                                                     number_of_itera,
+                                                                    write_log,
                                                                     logfile)
-                push!(search_results,(current_t_clikelihood,current_topology))
+                
                 str="($i/$number_of_runs) Estimated topology in this run: $(writeTopologyLevel1(current_topology))\n"
                 str*="($i/$number_of_runs) Composite likelihood of the estimated topology in this run: $(current_t_clikelihood)\n"
                 print(str)
-                write(logfile,str)
-                flush(logfile)
+                if (write_log)
+                    write(logfile,str)
+                    flush(logfile)
+                end
+                push!(search_results,(current_t_clikelihood,current_topology))
+                return current_t_clikelihood,current_topology
             catch 
                 str="($i/$number_of_runs) Terminated due to error\n"
                 print(str)
+                if (write_log)
+                    write(logfile,str)
+                    flush(logfile)
+                end
+            end
+        end
+        
+        #println("best: $best")
+        #i+=1
+    else
+        #for i in 1:number_of_runs
+        search_results = Distributed.pmap(1:number_of_runs) do i
+            #i+=1      
+            str=("\n($i/$number_of_runs) Searching for the best network using the simulated annealing algorithm, $(Dates.format(Dates.now(), "yyyy-mm-dd H:M:S.s"))\n")
+            print(str)
+            if (write_log)
                 write(logfile,str)
                 flush(logfile)
             end
-        end
-    else
-        while i < number_of_runs
-            i+=1      
-            str=("\n($i/$number_of_runs) Searching for the best network using the simulated annealing algorithm...")
-            print(str)
-            write(logfile,str)
-            flush(logfile)
             try 
                 current_t_clikelihood,current_topology=simulated_annealing(starting_topology, p, outgroup, 
                             hmax,
@@ -420,18 +464,24 @@ function initiate_search(starting_topology::HybridNetwork,p::Phylip,outgroup::St
                             k,
                             cons,
                             alph,
-                            )
+                            write_log,
+                            logfile)
                 push!(search_results,(current_t_clikelihood,current_topology))               
                 str=("($i/$number_of_runs) Estimated topology in this run: $(writeTopologyLevel1(current_topology))\n")
                 str*=("($i/$number_of_runs) Composite likelihood of the estimated topology in this run: $(current_t_clikelihood)\n")
                 print(str)
-                write(logfile,str)
-                flush(logfile)
+                if (write_log)
+                    write(logfile,str)
+                    flush(logfile)
+                end
+                return current_t_clikelihood,current_topology
             catch 
                 str="($i/$number_of_runs) Terminated due to error\n"
                 print(str)
-                write(logfile,str)
-                flush(logfile)
+                if (write_log)
+                    write(logfile,str)
+                    flush(logfile)
+                end
             end
         end
     end
@@ -482,6 +532,13 @@ function phyne!(starting_topology::HybridNetwork,p::Phylip,outgroup::String;
     typeof(logfile)
     #if(display) print(str) end
     
+    #number of processors when using parallel computing
+    #to decide whether we can write stuff in the logfile
+    num_processors=Distributed.nprocs()
+    write_log=true
+    if num_processors!==1 write_log=false end
+    
+    #which searching strategy algorithm selected
     if (do_hill_climbing) algorithm="Hill climbing"
     else algorithm="Simulated annealing" end
 
@@ -495,12 +552,13 @@ Outgroup specified for rooting: $outgroup
 Number of maximum reticulation(s): $hmax
 The maximum number of iterations for each optimization: $number_of_itera
 Search algorithm selected: $algorithm
-The maximum number of steps during search: $maximum_number_of_steps\n"
+The maximum number of steps during search: $maximum_number_of_steps
+The number of processors for this analysis: $(num_processors)\n"
     print(str)
     write(logfile,str)
     flush(logfile)
     @debug "[$(Dates.now())] Network searching using PhyNEST is starting"
-   
+    
     search_results=initiate_search(starting_topology,p,outgroup,
                         hmax,
                         maximum_number_of_steps,
@@ -512,19 +570,32 @@ The maximum number of steps during search: $maximum_number_of_steps\n"
                         k,
                         cons,
                         alph,
+                        write_log,
                         logfile
                         )
+
+    run=0    
+    str="\n-----Summary of the networks found\n"
+    str*=
+    "Run   Composite Likelihood    Network\n"
+        for i in search_results
+            run+=1
+        str *=
+    "$run\t$(round(i[1],digits=5))         $(writeTopologyLevel1(i[2]))\n"
+        end
+    print(str)
+    write(logfile,str)
+    flush(logfile)
 
     sorted_search_results=sort(search_results, by = first)
     @debug "[$(Dates.now())] The search results from $(number_of_runs) runs are sorted by their composite likelihood"
     best_topology=sorted_search_results[1][2]
     @debug "[$(Dates.now())] The 'best' topology is selected as a final product stored"
 
-str="-----end of analysis\n"
+str="\n-----end of analysis\n"
     print(str)
-    write(logfile,str)
-    flush(logfile)
-str="Best topology: $(writeTopologyLevel1(best_topology))"
+    
+str*="Best topology: $(writeTopologyLevel1(best_topology))"
     write(logfile,str)
     flush(logfile)
 
@@ -533,29 +604,27 @@ end
 
 
 
+function correct_outgroup(net::HybridNetwork, outgroup::AbstractString)
+    rooted_with_outgroup=false
+    root_node_number=net.root
+    root=net.node[root_node_number]
+    if length(root.edge)==2
+        attached_edge_1_to_root=root.edge[1]
+        attached_edge_2_to_root=root.edge[2]
 
+        child1=GetChild(attached_edge_1_to_root)
+        child2=GetChild(attached_edge_2_to_root)
 
-#=
-julia
-using Distributed
-addprocs(3)
-@everywhere using Revise
-cd("/Users/khaosan/Dropbox/PhyNEST.jl")
-]
-activate .
-@everywhere using PhyNEST
-PhyNEST.i(4)
-=#
-function trial(n::Int64)
-    nprocs()
-    procs()
-    workers()
-    nworkers()
-    myid()
-
-    pmap(i -> println("I'm worker $(myid()), working on i=$i"), 1:n)
-    @sync @distributed for i in 1:n
-    println("I'm worker $(myid()), working on i=$i")
+        if child1.name==outgroup
+            rooted_with_outgroup=true
+            return rooted_with_outgroup
+        elseif child2.name==outgroup
+            rooted_with_outgroup=true
+            return rooted_with_outgroup
+        else
+            rooted_with_outgroup=false
+            return rooted_with_outgroup
+        end
     end
-
+    return rooted_with_outgroup
 end

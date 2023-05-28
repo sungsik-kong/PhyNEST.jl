@@ -99,8 +99,9 @@ function do_optimization(net::HybridNetwork, p::Phylip;
     if(update_parameters)
         Taus, theta, gammas, nodes_of_hybrid_edge_in_net=backtransform_parameters(average_momest, res.minimizer, pc,how_many_hybrid_nodes,nodes_of_hybrid_edge_in_net)
         net_after_update=update_topology(net,Taus, theta, gammas, nodes_of_hybrid_edge_in_net)
+        #println(Taus, theta, gammas, nodes_of_hybrid_edge_in_net)
     end
-
+    
     return res, net_after_update
 end
 
@@ -302,7 +303,6 @@ function update_topology(net_before_update::HybridNetwork,Taus, theta, gammas, n
         #branch lengths
         if tau_num_parent<=n_taus #&& tau_num_child<=n_taus
             if child_node<0 && !(branch.hybrid)   # tree branch
-                #println("tau_num_parent:$tau_num_parent")
                 branch.length=Taus[tau_num_parent]-Taus[tau_num_child]
             elseif child_node>0 && !(branch.hybrid)   #tree branch leading to the tip
                 #branch lengths for the hybrid edge are set as 0.0
@@ -310,7 +310,7 @@ function update_topology(net_before_update::HybridNetwork,Taus, theta, gammas, n
             elseif child_node>0 && (branch.hybrid)   #hybrid branch leading to the hybrid node
                 branch.length=Taus[tau_num_parent]
             else #child_node<0 && (branch.hybrid)   
-                branch.length=0.0   
+                branch.length=0.0 
             end
         else
             branch.length=10^-10
@@ -332,6 +332,52 @@ function update_topology(net_before_update::HybridNetwork,Taus, theta, gammas, n
         end
 
     end
-    #printEdges(net)
+    
+    #fix hybrid branch lengths
+    hybrid_nodes=net.hybrid
+    for each_hybrid_node in hybrid_nodes
+        edge1=each_hybrid_node.edge[1]
+        edge2=each_hybrid_node.edge[2]
+        edge3=each_hybrid_node.edge[3]
+
+        edge1_length=edge1.length
+        edge2_length=edge2.length
+        edge3_length=edge3.length
+
+        the_three_edge_lengths=[edge1_length,edge2_length,edge3_length]
+        shortest_length=minimum(the_three_edge_lengths)
+
+        if edge1.hybrid==false
+            edge1.length=shortest_length
+        elseif edge1.hybrid==true
+            if edge1.length==shortest_length
+                edge1.length=0
+            else
+                edge1.length=edge1_length-shortest_length
+            end
+        end
+
+        if edge2.hybrid==false
+            edge2.length=shortest_length
+        elseif edge2.hybrid==true
+            if edge2.length==shortest_length
+                edge2.length=0
+            else
+                edge2.length=edge2_length-shortest_length
+            end
+        end
+
+        if edge3.hybrid==false
+            edge3.length=shortest_length
+        elseif edge3.hybrid==true
+            if edge3.length==shortest_length
+                edge3.length=0
+            else
+                edge3.length=edge3_length-shortest_length
+            end
+        end        
+    end
+
+
     return net
 end
