@@ -108,7 +108,7 @@ end
 
 print(str)
 if(write_log)
-    print(str)
+#    print(str)
     write(logfile,str)
     flush(logfile)
 end
@@ -362,9 +362,9 @@ It is recommended to increase the number of maximum_number_of_steps and rerun th
 "Terminated although it neither reached the maximum number of steps or failures,
 possibly because there was no more move to make.\n"
     end
-
-    if(write_log)
-        print(str)
+    
+    print(str)
+    if(write_log)    
         write(logfile,str)
         flush(logfile)
     end
