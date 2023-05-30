@@ -52,8 +52,35 @@ end
 
 
 
+"""
+    correct_outgroup(net::HybridNetwork, outgroup::AbstractString)
 
+    Check if the outgroup is indeed the outgroup of the network
+"""
+function correct_outgroup(net::HybridNetwork, outgroup::AbstractString)
+    rooted_with_outgroup=false
+    root_node_number=net.root
+    root=net.node[root_node_number]
+    if length(root.edge)==2
+        attached_edge_1_to_root=root.edge[1]
+        attached_edge_2_to_root=root.edge[2]
 
+        child1=GetChild(attached_edge_1_to_root)
+        child2=GetChild(attached_edge_2_to_root)
+
+        if child1.name==outgroup
+            rooted_with_outgroup=true
+            return rooted_with_outgroup
+        elseif child2.name==outgroup
+            rooted_with_outgroup=true
+            return rooted_with_outgroup
+        else
+            rooted_with_outgroup=false
+            return rooted_with_outgroup
+        end
+    end
+    return rooted_with_outgroup
+end
 
 
 

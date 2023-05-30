@@ -69,7 +69,7 @@ function get_quartets(net::HybridNetwork, p::Phylip;
         N.theta=estimated_theta
     else
         N.theta=estimated_theta 
-        @warn("Expected 0.00001 < estimated_theta < 0.1, but received $estimated_theta. Now N.theta=$default_theta.")
+        #@warn("Expected 0.00001 < estimated_theta < 0.1, but received $estimated_theta. Now N.theta=$default_theta.")
     end
 
     for each_quartet in N.quartet

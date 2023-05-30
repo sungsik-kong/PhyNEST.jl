@@ -106,6 +106,7 @@ else
 possibly because there was no more move to make.\n"
 end
 
+print(str)
 if(write_log)
     print(str)
     write(logfile,str)
@@ -489,6 +490,8 @@ function initiate_search(starting_topology::HybridNetwork,p::Phylip,outgroup::St
     return search_results
 end
 
+
+#tuning: number_of_runs=10; maximum_number_of_steps=250000 (works for n7h2); 
 """
     phyne!(starting_topology::HybridNetwork,p::Phylip,outgroup::String;
         hmax=1::Integer,
@@ -499,18 +502,18 @@ end
         do_hill_climbing=true::Bool,
         number_of_burn_in=25::Integer,
         k=10::Integer,
-        cons=0.9::Float64,
-        alph=0.8::Float64
+        cons=0.5::Float64,
+        alph=0.5::Float64
         )
 
 phyne! is fine.
 """
 function phyne!(starting_topology::HybridNetwork,p::Phylip,outgroup::String;
     hmax=1::Integer,
-    maximum_number_of_steps=100000::Integer,
+    maximum_number_of_steps=250000::Integer,
     maximum_number_of_failures=100::Integer,
     number_of_itera=1000::Integer,
-    number_of_runs=5::Integer,
+    number_of_runs=10::Integer,
     do_hill_climbing=true::Bool,
     number_of_burn_in=25::Integer,
     k=10::Integer,
@@ -553,6 +556,7 @@ Number of maximum reticulation(s): $hmax
 The maximum number of iterations for each optimization: $number_of_itera
 Search algorithm selected: $algorithm
 The maximum number of steps during search: $maximum_number_of_steps
+Output file store path: $(pwd())
 The number of processors for this analysis: $(num_processors)\n"
     print(str)
     write(logfile,str)
@@ -594,37 +598,21 @@ The number of processors for this analysis: $(num_processors)\n"
 
 str="\n-----end of analysis\n"
     print(str)
-    
-str*="Best topology: $(writeTopologyLevel1(best_topology))"
+
+    best_top=writeTopologyLevel1(best_topology)
+    best_top_di=writeTopologyLevel1(best_topology,di=true)
+
+str*="Best topology: $best_top)"
     write(logfile,str)
     flush(logfile)
+
+    out=string(filename,".out")
+    outfile=open(out,"w")
+    write(outfile,"$best_top\n\n")
+    write(outfile,best_top_di)
+    flush(outfile)
 
     return best_topology
 end
 
 
-
-function correct_outgroup(net::HybridNetwork, outgroup::AbstractString)
-    rooted_with_outgroup=false
-    root_node_number=net.root
-    root=net.node[root_node_number]
-    if length(root.edge)==2
-        attached_edge_1_to_root=root.edge[1]
-        attached_edge_2_to_root=root.edge[2]
-
-        child1=GetChild(attached_edge_1_to_root)
-        child2=GetChild(attached_edge_2_to_root)
-
-        if child1.name==outgroup
-            rooted_with_outgroup=true
-            return rooted_with_outgroup
-        elseif child2.name==outgroup
-            rooted_with_outgroup=true
-            return rooted_with_outgroup
-        else
-            rooted_with_outgroup=false
-            return rooted_with_outgroup
-        end
-    end
-    return rooted_with_outgroup
-end
