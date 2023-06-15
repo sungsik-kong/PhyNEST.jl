@@ -326,7 +326,15 @@ function update_topology(net_before_update::HybridNetwork,Taus, theta, gammas, n
                 else
                     branch.gamma=this_gamma
                 end
-            else
+            elseif (child_node,parent_node)==nodes_of_hybrid_edge_in_net[i]
+                this_gamma=gammas[i]
+                    if this_gamma==NaN
+                    this_gamma=1/length(nodes_of_hybrid_edge_in_net)
+                    branch.gamma=this_gamma
+                else
+                    branch.gamma=this_gamma
+                end
+            else 
                 continue
             end
         end
@@ -345,10 +353,16 @@ function update_topology(net_before_update::HybridNetwork,Taus, theta, gammas, n
         edge3_length=edge3.length
 
         the_three_edge_lengths=[edge1_length,edge2_length,edge3_length]
+        #println([edge1_length,edge2_length,edge3_length])
+        sorted=sort([edge1_length,edge2_length,edge3_length])
         shortest_length=minimum(the_three_edge_lengths)
 
         if edge1.hybrid==false
-            edge1.length=shortest_length
+            if shortest_length!==0
+                edge1.length=shortest_length
+            else
+                edge1.length=sorted[2]
+            end
         elseif edge1.hybrid==true
             if edge1.length==shortest_length
                 edge1.length=0
@@ -377,7 +391,6 @@ function update_topology(net_before_update::HybridNetwork,Taus, theta, gammas, n
             end
         end        
     end
-
 
     return net
 end

@@ -238,15 +238,21 @@ function simulated_annealing(starting_topology::HybridNetwork, p::Phylip, outgro
         calculateNmov!(new_topology,Nmov)# function to calculate Nmov, number max of tries per move2int
         move = whichMove(new_topology,hmax,movesfail,Nmov)
         if move != :none
+            outgroup_rooted=false
             accepted=false
             #println(new_topology)
-            new_topology=readTopologyUpdate(writeTopologyLevel1(new_topology))
+            #new_topology=readTopologyUpdate(writeTopologyLevel1(new_topology))
             new_topology=@suppress begin readTopologyUpdate(writeTopologyLevel1(new_topology,di=true)) end #change to unrooted, plus update branch lengths to 1.0, we change to unrooted because proposedTop! requires it
             proposedTop!(move,new_topology,true,steps,10, movescount,movesfail,false) 
-            @suppress begin new_topology=readTopology(writeTopologyLevel1(new_topology,outgroup)) end
-            
-            res,updated_new_topology=do_optimization(new_topology,p,update_parameters=true)
-            new_t_clikelihood=res.minimum
+            new_topology=@suppress begin readTopology(writeTopologyLevel1(new_topology,outgroup)) end
+            outgroup_rooted=correct_outgroup(new_topology,outgroup)
+            #println("hi")
+            if(outgroup_rooted)
+                res,updated_new_topology=do_optimization(new_topology,p,update_parameters=true)
+                new_t_clikelihood=res.minimum
+            else
+            new_t_clikelihood=Inf
+            end
             
             if new_t_clikelihood<=current_t_clikelihood && !isnan(new_t_clikelihood) && !isnan(current_t_clikelihood)
                 accepted=true

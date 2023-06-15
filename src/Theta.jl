@@ -100,6 +100,7 @@ function get_negative_log_clikelihood(N::Network)
 
     #get clikelihood
     clikelihood=prod(qliks)
+    #println(clikelihood)
 
     #make it negative log and back to Float from BigFloat
     neg_log_clik=Float64(-1.0*log(clikelihood))
