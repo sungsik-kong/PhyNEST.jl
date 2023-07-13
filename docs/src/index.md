@@ -14,8 +14,6 @@ Please use [google group](https://groups.google.com/g/phynest-users) to report b
 ```@contents
 Pages = [
     "manual/installation.md",
-    "manual/input.md",
-    "manual/networkest.md",
     ]
 ```
 

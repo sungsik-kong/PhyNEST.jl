@@ -2,13 +2,13 @@ using Documenter
 using PhyNEST
 
 makedocs(
-	sitename = "PhyNEST.jl",
+	sitename = "PhyNEST",
 	pages = [
 		"index.md",
 		"Manual" => [
 			"manual/installation.md",
-			"manual/input.md",
-			"manual/networkest.md",
+			#"manual/input.md",
+			#"manual/networkest.md",
 #			"manual/quartet.md"
 #			"manual/others.md"
 		]
