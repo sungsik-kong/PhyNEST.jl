@@ -1,5 +1,5 @@
 using Documenter
-using PhyNEST
+#using PhyNEST
 
 makedocs(
 	sitename = "PhyNEST",
