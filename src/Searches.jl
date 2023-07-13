@@ -501,15 +501,16 @@ end
 """
     phyne!(starting_topology::HybridNetwork,p::Phylip,outgroup::String;
         hmax=1::Integer,
-        maximum_number_of_steps=1000::Integer,
+        maximum_number_of_steps=250000::Integer,
         maximum_number_of_failures=100::Integer,
         number_of_itera=1000::Integer,
-        number_of_runs=5::Integer,
+        number_of_runs=10::Integer,
         do_hill_climbing=true::Bool,
         number_of_burn_in=25::Integer,
         k=10::Integer,
         cons=0.5::Float64,
-        alph=0.5::Float64
+        alph=0.5::Float64,
+        filename=""::AbstractString
         )
 
 phyne! is fine.

@@ -9,7 +9,7 @@ Then, we specify the starting tree (or network) stored in the `HybridNetwork` ob
 
 ```@julia netest
 using PhyNEST
-data = readPhylipFile!("n5h1_5k.txt")
+data = readPhylip("n5h1_5k.txt",showProgress=false)
 startingtree = readTopology("(5,(4,(3,(2,1))));")
 ```
 

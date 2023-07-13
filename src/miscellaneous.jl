@@ -52,6 +52,44 @@ end
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 """
     correct_outgroup(net::HybridNetwork, outgroup::AbstractString)
 
@@ -83,6 +121,25 @@ function correct_outgroup(net::HybridNetwork, outgroup::AbstractString)
 end
 
 
+
+
+function LRT(p::Phylip)
+    tree=readTopology("(1,(2,(3,4)));")
+    net=readTopology("(1,((2,(3)#H6:::0.5),(4,#H6:::0.5)));")
+
+    stat0,top0=do_optimization(tree,p)
+    stat1,top2=do_optimization(net,p)
+
+    likelihood0=stat0.minimum
+    likelihood1=stat1.minimum
+
+    lrt=-2 * (likelihood0-likelihood1)
+
+    
+
+    return lrt 
+
+end
 
 
 
@@ -252,20 +309,6 @@ function HyDe(outgroup::String,p::Phylip; p_value=0.05::Float64, filter=true::Bo
 
 end
 
-
-
-function LRT(t1,t2,p)
-    optt1,tau,gamma=Optimization(t1,p,1000)
-    optt2,tau,gamma=Optimization(t2,p,1000)
-
-    supt1=optt1.minimum
-    supt2=optt2.minimum
-
-    lr= -2 * log(supt1/supt2)
-
-    return lr 
-
-end
 
 
 
