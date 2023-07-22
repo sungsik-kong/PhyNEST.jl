@@ -16,22 +16,22 @@ To use [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl), Julia >= v1.7 i
 
 To install [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) run the following command in Julia prompt:
 ```@julia
-using Pkg
-Pkg.add("PhyNEST")
+julia> using Pkg
+julia> Pkg.add("PhyNEST")
 ```
 or
 ```@julia install
-] add PhyNEST
+julia> ] add PhyNEST
 ```
 Either command installs the package. To check the current version of installed [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl), run the following command:
 ```@julia
-] status PhyNEST
+julia> ] status PhyNEST
 ```
 ## Test example
 Once the installation is complete, load [PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl) and run function `greet()` to see if the package has been added to the local machine. A greet message with current time should appear.
 ```@repl install
-using PhyNEST
-greet()
+julia> using PhyNEST
+julia> greet()
 ```
 
 ## Citation
