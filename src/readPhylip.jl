@@ -53,8 +53,8 @@ end
                     csvname::AbstractString,
                     showProgress::Bool)
 
-Exceuted while running the function readPhylip. 
-Fills in the attributes in the Phylip object, except for the `Phylip.time`. 
+Exceuted while running the function `readPhylip`. 
+Fills in the attributes in the `Phylip` object, except for the `Phylip.time`. 
 """
 function readPhylipFile(inputfile::AbstractString,
                         writecsv::Bool,
@@ -82,8 +82,8 @@ end
                     showProgress::Bool)
 
 Function that shortens?summarizes? the sequence alignment into two matrices: 
-(1) the one with unique sites and 
-(2) another with how many times each column in the previous matrix occurs throughout the alignment.
+- The one with unique sites and 
+- Another with how many times each column in the previous matrix occurs throughout the alignment.
 """
 function PhylipFileInfo(inputfile::AbstractString, 
                         p::Phylip, 
