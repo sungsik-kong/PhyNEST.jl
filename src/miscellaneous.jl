@@ -3,7 +3,7 @@
 """
     greet()
 
-Displays a simple greet message with citation information. No input argument is needed. 
+Displays a greeting with citation information. No argument needed. 
 
 ## Example
 ```@jldoctest
