@@ -15,7 +15,7 @@ By default, progress bar is displayed, and `.csv` and `.ckp` files are **NOT** p
 See optional arguments below and modify if needed.
 
 ## Mandatory argument
-- `inputfile`     Name of the phylip file as a string [mandatory]
+- `inputfile`     Name of the phylip file as a string
 
 ## Optional arguments
 - `writecsv       (default=false)` A boolean arguement to allow writing site pattern frequencies in `.csv` file
