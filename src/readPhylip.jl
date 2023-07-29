@@ -54,7 +54,7 @@ end
                     showProgress::Bool)
 
 Exceuted while running the function readPhylip. 
-Fills in the attributes in the Phylip object, except for the time. 
+Fills in the attributes in the Phylip object, except for the `Phylip.time`. 
 """
 function readPhylipFile(inputfile::AbstractString,
                         writecsv::Bool,
@@ -223,7 +223,7 @@ end
 """
     sitePatternCounts(p::Phylip,ppbase::Array,counts::Array)
 
-Computes observed site pattern frequencies from ppbase and counts obtained from PhylipFileInfo.
+Computes observed site pattern frequencies from ppbase and counts obtained from `PhylipFileInfo`.
 """
 function sitePatternCounts(p::Phylip,ppbase::Array,counts::Array)
     Allquartet=p.allquartet

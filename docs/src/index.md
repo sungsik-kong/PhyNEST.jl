@@ -18,6 +18,7 @@ Please use [google group](https://groups.google.com/g/phynest-users) to report b
     greet
     readPhylip
     PhyNEST.readPhylipFile
+    PhyNEST.PhylipFileInfo
 ```
 ## Types
 ```@docs
