@@ -1,8 +1,10 @@
-# PhyNEST.jl
+# PhyNEST
 
-Documentation for a Julia package **[PhyNEST.jl](https://github.com/sungsik-kong/PhyNEST.jl): Phylogenetic Network Estimation using SiTe patterns**.
+Documentation for a Julia package **[PhyNEST](https://github.com/sungsik-kong/PhyNEST.jl): Phylogenetic Network Estimation using SiTe patterns**.
 
 ---
+## Tutorials
+[wiki tutorial](https://github.com/sungsik-kong/PhyNEST.jl/wiki)
 
 ## References
 Sungsik Kong, David Swofford, and Laura Kubatko (2022) Inference of Phylogenetic Networks from Sequence Data using Composite Likelihood. Preprint available online on *BioRxiv* at [https://doi.org/10.1101/2022.11.14.516468](https://doi.org/10.1101/2022.11.14.516468).
