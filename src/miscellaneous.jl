@@ -5,7 +5,7 @@
 
 Displays a simple greet message with citation information. No input argument is needed. 
 
-```julia
+```@repl
 greet()
 ```
 """
