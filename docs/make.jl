@@ -4,14 +4,7 @@ using PhyNEST
 makedocs(
 	sitename = "PhyNEST",
 	pages = [
-		"index.md",
-		"Manual" => [
-			"manual/installation.md"
-			#"manual/input.md",
-			#"manual/networkest.md",
-#			"manual/quartet.md"
-#			"manual/others.md"
-		]
+		"index.md"
 	]
 )
 
