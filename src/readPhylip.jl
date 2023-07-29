@@ -79,8 +79,7 @@ end
 """
     PhylipFileInfo(inputfile::AbstractString, 
                     p::Phylip, 
-                    showProgress::Bool;
-                    nstar=15::Integer)
+                    showProgress::Bool)
 
 Function that shortens?summarizes? the sequence alignment into two matrices: 
 (1) the one with unique sites and 
