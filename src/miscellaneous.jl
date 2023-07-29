@@ -1,20 +1,13 @@
 #Written by Sungsik Kong 2021-2022
 #Last updated by Sungsik Kong 2023
-
-"""
-    get_average(i::Array)
-
-Compute average of the values in an array. Did not want to add Statistics dependency for this...
-"""
-function get_average(i::Array)
-    average=sum(i)/length(i)
-    return average
-end
-
 """
     greet()
 
 Displays a simple greet message with citation information. No input argument is needed. 
+
+```julia
+greet()
+```
 """
 function greet()
     now=Dates.now()
@@ -26,6 +19,19 @@ function greet()
     Preprint available online on BioRxiv at https://doi.org/10.1101/2022.11.14.516468.
     """)
 end
+
+
+"""
+    get_average(i::Array)
+
+Compute average of the values in an array. Did not want to add Statistics dependency for this...
+"""
+function get_average(i::Array)
+    average=sum(i)/length(i)
+    return average
+end
+
+
 
 """
     checkDEBUG()
