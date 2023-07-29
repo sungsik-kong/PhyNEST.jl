@@ -5,8 +5,14 @@
 
 Displays a simple greet message with citation information. No input argument is needed. 
 
-```@repl
-greet()
+## Example
+```@jldoctest
+julia> greet()
+Thank you for using PhyNEST: Phylogenetic Network Estimation using SiTe patterns (current time: 2023-07-29T12:17:50.489).
+Please report bugs or make suggestions to https://groups.google.com/g/phynest-users.
+If you conduct an analysis using PhyNEST, please cite:
+Sungsik Kong, David Swofford, and Laura Kubatko (2022) Inference of Phylogenetic Networks from Sequence Data using Composite Likelihood.
+Preprint available online on BioRxiv at https://doi.org/10.1101/2022.11.14.516468.
 ```
 """
 function greet()
