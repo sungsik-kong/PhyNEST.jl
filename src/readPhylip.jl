@@ -1,27 +1,28 @@
 #written by Sungsik Kong 2021-2022
 "###---READING INPUT PHYLIP FILE---###"
+const nstar=15 #number of starts in the prgoress bar
 
 """
-    readPhylip(inputfile::AbstractString)
+    readPhylip(inputfile::AbstractString; 
+                writecsv=false::Bool,
+                csvname=""::AbstractString,
+                showProgress=true::Bool,
+                tdigits=3::Integer,
+                checkpoint=false::Bool)
     
-Import, read, and parse the input phylip file. File name must be specified as string. \\
-By default, .csv and .ckp files are **NOT** produced. See below for the optional arguments.\\ 
+Import, read, and parse the input phylip file. File name must be specified as string.
+By default, progress bar is displayed, and `.csv` and `.ckp` files are **NOT** produced. 
+See optional arguments below and modify if needed.
 
-To save the observed quartet site pattern frequencies in a .csv file, set the optional argument\\
-`writecsv=true`. The .csv file will be stored in the working directory, with a filename \\
-`"sitePatternCounts_inputfile.csv"`. If a user would like to modify the filename, it can be done\\
-by providing preferred name using the optional argument `csvname="preferred_file_name.csv"`. \\
+## Mandatory argument
+- `inputfile`     Name of the phylip file as a string [mandatory]
 
-### Input
-## Mandatory
-- `inputfile`     Name of the phylip file as a String [mandatory]\\ \n
-
-## Optional
-- `writecsv       (default=false)` A Boolean arguement to write site pattern frequencies in CSV file\\
-- `csvname        (default=sitePatternCounts_inputfile.csv)` A string that will be name of the `.csv` file \\
-- `showProgress   (default=true)` A boolean argument for visualizing the progress of alignment parsing process\\
-- `tdigits        (default=3)` Number of decimal points to record timme taken to parse the file in seconds\\
-- `checkpoint     (default=false)` A boolean argument to store Phylip object as a .ckp file. (Warning: .ckp can be large).
+## Optional arguments
+- `writecsv       (default=false)` A boolean arguement to allow writing site pattern frequencies in `.csv` file
+- `csvname        (default=sitePatternCounts_inputfile.csv)` A string that will be name of the `.csv` file 
+- `showProgress   (default=true)` A boolean argument for visualizing the progress of alignment parsing
+- `tdigits        (default=3)` Number of decimal points to record timme taken to parse the file in seconds
+- `checkpoint     (default=false)` A boolean argument to store the Phylip object as a `.ckp` file. (Warning: `.ckp` file can be large)
 """
 function readPhylip(inputfile::AbstractString; 
                     writecsv=false::Bool,
@@ -34,8 +35,12 @@ function readPhylip(inputfile::AbstractString;
             #total bytes allocated, garbage collection time, and an object with various memory allocation counters.
         pset=@timed readPhylipFile(inputfile,writecsv,csvname,showProgress)
         Phylip=pset[1]
-        Phylip.time=round(pset[2],digits=tdigits)#update phylip.time attribute
-        if(checkpoint) storeCheckPoint(Phylip) end #store phylip as a checkpoint file IF a user wants.
+        Phylip.time=round(pset[2],digits=tdigits)#updates phylip.time attribute.
+        
+        if(checkpoint) #store phylip object as a checkpoint file if a user wants.
+            storeCheckPoint(Phylip) 
+            println("Checkpoint file .ckp stored.")
+        end 
         return Phylip
     catch(error)
         display(error)
@@ -43,35 +48,47 @@ function readPhylip(inputfile::AbstractString;
 end
 
 """
-    readPhylipFile(inputfile::AbstractString,writecsv::Bool,csvname::AbstractString,showProgress::Bool)
+    readPhylipFile(inputfile::AbstractString,
+                    writecsv::Bool,
+                    csvname::AbstractString,
+                    showProgress::Bool)
 
-Exceuted while running the function readPhylip. Fills in all attributes in the Phylip object, except for the time. 
+Exceuted while running the function readPhylip. 
+Fills in the attributes in the Phylip object, except for the time. 
 """
-function readPhylipFile(inputfile::AbstractString,writecsv::Bool,csvname::AbstractString,showProgress::Bool)
-
+function readPhylipFile(inputfile::AbstractString,
+                        writecsv::Bool,
+                        csvname::AbstractString,
+                        showProgress::Bool)
     p=Phylip(inputfile)#create a Phylip object with only Phylip.filename attribute filled
     UniqueBase,BaseCounts=PhylipFileInfo(inputfile, p, showProgress) #fills in p.seqleng, p.nametaxa attributes
     p=getUniqueQuartets(p) #fills in p.numtaxa, p.counttaxa, and p.allquartet attributes
     p=sitePatternCounts(p,UniqueBase,BaseCounts) #fills in p.spcounts for whatever quartet we have atm
     p=spRearrange(p) #shuffles quartet, rearrange spcounts for that quartet and fills in p.allquartet and p.spcounts
-    #p=binaryIndexforQuartet(p) #fills in p.index attribute
     
     #write site pattern counts for all quartets into .csv
-    
-    if(writecsv) writeSitePatternCounts(p,writecsv,csvname,inputfile) end
+    if(writecsv) 
+        writeSitePatternCounts(p,writecsv,csvname,inputfile) 
+        println("Site pattern frequencies .csv stored.")
+    end
     
     return p
 end
 
+#PhylipFileInfo(inputfile::AbstractString, p::Phylip)=PhylipFileInfo(inputfile,p,true)
 """
-    PhylipFileInfo(inputfile::AbstractString, p::Phylip)
-    PhylipFileInfo(inputfile::AbstractString, p::Phylip, showProgress::Bool)    
+    PhylipFileInfo(inputfile::AbstractString, 
+                    p::Phylip, 
+                    showProgress::Bool;
+                    nstar=15::Integer)
 
-Function that shortens?summarizes? the sequence alignment into two matrices: the one with unique sites and \\
-another with how many times each column in the previous matrix occurs throughout the alignment.
+Function that shortens?summarizes? the sequence alignment into two matrices: 
+(1) the one with unique sites and 
+(2) another with how many times each column in the previous matrix occurs throughout the alignment.
 """
-PhylipFileInfo(inputfile::AbstractString, p::Phylip)=PhylipFileInfo(inputfile,p,true)
-function PhylipFileInfo(inputfile::AbstractString, p::Phylip, showProgress::Bool)
+function PhylipFileInfo(inputfile::AbstractString, 
+                        p::Phylip, 
+                        showProgress::Bool)
     #taxaMatch=false
     seq=String[]
     countTaxa1=0#the number of taxa indicated in the first line
@@ -94,17 +111,17 @@ function PhylipFileInfo(inputfile::AbstractString, p::Phylip, showProgress::Bool
             #if col!==2#if there is no space between two columns but delimited by a tab
             #     eachword=split(l, "\t")#but the space is caused by neither tab or space, then there will be an error <- honestly this is preferred. Should be in this format.
             #end
-            col==2 || error("Cannot parse phylip file [$inputfile] on line $line. Every delimitation must be done by a single space or a tab.")
+            col==2 || error("Error while reading $inputfile on line $line. Sequence name must not contain a space. Sequence name and sequence must be separated by a space or a tab.")
 
             if line==1 #for the first line of phylip
                 #println("\tThere are $(eachword[1]) taxa with Sequence length of $(eachword[2]).")
                 try countTaxa1=parse(Int64, eachword[1])#Transform the string value into an integer
-                catch e error("Check the first line of [$inputfile]. Number of individual must be an integer, but received '$(eachword[1])'")
+                catch e error("Error while reading $inputfile on line 1. Number of individual must be an integer, but received '$(eachword[1])'")
                     break
                 end
                 
                 try seqLength=parse(Int64, eachword[2])#Transform the string value into an integer
-                catch e error("Check the first line of [$inputfile]. Sequence length must be an integer, but received '$(eachword[2])'") 
+                catch e error("Error while reading $inputfile on line 1 Sequence length must be an integer, but received '$(eachword[2])'") 
                     break
                 end
             else
@@ -117,8 +134,8 @@ function PhylipFileInfo(inputfile::AbstractString, p::Phylip, showProgress::Bool
             end
         end
 
-        countTaxa1!==0 || error("There is no sequence taht we can parse.")
-        countTaxa1==countTaxa2 || error("The number of taxa indicated in the first line of the file [$inputfile] is [$countTaxa1], but there are [$(line-1)] sequences.")
+        countTaxa1!==0 || error("There is no sequence to be parsed.")
+        countTaxa1==countTaxa2 || error("Expected $countTaxa1 sequences, but there are $(line-1) sequences.")
             p.numtaxa=countTaxa1 #Begin to fill in the numtaxa element in Type Phylip
             p.seqleng=seqLength
         
@@ -134,13 +151,30 @@ function PhylipFileInfo(inputfile::AbstractString, p::Phylip, showProgress::Bool
             push!(ppbase,oneSite)
         end
         UniqueBase=unique(ppbase)
-        
+
+        n = length(UniqueBase)
+        BaseCounts=Int[]
+        if(showProgress)
+            nstars=nstar
+            uniquebase_perstar = (n/nstars)
+            println("Progress:")
+            print("0+" * "-"^nstars * "+100%\n  ")
+            stars=0
+            nextstar = Integer(ceil(uniquebase_perstar))
+        end
+        for f in 1:n
+            BaseCounts=append!(BaseCounts,count(==(UniqueBase[f]),ppbase))
+            if showProgress && f >= nextstar
+                print("*")
+                stars += 1
+                nextstar = Integer(ceil((stars+1) * uniquebase_perstar))
+            end
+        end
+        if(showProgress) print("complete\n") end
+        #==
         #=using package ProgressMeter
         #BaseCounts=[count(==(element),ppbase) for element in UniqueBase] #original line without using ProgressMeter
         #p = Progress(n, 1, "Parsing [$inputfile]...", 50)#using package ProgressMeter=#
-        BaseCounts=Int[]
-        
-        n = length(UniqueBase)
         if(showProgress)
             p = Progress(n, dt=0.5, barglyphs=BarGlyphs("[=> ]"), barlen=50, color=:yellow)
             for f in 1:length(UniqueBase)
@@ -152,6 +186,7 @@ function PhylipFileInfo(inputfile::AbstractString, p::Phylip, showProgress::Bool
                 BaseCounts=append!(BaseCounts,count(==(UniqueBase[f]),ppbase))
             end
         end
+        ==#
         
         length(UniqueBase)==length(BaseCounts) || error("Something went wrong while reading the sequences. The length of UniqueBase and BaseCounts are not the same.")
         return UniqueBase, BaseCounts
@@ -247,8 +282,7 @@ end
 """
     spRearrange(p::Phylip)
 
-Rearranges the elemetns of each unique quartet obtained using getUniqueQuartets, and also suffles the site pattern frequencies \\
-accordingly. This prevents 24 redundant computation, saving computation time.
+Rearranges the elemetns of each unique quartet obtained using getUniqueQuartets, and also suffles the site pattern frequencies accordingly. This prevents 24 redundant computations, saving computation time.
 """
 function spRearrange(p::Phylip)
     Allquartet=p.allquartet
@@ -328,6 +362,7 @@ function spRearrange(p::Phylip)
     end
     return p
 end
+
 #=
 """
     binaryIndexforQuartet(p::Phylip)
@@ -432,10 +467,10 @@ function writeSitePatternCounts(p::Phylip,write::Bool,csvname::AbstractString,in
     if write==true 
         if isempty(csvname)
             CSV.write("sitePatternCounts_$inputfile.csv",df)
-            println("A [.csv] file is saved as sitePatternCounts_$inputfile.csv in the current working directory.")
+            #println("A [.csv] file is saved as sitePatternCounts_$inputfile.csv in the current working directory.")
         else
             CSV.write("$csvname.csv",df)
-            println("A [.csv] file is saved as $csvname.csv in the current working directory.")
+            #println("A [.csv] file is saved as $csvname.csv in the current working directory.")
         end
     end
 end
