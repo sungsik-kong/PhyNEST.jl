@@ -218,7 +218,9 @@ function getUniqueQuartets(p::Phylip)
 end
 
 """
-    sitePatternCounts(p::Phylip,ppbase::Array,counts::Array)
+    sitePatternCounts(p::Phylip,
+                    ppbase::Array,
+                    counts::Array)
 
 Computes observed site pattern frequencies from UniqueBase and BaseCounts obtained from the function `PhylipFileInfo`.
 """
