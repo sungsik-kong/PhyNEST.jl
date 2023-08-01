@@ -15,10 +15,13 @@ Please use [google group](https://groups.google.com/g/phynest-users) to report b
 
 ## Functions
 ```@docs
-    greet
-    readPhylip
+    PhyNEST.greet
+    PhyNEST.readPhylip
     PhyNEST.readPhylipFile
     PhyNEST.PhylipFileInfo
+    PhyNEST.getUniqueQuartets
+    PhyNEST.sitePatternCounts
+    PhyNEST.spRearrange
 ```
 ## Types
 ```@docs

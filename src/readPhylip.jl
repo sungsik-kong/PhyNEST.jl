@@ -192,12 +192,10 @@ function PhylipFileInfo(inputfile::AbstractString,
     end
 end
 
-
 """
     getUniqueQuartets(p::Phylip)
 
-Getting some combinations for four sequences (quartets). This will result in X! quartets where X is the number of sequences \\
-in the input phylip file. I am sure there is a better way to do this.
+Getting some combinations for four sequences (quartets). This will result in n! quartets where n is the number of sequences. I believe a better way to do this exists.
 """
 function getUniqueQuartets(p::Phylip)
     numind=p.numtaxa
@@ -222,7 +220,7 @@ end
 """
     sitePatternCounts(p::Phylip,ppbase::Array,counts::Array)
 
-Computes observed site pattern frequencies from ppbase and counts obtained from `PhylipFileInfo`.
+Computes observed site pattern frequencies from UniqueBase and BaseCounts obtained from the function `PhylipFileInfo`.
 """
 function sitePatternCounts(p::Phylip,ppbase::Array,counts::Array)
     Allquartet=p.allquartet
@@ -277,11 +275,12 @@ function sitePatternCounts(p::Phylip,ppbase::Array,counts::Array)
     end 
     return p
 end
+#try to speed this task up by utilizing dictionary 
 
 """
     spRearrange(p::Phylip)
 
-Rearranges the elemetns of each unique quartet obtained using getUniqueQuartets, and also suffles the site pattern frequencies accordingly. This prevents 24 redundant computations, saving computation time.
+Rearranges the elemetns of each unique quartet obtained using `getUniqueQuartets`, and also suffles the site pattern frequencies accordingly. This prevents 24 redundant computations, saving computation time.
 """
 function spRearrange(p::Phylip)
     Allquartet=p.allquartet

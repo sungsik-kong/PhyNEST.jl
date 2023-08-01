@@ -324,3 +324,169 @@ end
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# add a leaf 
+using PhyloNetworks
+#q=readTopology("(1,2,(3,4));")
+function printEverything(t::HybridNetwork) PhyloNetworks.printEverything(t) end
+
+
+function add_a_leaf(top::HybridNetwork, new_leaf_name::AbstractString)
+    treeset=HybridNetwork[]
+    #Create a branch (u,v) where 
+    #u=leaf with leaf number=n+1; where n=number of leaves
+    #v=smallest node number-1
+    #println("The new leaf name is set as '$new_leaf_name'")
+    n=length(top.leaf)
+    #println("There are $n leaves in the topology..")
+    u=n+1
+    smallest_internal_node_number=-2
+    for nods in top.node
+        if nods.number < smallest_internal_node_number
+            smallest_internal_node_number=nods.number
+        end
+    end
+    v=smallest_internal_node_number-1
+
+    #make the node objects for u and v
+    node_u=PhyloNetworks.Node(u,true)
+    node_u.name=new_leaf_name
+    node_v=PhyloNetworks.Node(v,false)
+    
+    #make an edge uv that links u and v
+    #make the edge number as current edges + 1 because we are adding an edge
+    edge_uv=PhyloNetworks.Edge(top.numEdges+1)
+    edge_uv.node=[node_u,node_v]
+    edge_uv.length=-1.0
+    #add information to nodes u and v that they are linked to edge_uv
+    push!(node_u.edge,edge_uv)
+    push!(node_v.edge,edge_uv)
+    #push!(t.node,node_u)
+    #push!(t.node,node_v)
+    #println("=====node_u, node_v, edge_uv=====")
+    #println(node_u)
+    #println(node_v)
+    #println(edge_uv)
+    
+    #for a selected edge (u',v')
+    #   add (u,v) - push 2 nodes
+    #   create 2 edges (u',v), (v,v')
+    #   remove (u',v')
+
+    for i in 1:length(top.edge)
+        t=deepcopy(top)
+        e=t.edge[i]
+        #println("=====tree before modify, selected edge=====")
+        #printEverything(t)
+        #println(e)
+
+        #creating two edges that disects the selected edge
+        numEdges=length(t.edge)
+        e1=deepcopy(e)
+        e1.number=numEdges+1
+        e1.node[2]=node_v #tail of one of the edges is v
+        e2=deepcopy(e)
+        e2.number=numEdges+2        
+        e2.node[1]=node_v #head of one of the edges is v  
+        #println("=====selected edge, modified edge 1, modified edge 2=====")
+        #println(e, e1, e2)      
+
+        #so far we need to remove e and push e1 and e2
+        #also we need to add node_u, node_v, and edge_uv
+        deleteat!(t.edge, i)
+        push!(t.edge,e1)
+        push!(t.edge,e2)
+        push!(t.node,node_u)
+        push!(t.node,node_v)
+        push!(t.edge,edge_uv)
+        #println("=====tree after modify=====")
+        #printEverything(t)
+
+        #now everything that is needed is out There
+        #so reoragnize the edge numbers connected to each node 
+        #since some are deleted and some are newly added
+        for vertex in t.node
+            relevantedges=PhyloNetworks.Edge[]
+            thenumber=vertex.number
+            for branch in t.edge
+                parent=PhyloNetworks.getParent(branch)
+                parent=parent.number
+                child=PhyloNetworks.getChild(branch)
+                child=child.number
+                if parent == thenumber
+                    push!(relevantedges,branch)
+                elseif child == thenumber
+                    push!(relevantedges,branch)
+                else
+                    continue
+                end
+            end
+            vertex.edge=relevantedges
+        end    
+        #println("=====tree alsmot final=====")
+        #printEverything(t)
+        t0=readTopology(PhyloNetworks.writeTopologyLevel1(t))
+        push!(treeset,t0)
+    end
+    
+    return treeset
+end
+
+
+function add_n(tree::HybridNetwork, new_leaf_name::AbstractString)
+    treeset=HybridNetwork[]
+    push!(treeset,tree)
+    col=add_n(treeset, new_leaf_name)
+    return col
+end
+
+function add_n(trees::Array, new_leaf_name::AbstractString)
+    treeset=HybridNetwork[]
+    for eachtree in trees
+        set=add_a_leaf(eachtree, new_leaf_name)
+        for each in set
+            push!(treeset,each)
+        end
+    end
+
+    return treeset
+end
+
+#make a function that pipelines all - return object or newick
+function add_one(trees::Array; new_leaf_name=""::AbstractString)
+    treeset=HybridNetwork[]
+    for eachtree in trees
+        set=add_n(eachtree, new_leaf_name)
+        for each in set
+            push!(treeset,each)
+        end
+    end
+    return treeset
+end
+function add_one(top::HybridNetwork; new_leaf_name=""::AbstractString)
+    if isempty(new_leaf_name) new_leaf_name=length(top.leaf)+1 end
+    new_leaf_name=(string(new_leaf_name))
+    collection=add_n(top,new_leaf_name)
+    return collection
+end
+
+#given a topology, switch leaf labels and return the list
+function flip_leaves(tree::HybridNetwork)
+    set=HybridNetwork[]
+    #Replace species names?
+    return set
+end
