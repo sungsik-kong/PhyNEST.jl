@@ -22,6 +22,11 @@ Please use [google group](https://groups.google.com/g/phynest-users) to report b
     PhyNEST.getUniqueQuartets
     PhyNEST.sitePatternCounts
     PhyNEST.spRearrange
+    PhyNEST.show_sp
+    PhyNEST.sitePatternsToDF
+    PhyNEST.write_sp
+    PhyNEST.storeCheckPoint
+    PhyNEST.readCheckPoint
 ```
 ## Types
 ```@docs

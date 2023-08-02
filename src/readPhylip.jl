@@ -390,10 +390,9 @@ end
 """
     show_sp(p::Phylip)
 
-Pretty name for displaying all quartet and the corresponding site pattern frequencies on screen in the DataFrame format. \\
-It may result in excessively long table when there are many sequences in the input file.
+Pretty name for displaying all quartet and the corresponding site pattern frequencies on screen in the DataFrame format. It may result in excessively long table when there are many sequences in the input file.
 
-### Input
+## Input
 `p`     Phylip object [mandatory]
 """
 function show_sp(p::Phylip)
@@ -404,7 +403,7 @@ end
 """
     sitePatternsToDF(p::Phylip)
 
-Extracts the quartet and site pattern information from the Phyliip object, and reorganizes them in the DataFrame format.\\
+Extracts the quartet and site pattern information from the Phyliip object, and reorganizes them in the DataFrame format. 
 This function does all hard work work for show_sp.
 """
 function sitePatternsToDF(p::Phylip)
@@ -444,11 +443,12 @@ function sitePatternsToDF(p::Phylip)
 end
 
 """
-    write_sp(p::Phylip)
+    write_sp(p::Phylip; 
+            csvname="PhyNEST_sp"::AbstractString)
 
-Pretty name for exporting all quartet and the corresponding site pattern frequencies in a .csv format. \\
+Pretty name for exporting all quartet and the corresponding site pattern frequencies in a .csv format.
 
-### Input
+## Input
 `p`         Phylip object [mandatory]
 `csvname`   Filename for the .csv output can be given, otherwise we use PhyNEST_sp.csv by default.
 """
@@ -457,10 +457,12 @@ function write_sp(p::Phylip; csvname="PhyNEST_sp"::AbstractString)
 end
 
 """
-    writeSitePatternCounts(phylip::Phylip,csvname::AbstractString)
+    writeSitePatternCounts(p::Phylip,
+                            write::Bool,
+                            csvname::AbstractString,
+                            inputfile::AbstractString)
 
-The function that actually stores the DataFrame with quartet and site pattern frequencies into a .csv file. \\
-This function does all hard work work for write_sp.
+The function that actually stores the DataFrame with quartet and site pattern frequencies into a .csv file. This function does all hard work work for `write_sp`.
 """
 function writeSitePatternCounts(p::Phylip,write::Bool,csvname::AbstractString,inputfile::AbstractString)
     df=sitePatternsToDF(p)
@@ -485,11 +487,11 @@ writeSitePatternCounts(p::Phylip,csvname::AbstractString)=writeSitePatternCounts
 """
     storeCheckPoint(p::Phylip)
 
-Stores the phylip object into a .ckp file so a user does not have to repeat the phylip parsing again if working with the \\
-same dataset next time. By default it creates a .ckp file that has the same filename as the input phylip file.\\
+Stores the phylip object into a .ckp file so a user does not have to repeat the phylip parsing again if working with the 
+same dataset next time. By default it creates a .ckp file that has the same filename as the input phylip file.
 File size can get pretty large... 
 
-### Input
+## Input
 `p`         Phylip object [mandatory]
 """
 function storeCheckPoint(p::Phylip)
