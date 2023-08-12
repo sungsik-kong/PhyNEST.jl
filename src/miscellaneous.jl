@@ -54,10 +54,79 @@ function checkDEBUG()
 end
 
 
+"""
+    Dstat(outgroup::String, p::Phylip;
+        pval=0.05::Float64, displayall=false::Bool)
 
+Conducts Patterson's D-statistic analysis. Can use `showall(df)` to see all rows.
 
+## Mandatory argument
+- `outgroup`     Name of the outgroup taxa
+- `p`   Phylip object
 
+## Optional arguments
+- `pval       (default=0.05)` Alpha level for significance
+- `display_all (default=false)` If set as `true`, the function print test results for every quartets. By default, it only prints those quartets where signficance was found.
+"""
+function Dstat(outgroup::String, p::Phylip; pval=0.05::Float64, display_all=false::Bool)
 
+    dict=dictionary_phylip(p)
+    ndist=Normal(0,1)
+    res=[]
+
+    #Reassure the provided outgroup indeed exists in the data
+    outgroup_presence=issubset([outgroup],p.nametaxa)
+    (outgroup_presence) || error("Outgroup $outgroup does not exist in data.")
+    ourgroup_id=dict["$outgroup"]
+
+    #ABBA-BABA test
+    for n in 1:length(p.allquartet)
+        if p.allquartet[n][1]==ourgroup_id 
+            out=p.allquartet[n][1]
+            t1=p.allquartet[n][2]
+            t2=p.allquartet[n][3]
+            t3=p.allquartet[n][4]
+
+            ABAB=p.spcounts[n][7]
+            ABBA=p.spcounts[n][9]
+
+            d=(ABBA-ABAB)/(ABBA+ABAB)
+            z=d/(2*sqrt((0.25/(ABBA+ABAB))))
+            pv=1-cdf(ndist,z)
+
+            if pv<=(pval) ast="*" else ast="" end
+
+            if (display_all)
+                push!(res,[p.nametaxa[out],p.nametaxa[t1],p.nametaxa[t2],p.nametaxa[t3],ABAB, ABBA, d, z, pv, ast])
+            else
+                if ast=="*"
+                    push!(res,[p.nametaxa[out],p.nametaxa[t1],p.nametaxa[t2],p.nametaxa[t3],ABAB, ABBA, d, z, pv, ast])
+                end
+            end
+        else
+            continue
+        end
+    end
+
+    #print results in a cleaner way
+    df=DataFrame(outgroup=String[],taxa1=String[],taxa2=String[],taxa3=String[],ABAB=Int[],ABBA=Int[],Dstat=Float64[],Zscore=Float64[],pvalue=Float64[],significance=String[])
+    for result in res
+        push!(df, result)
+    end            
+   
+    println("Tip: use showall(df) function to see all rows.")
+
+    return df
+end
+
+"""
+    showall(df::DataFrame)    
+
+Print all rows of the DataFrame object.    
+"""
+function showall(df::DataFrame)    
+    show(df,allrows=true)   
+end
 
 
 
@@ -178,56 +247,6 @@ end
 
 
 
-Dstat(outgroup::String,p::Phylip)=Dstat(outgroup::String,p::Phylip,0.05,false)
-Dstat(outgroup::String,p::Phylip,pval::Float64)=Dstat(outgroup::String,p::Phylip,pval::Float64,false)
-function Dstat(outgroup::String,p::Phylip,pval::Float64,displayall::Bool)
-    
-    outgroup1=0
-    ndist=Normal(0,1)
-    quartet=[]
-    sitepattern=[]
-
-    for n in 1:length(p.nametaxa)
-        
-        if p.nametaxa[n]==outgroup
-            outgroup1=p.counttaxa[n]
-            break
-        end
-    end
-
-    outgroup1!==0 || error("Cannot find the specified outgroup '$outgroup' in Phylip input file.")
-
-    for n in 1:length(p.allquartet)
-        if p.allquartet[n][1]==outgroup1
-            push!(quartet,p.allquartet[n])
-            push!(sitepattern,[p.spcounts[n][7],p.spcounts[n][9]])
-        else
-            continue
-        end
-    end
-
-        for n in 1:length(sitepattern)
-            ABAB=sitepattern[n][1]
-            ABBA=sitepattern[n][2]
-            d=(ABBA-ABAB)/(ABBA+ABAB)
-            z=d/(2*sqrt((0.25/(ABBA+ABAB))))
-            println([ABAB, ABBA, d, z])
-            
-            pv=1-cdf(ndist,z)
-            if displayall==true
-                println("$([p.nametaxa[quartet[n][1]],p.nametaxa[quartet[n][2]],p.nametaxa[quartet[n][3]],p.nametaxa[quartet[n][4]]]), d=$d, z=$z, p=$pv")
-            else
-                if pv<=(pval)
-                    println("$([p.nametaxa[quartet[n][1]],p.nametaxa[quartet[n][2]],p.nametaxa[quartet[n][3]],p.nametaxa[quartet[n][4]]]), d=$d, z=$z, p=$pv <= SIGNIFICANT!")
-                else
-                    println("$([p.nametaxa[quartet[n][1]],p.nametaxa[quartet[n][2]],p.nametaxa[quartet[n][3]],p.nametaxa[quartet[n][4]]]), d=$d, z=$z, p=$pv")
-                end
-            end
-
-        end
-
-    end
-
 
 ###Need to deal with avg_obs=num_obs/(1*1*1*1)#(self.outIndex.shape[0] * p1.shape[0] * hyb.shape[0] * p2.shape[0])
 function HyDe(outgroup::String,p::Phylip; p_value=0.05::Float64, filter=true::Bool)
@@ -337,13 +356,9 @@ end
 
 
 
-
-
+"###---Adding a leaf on a topology: Misc. function designed for a task with Tang at UWM---###"
 # add a leaf 
-using PhyloNetworks
-#q=readTopology("(1,2,(3,4));")
-function printEverything(t::HybridNetwork) PhyloNetworks.printEverything(t) end
-
+#q=readTopology("(1,2,(3,4));") #unrooted quartet
 
 function add_a_leaf(top::HybridNetwork, new_leaf_name::AbstractString)
     treeset=HybridNetwork[]
@@ -489,4 +504,68 @@ function flip_leaves(tree::HybridNetwork)
     set=HybridNetwork[]
     #Replace species names?
     return set
+end
+
+
+#transforms a topology into a adjacent matrix
+#a topology is transformed to n by n matrix where n=number of nodes
+#0 if there is no linkage between the nodes; 1 if there is a linkage
+function top2adjmat4tip(top::HybridNetwork)
+    number_of_nodes=length(top.node)
+    dict=Dict()
+
+    dict["1"]=1
+    dict["2"]=2
+    dict["3"]=3
+    dict["4"]=4
+    dict["5"]=5
+    dict["6"]=6
+    
+    length(dict)==number_of_nodes || error("Number of nodes and length of dictionary does not match.")
+    
+    adjmat=zeros(Int64, number_of_nodes, number_of_nodes)
+    for vertex in top.node
+        edges=vertex.edge
+        for link in edges
+            x=dict[vertex.name]
+            y1=dict[GetParent(link).name]
+            y2=dict[GetChild(link).name]
+            adjmat[x,x]=1
+            adjmat[x,y1]=1
+            adjmat[x,y2]=1
+        end
+    end
+    #println(adjmat)
+    return adjmat
+end
+
+function top2adjmat5tip(top::HybridNetwork)
+    number_of_nodes=length(top.node)
+    dict=Dict()
+
+    dict["1"]=1
+    dict["2"]=2
+    dict["3"]=3
+    dict["4"]=4
+    dict["5"]=5
+    dict["6"]=6
+    dict["7"]=7
+    dict["8"]=8
+    
+    length(dict)==number_of_nodes || error("Number of nodes and length of dictionary does not match.")
+    
+    adjmat=zeros(Int64, number_of_nodes, number_of_nodes)
+    for vertex in top.node
+        edges=vertex.edge
+        for link in edges
+            x=dict[vertex.name]
+            y1=dict[GetParent(link).name]
+            y2=dict[GetChild(link).name]
+            adjmat[x,x]=1
+            adjmat[x,y1]=1
+            adjmat[x,y2]=1
+        end
+    end
+    #println(adjmat)
+    return adjmat
 end

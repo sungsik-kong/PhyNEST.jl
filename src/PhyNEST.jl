@@ -48,7 +48,8 @@ module PhyNEST
         do_optimization,
         hill_climbing,
         simulated_annealing,
-        phyne!
+        phyne!,
+        Dstat, showall
 
     include("check.jl")
     include("Objects.jl")
