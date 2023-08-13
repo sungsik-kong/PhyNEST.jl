@@ -41,7 +41,7 @@ See the manuscript and/or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006]
 - `theta`     Effective population size parameter
 
 ## Optional argument
-- `alpha`     `dafault=4/3`
+- `alpha (dafault=4/3)`
 """
 GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
 function GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
@@ -173,7 +173,7 @@ See the manuscript and/or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006]
 - `theta`     Effective population size parameter
 
 ##Optional argument
-- `alpha`     `dafault=4/3`
+- `alpha (dafault=4/3)`
 """
 GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
 function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
