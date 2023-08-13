@@ -137,7 +137,7 @@ function Dstat(outgroup::String, p::Phylip; pval=0.05::Float64, display_all=fals
         end
     end
 
-    #print results in a cleaner way
+    #prepare to print results in a cleaner way using DataFrame
     df=DataFrame(outgroup=String[],
                 taxa1=String[],
                 taxa2=String[],
@@ -162,12 +162,8 @@ end
 
 Print all rows of the DataFrame object.    
 """
-function showall(df::DataFrame)    
-    show(df,allrows=true)   
-end
+function showall(df::DataFrame) CSV.show(df,allrows=true)   end
 
-function Dstatsearchquartets()
-end
 
 
 
@@ -191,6 +187,8 @@ end
 
 
 
+function Dstatsearchquartets()
+end
 
 """
 

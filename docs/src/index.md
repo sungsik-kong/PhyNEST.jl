@@ -28,6 +28,9 @@ Please use [google group](https://groups.google.com/g/phynest-users) to report b
     PhyNEST.storeCheckPoint
     PhyNEST.readCheckPoint
 
+    PhyNEST.GetTrueProbsSymm
+    PhyNEST.GetTrueProbsAsymm
+
     PhyNEST.Dstat
     PhyNEST.showall
 ```
