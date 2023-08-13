@@ -56,7 +56,10 @@ end
 ###---create quartet object with topology AND phylip information (i.e. fill more information)---###
 #using theta=0.0001 by default
 function get_quartets(net::HybridNetwork, p::Phylip; 
-                        round_gamma_digits=5::Int64, default_theta=0.0001::Float64)
+                        round_gamma_digits=5::Int64, 
+                        min_theta=0.00001::Float64,
+                        max_theta=0.1::Float64,
+                        default_theta=0.0001::Float64)
     N=get_quartets(net;round_gamma_digits=round_gamma_digits)
     for each_quartet in N.quartet
         dictionary_Combined=dictionary_combined(N,p)
@@ -65,11 +68,10 @@ function get_quartets(net::HybridNetwork, p::Phylip;
     end
     estimated_theta=default_theta
     estimated_theta=get_start_theta(N)
-    if 0.00001 < estimated_theta < 0.1
+    if min_theta < estimated_theta < max_theta
         N.theta=estimated_theta
     else
         N.theta=estimated_theta 
-        #@warn("Expected 0.00001 < estimated_theta < 0.1, but received $estimated_theta. Now N.theta=$default_theta.")
     end
 
     for each_quartet in N.quartet

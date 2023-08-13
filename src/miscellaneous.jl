@@ -61,10 +61,11 @@ end
 
 Conducts Patterson's D-statistic test. The result prints site pattern frequencies ABAB and ABBA used to compute 
 the D-statistic, Z-score, and the p-value for each quartet tested. Significance is marked with an asterisk.
+Function `showall(df)` can be subsequently used to show all rows.
 
-## Mandatory argument
+## Mandatory arguments
 - `outgroup`     Name of the outgroup taxa
-- `p`   Phylip object
+- `p`   The `Phylip` object
 
 ## Optional arguments
 - `pval       (default=0.05)` Alpha level for significance
@@ -81,6 +82,19 @@ Tip: use showall(df) function to see all rows.
 ─────┼──────────────────────────────────────────────────────────────────────────────────────────
    1 │ 4         3       2       1        1427   7852  0.692424  66.6995      0.0  *
    2 │ 4         1       2       3        1427   7836  0.691892  66.5908      0.0  *
+
+julia> df=Dstat("4",p,display_all=true)
+Tip: if neccessary, use showall(df) function to see all rows.
+6×10 DataFrame
+Row │ outgroup  taxa1   taxa2   taxa3   ABAB   ABBA   Dstat        Zscore      pvalue    significance
+    │ String    String  String  String  Int64  Int64  Float64      Float64     Float64   String
+────┼─────────────────────────────────────────────────────────────────────────────────────────────────
+  1 │ 4         3       1       2        7852   1427  -0.692424    -66.6995    1.0
+  2 │ 4         3       2       1        1427   7852   0.692424     66.6995    0.0       *
+  3 │ 4         1       3       2        7836   1427  -0.691892    -66.5908    1.0
+  4 │ 4         1       2       3        1427   7836   0.691892     66.5908    0.0       *
+  5 │ 4         2       3       1        7836   7852   0.00101989    0.127743  0.449176
+  6 │ 4         2       1       3        7852   7836  -0.00101989   -0.127743  0.550824
 ```
 """
 function Dstat(outgroup::String, p::Phylip; pval=0.05::Float64, display_all=false::Bool)
@@ -129,7 +143,7 @@ function Dstat(outgroup::String, p::Phylip; pval=0.05::Float64, display_all=fals
         push!(df, result)
     end            
    
-    println("Tip: use showall(df) function to see all rows.")
+    println("Tip: if neccessary, use showall(df) function to see all rows.")
 
     return df
 end
@@ -143,7 +157,7 @@ function showall(df::DataFrame)
     show(df,allrows=true)   
 end
 
-function searchquartets()
+function Dstatsearchquartets()
 end
 
 
@@ -184,6 +198,7 @@ function HyDe(outgroup::String,p::Phylip; p_value=0.05::Float64, filter=true::Bo
     sitepattern=[]
     num_obs = p.seqleng
      
+    
     
 
     for n in 1:length(p.nametaxa)
