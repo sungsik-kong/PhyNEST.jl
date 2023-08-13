@@ -42,6 +42,27 @@ See the manuscript and/or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006]
 
 ## Optional argument
 - `alpha (dafault=4/3)`
+
+## Example
+```@jldoctest
+julia> symprob=GetTrueProbsSymm(1.0,2.0,3.0,0.003,4/3)
+15-element Vector{Float64}:
+ 0.2404720290824025
+ 0.00047873583861244776
+ 0.00047873583861244776
+ 0.0007310388098746822
+ 3.639464668511165e-6
+ 0.0007211284736310421
+ 6.790832193120881e-6
+ 1.461658030751117e-6
+ 6.790832193120881e-6
+ 0.0007211284736310421
+ 1.461658030751117e-6
+ 1.461658030751117e-6
+ 1.461658030751117e-6
+ 6.304951604760085e-6
+ 2.955516269578535e-8
+```
 """
 GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
 function GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
@@ -174,6 +195,27 @@ See the manuscript and/or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006]
 
 ##Optional argument
 - `alpha (dafault=4/3)`
+
+## Example
+```@jldoctest
+julia> asymprob=GetTrueProbsAsymm(1.0,2.0,3.0,0.003,4/3)
+15-element Vector{Float64}:
+ 0.24055000044773364
+ 0.00045274538350207147
+ 0.00045274538350207147
+ 0.00027457470635933667
+ 1.7612660121311035e-6
+ 0.0006951380185206657
+ 3.283594866865977e-5
+ 1.4343273481706927e-6
+ 3.283594866865977e-5
+ 0.0011794138135323934
+ 2.401907811548733e-6
+ 1.4343273481706927e-6
+ 2.401907811548733e-6
+ 5.394333411761533e-6
+ 2.7254257479319977e-8
+```
 """
 GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
 function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
