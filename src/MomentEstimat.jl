@@ -1,19 +1,5 @@
 #written by Sungsik Kong 2021-2022
 #Theta can be estimated, but if not provided, we use user provided theta value here (default=0.001)
-"""
-    momentEstimate(each_quartet::quartets,theta=0.001::Float64)
-
-For each quartet object, computes three branch lengths using the method of moment estimator
-"""
-function momentEstimate(each_quartet::quartets,theta=0.001::Float64)
-    sym_type=each_quartet.symtype
-    if sym_type==0 
-        t1,t2,t3=mom_est_sym(each_quartet.mspcountsNET,theta)
-    else 
-        t1,t2,t3=mom_est_asym(sym_type,each_quartet.mspcountsNET,theta) 
-    end    
-    return (t1,t2,t3)
-end
 
 """
     mom_est_sym(site_pattern_frequnecies::Array,theta::Float64; mu=(4/3)::Float64)
@@ -241,3 +227,17 @@ function get_average_moment_branch_length(N::Network)
     return average_moment_branch_length
 end
 
+"""
+    momentEstimate(each_quartet::quartets,theta=0.001::Float64)
+
+For each quartet object, computes three branch lengths using the method of moment estimator
+"""
+function momentEstimate(each_quartet::quartets,theta=0.001::Float64)
+    sym_type=each_quartet.symtype
+    if sym_type==0 
+        t1,t2,t3=mom_est_sym(each_quartet.mspcountsNET,theta)
+    else 
+        t1,t2,t3=mom_est_asym(sym_type,each_quartet.mspcountsNET,theta) 
+    end    
+    return (t1,t2,t3)
+end

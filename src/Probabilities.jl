@@ -544,18 +544,18 @@ end
 
 
 """ 
-    sim_sp_counts(type::Integer,
-                    myt1::Float64,
-                    myt2::Float64,
-                    myt3::Float64,
-                    theta::Float64)
-    sim_sp_counts(type::Integer,
-                    myt1::Float64,
-                    myt2::Float64,
-                    myt3::Float64,
-                    theta::Float64,
-                    alpha::Float64,
-                    length::Integer)
+    sim_sp_freq(type::Integer,
+                myt1::Float64,
+                myt2::Float64,
+                myt3::Float64,
+                theta::Float64)
+    sim_sp_freq(type::Integer,
+                myt1::Float64,
+                myt2::Float64,
+                myt3::Float64,
+                theta::Float64,
+                alpha::Float64,
+                length::Integer)
 
 Generates site pattern frequencies for the five possible quartet topologies modeled as 
 a multinomial random variable under the assumption that the observed sites are independent, 
@@ -598,7 +598,7 @@ The fifteen quartet site pattern frequencies are returned in the order of:
 
 ##Example
 ```@jldoctest
-julia> sim_sp_counts(1,1.0,2.0,3.0,0.003,4/3,50000)
+julia> sim_sp_freq(1,1.0,2.0,3.0,0.003,4/3,50000)
 15-element Vector{Int64}:
  48073
    411
@@ -615,7 +615,7 @@ julia> sim_sp_counts(1,1.0,2.0,3.0,0.003,4/3,50000)
      2
      4
      0
-julia> sim_sp_counts(2,1.0,2.0,3.0,0.003)
+julia> sim_sp_freq(2,1.0,2.0,3.0,0.003)
 15-element Vector{Int64}:
  962053
   14160
@@ -634,8 +634,8 @@ julia> sim_sp_counts(2,1.0,2.0,3.0,0.003)
       1     
 ```
 """
-sim_sp_counts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=sim_sp_counts(type,myt1,myt2,myt3,theta,4/3,1000000)
-function sim_sp_counts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)
+sim_sp_freq(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=sim_sp_freq(type,myt1,myt2,myt3,theta,4/3,1000000)
+function sim_sp_freq(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)
     weights=[4,12,12,12,24,12,12,24,12,12,24,24,24,24,24]
     if type==0
         p=GetTrueProbsSymm(myt1,myt2,myt3,theta,alpha)

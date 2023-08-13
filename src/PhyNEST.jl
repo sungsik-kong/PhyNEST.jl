@@ -38,7 +38,7 @@ module PhyNEST
         GetTrueProbsSymm,
         GetTrueProbsAsymm,
         GetTrueProbsAsymmTypes,
-        sim_sp_counts,
+        sim_sp_freq,
         Network,
         quartets,
         get_quartets,
