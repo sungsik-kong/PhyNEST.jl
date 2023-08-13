@@ -145,23 +145,23 @@ end
                     alpha::Float64)
 
 Computes true site pattern probabilities for the asymmetric quartet tree: (1,(2,(3,4)));. The fifteen quartet site pattern probabilities are returned 
-    in the order of:
+in the order of:
     
-    - AAAA 
-    - AAAB 
-    - AABA 
-    - AABB 
-    - AABC 
-    - ABAA 
-    - ABAB 
-    - ABAC 
-    - ABBA 
-    - BAAA 
-    - ABBC 
-    - CABC 
-    - BACA 
-    - BCAA 
-    - ABCD
+- AAAA 
+- AAAB 
+- AABA 
+- AABB 
+- AABC 
+- ABAA 
+- ABAB 
+- ABAC 
+- ABBA 
+- BAAA 
+- ABBC 
+- CABC 
+- BACA 
+- BCAA 
+- ABCD
      
 Three speciation times (node ages) in coalescent unit and theta must be provided; alpha is assumed to be 4/3 if unspecified. 
 See the manuscript and/or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006] for more information.
