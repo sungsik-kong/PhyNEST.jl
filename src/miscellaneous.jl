@@ -146,8 +146,8 @@ function Dstat(outgroup::String, p::Phylip; pval=0.05::Float64, display_all=fals
                 ABBA=Int[],
                 Dstat=Float64[],
                 Zscore=Float64[],
-                pvalue=Float64[],
-                significance=String[])
+                Pvalue=Float64[],
+                sig=String[])
     for result in res
         push!(df, result)
     end            

@@ -392,8 +392,8 @@ end
 
 Pretty name for displaying all quartet and the corresponding site pattern frequencies on screen in the DataFrame format. It may result in excessively long table when there are many sequences in the input file.
 
-## Input
-`p`     Phylip object [mandatory]
+## Mandatory argument
+- `p`     Phylip object
 """
 function show_sp(p::Phylip)
     df=sitePatternsToDF(p)
@@ -448,9 +448,11 @@ end
 
 Pretty name for exporting all quartet and the corresponding site pattern frequencies in a .csv format.
 
-## Input
-`p`         Phylip object [mandatory]
-`csvname`   Filename for the .csv output can be given, otherwise we use PhyNEST_sp.csv by default.
+## Mandatory argument
+- `p`         Phylip object 
+
+## Optional argument
+- `csvname`   Filename for the .csv output can be given, otherwise we use PhyNEST_sp.csv by default.
 """
 function write_sp(p::Phylip; csvname="PhyNEST_sp"::AbstractString)
     writeSitePatternCounts(p,csvname)
@@ -491,8 +493,8 @@ Stores the phylip object into a .ckp file so a user does not have to repeat the 
 same dataset next time. By default it creates a .ckp file that has the same filename as the input phylip file.
 File size can get pretty large... 
 
-## Input
-`p`         Phylip object [mandatory]
+## Mandatory argument
+- `p`         Phylip object
 """
 function storeCheckPoint(p::Phylip)
     open("$(p.filename).ckp", "w") do file
@@ -541,8 +543,8 @@ end
 
 Reads in .ckp file and creates a filled in phylip object.
 
-### Input
-`ckpfile`   Name of the checkpoint file\\
+## Mandatory argument
+- `ckpfile`   Name of the checkpoint file
 """
 function readCheckPoint(ckpfile::AbstractString)
     p=Phylip()

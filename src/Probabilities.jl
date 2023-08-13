@@ -12,16 +12,36 @@
                     theta::Float64,
                     alpha::Float64)
 
-Computes true site pattern probabilities for the symmetric quartet tree: `((1,2),(3,4));`. 
+Computes true site pattern probabilities for the symmetric quartet tree: `((1,2),(3,4));`. The fifteen quartet site pattern probabilities are returned 
+in the order of:
+
+- AAAA 
+- AAAB 
+- AABA 
+- AABB 
+- AABC 
+- ABAA 
+- ABAB 
+- ABAC 
+- ABBA 
+- BAAA 
+- ABBC 
+- CABC 
+- BACA 
+- BCAA 
+- ABCD
+ 
 Three speciation times (node ages) in coalescent unit and theta must be provided; alpha is assumed to be 4/3 if unspecified. 
 See the manuscript and/or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006] for more information.
 
-## Input
--`myt1`      Speciation time for the common ancestor of species 1 and 2 in coalescent unit
--`myt2`      Speciation time for the common ancestor of species 3 and 4 in coalescent unit
--`myt3`      Root node age in coalescent unit
--`theta`     Effective population size parameter
--`alpha`     (dafault=4/3)
+## Mandatory arguments
+- `myt1`      Speciation time for the common ancestor of species 1 and 2 in coalescent unit
+- `myt2`      Speciation time for the common ancestor of species 3 and 4 in coalescent unit
+- `myt3`      Root node age in coalescent unit
+- `theta`     Effective population size parameter
+
+## Optional argument
+- `alpha`     `dafault=4/3`
 """
 GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
 function GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
@@ -124,16 +144,36 @@ end
                     theta::Float64,
                     alpha::Float64)
 
-Computes true site pattern probabilities for the asymmetric quartet tree: (1,(2,(3,4)));.
+Computes true site pattern probabilities for the asymmetric quartet tree: (1,(2,(3,4)));. The fifteen quartet site pattern probabilities are returned 
+    in the order of:
+    
+    - AAAA 
+    - AAAB 
+    - AABA 
+    - AABB 
+    - AABC 
+    - ABAA 
+    - ABAB 
+    - ABAC 
+    - ABBA 
+    - BAAA 
+    - ABBC 
+    - CABC 
+    - BACA 
+    - BCAA 
+    - ABCD
+     
 Three speciation times (node ages) in coalescent unit and theta must be provided; alpha is assumed to be 4/3 if unspecified. 
 See the manuscript and/or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006] for more information.
 
-## Input
--`myt1`      Speciation time for the common ancestor of species 3 and 4 in coalescent unit
--`myt2`      Speciation time for the common ancestor of species 2 and (3,4) in coalescent unit
--`myt3`      Root node age in coalescent unit
--`theta`     Effective population size parameter
--`alpha`     (dafault=4/3)
+## Mandatory arguments
+- `myt1`      Speciation time for the common ancestor of species 3 and 4 in coalescent unit
+- `myt2`      Speciation time for the common ancestor of species 2 and (3,4) in coalescent unit
+- `myt3`      Root node age in coalescent unit
+- `theta`     Effective population size parameter
+
+##Optional argument
+- `alpha`     `dafault=4/3`
 """
 GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
 function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
