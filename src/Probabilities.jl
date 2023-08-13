@@ -2,8 +2,15 @@
 #Last updated by Sungsik Kong 2023
 
 """
-    GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)
-    GetTrueProbsSymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+    GetTrueProbsSymm(myt1::Float64,
+                    myt2::Float64,
+                    myt3::Float64,
+                    theta::Float64)
+    GetTrueProbsSymm(myt1::Float64,
+                    myt2::Float64,
+                    myt3::Float64,
+                    theta::Float64,
+                    alpha::Float64)
 
 Computes true site pattern probabilities for the symmetric quartet tree: `((1,2),(3,4));`. 
 Three speciation times (node ages) in coalescent unit and theta must be provided; alpha is assumed to be 4/3 if unspecified. 
@@ -107,8 +114,15 @@ end
 
 
 """
-    GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)
-    GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+    GetTrueProbsAsymm(myt1::Float64,
+                    myt2::Float64,
+                    myt3::Float64,
+                    theta::Float64)
+    GetTrueProbsAsymm(myt1::Float64,
+                    myt2::Float64,
+                    myt3::Float64,
+                    theta::Float64,
+                    alpha::Float64)
 
 Computes true site pattern probabilities for the asymmetric quartet tree: (1,(2,(3,4)));.
 Three speciation times (node ages) in coalescent unit and theta must be provided; alpha is assumed to be 4/3 if unspecified. 
@@ -292,6 +306,34 @@ function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Floa
     return p1
 
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
