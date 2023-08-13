@@ -57,7 +57,9 @@ end
 """
     Dstat(outgroup::String, p::Phylip;
         pval=0.05::Float64, 
-        displayall=false::Bool)
+        displayall=false::Bool,
+        writecsv=false::Bool, 
+        filename=""::AbstractString)
 
 Conducts Patterson's D-statistic test. The result prints site pattern frequencies ABAB and ABBA used to compute 
 the D-statistic, Z-score, and the p-value for each quartet tested. Significance is marked with an asterisk.
@@ -70,6 +72,8 @@ Function `showall(df)` can be subsequently used to show all rows.
 ## Optional arguments
 - `pval       (default=0.05)` Alpha level for significance
 - `display_all (default=false)` If set as `true`, the function print test results for every quartet. By default, it only prints those quartets where signficance was found.
+- `writecsv (default=false)` If `true`, the result is stored in `.csv` file in the working directory
+- `filename` Specifies `.csv` file name if `writecsv=true`. If unspecified, the result is stored as `Dstat-out.csv`
 
 ## Example
 ```@jldoctest
@@ -97,7 +101,7 @@ Row │ outgroup  taxa1   taxa2   taxa3   ABAB   ABBA   Dstat        Zscore     
   6 │ 4         2       1       3        7852   7836  -0.00101989   -0.127743  0.550824
 ```
 """
-function Dstat(outgroup::String, p::Phylip; pval=0.05::Float64, display_all=false::Bool)
+function Dstat(outgroup::String, p::Phylip; pval=0.05::Float64, showall=false::Bool, writecsv=false::Bool, filename=""::AbstractString)
 
     dict=dictionary_phylip(p)
     ndist=Normal(0,1)
@@ -125,7 +129,7 @@ function Dstat(outgroup::String, p::Phylip; pval=0.05::Float64, display_all=fals
 
             if pv<=(pval) ast="*" else ast="" end
 
-            if (display_all)
+            if (showall)
                 push!(res,[p.nametaxa[out],p.nametaxa[t1],p.nametaxa[t2],p.nametaxa[t3],ABAB, ABBA, d, z, pv, ast])
             else
                 if ast=="*"
@@ -147,22 +151,28 @@ function Dstat(outgroup::String, p::Phylip; pval=0.05::Float64, display_all=fals
                 Dstat=Float64[],
                 Zscore=Float64[],
                 Pvalue=Float64[],
-                sig=String[])
+                significance=String[])
     for result in res
         push!(df, result)
     end            
    
-    println("Tip: if neccessary, use showall(df) function to see all the rows.")
+    #write csv
+    if filename=="" filename="Dstat-out" end
+    if (writecsv)
+        CSV.write("$filename.csv",df) 
+    end
+
+    println("Tip: if neccessary, use function showallDF(df) to see all the rows.")
 
     return df
 end
 
 """
-    showall(df::DataFrame)    
+    showallDF(df::DataFrame)    
 
-Print all rows of the DataFrame object.    
+Print all rows of the DataFrame object using the package `CSV`.    
 """
-function showall(df::DataFrame) CSV.show(df,allrows=true)   end
+function showallDF(df::DataFrame) CSV.show(df,allrows=true)   end
 
 
 
