@@ -56,9 +56,11 @@ end
 
 """
     Dstat(outgroup::String, p::Phylip;
-        pval=0.05::Float64, displayall=false::Bool)
+        pval=0.05::Float64, 
+        displayall=false::Bool)
 
-Conducts Patterson's D-statistic analysis. Can use `showall(df)` to see all rows.
+Conducts Patterson's D-statistic test. The result prints site pattern frequencies ABAB and ABBA used to compute 
+the D-statistic, Z-score, and the p-value for each quartet tested. Significance is marked with an asterisk.
 
 ## Mandatory argument
 - `outgroup`     Name of the outgroup taxa
@@ -67,6 +69,19 @@ Conducts Patterson's D-statistic analysis. Can use `showall(df)` to see all rows
 ## Optional arguments
 - `pval       (default=0.05)` Alpha level for significance
 - `display_all (default=false)` If set as `true`, the function print test results for every quartets. By default, it only prints those quartets where signficance was found.
+
+## Example
+```@jldoctest
+julia> p=readPhylip("sample_n4h1.txt")
+julia> df=Dstat("4",p)
+Tip: use showall(df) function to see all rows.
+2×10 DataFrame
+ Row │ outgroup  taxa1   taxa2   taxa3   ABAB   ABBA   Dstat     Zscore   pvalue   significance
+     │ String    String  String  String  Int64  Int64  Float64   Float64  Float64  String
+─────┼──────────────────────────────────────────────────────────────────────────────────────────
+   1 │ 4         3       2       1        1427   7852  0.692424  66.6995      0.0  *
+   2 │ 4         1       2       3        1427   7836  0.691892  66.5908      0.0  *
+```
 """
 function Dstat(outgroup::String, p::Phylip; pval=0.05::Float64, display_all=false::Bool)
 
@@ -126,6 +141,9 @@ Print all rows of the DataFrame object.
 """
 function showall(df::DataFrame)    
     show(df,allrows=true)   
+end
+
+function searchquartets()
 end
 
 
