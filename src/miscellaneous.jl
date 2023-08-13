@@ -75,7 +75,7 @@ Function `showall(df)` can be subsequently used to show all rows.
 ```@jldoctest
 julia> p=readPhylip("sample_n4h1.txt")
 julia> df=Dstat("4",p)
-Tip: use showall(df) function to see all rows.
+Tip: if neccessary, use showall(df) function to see all the rows.
 2×10 DataFrame
  Row │ outgroup  taxa1   taxa2   taxa3   ABAB   ABBA   Dstat     Zscore   pvalue   significance
      │ String    String  String  String  Int64  Int64  Float64   Float64  Float64  String
@@ -84,7 +84,7 @@ Tip: use showall(df) function to see all rows.
    2 │ 4         1       2       3        1427   7836  0.691892  66.5908      0.0  *
 
 julia> df=Dstat("4",p,display_all=true)
-Tip: if neccessary, use showall(df) function to see all rows.
+Tip: if neccessary, use showall(df) function to see all the rows.
 6×10 DataFrame
 Row │ outgroup  taxa1   taxa2   taxa3   ABAB   ABBA   Dstat        Zscore      pvalue    significance
     │ String    String  String  String  Int64  Int64  Float64      Float64     Float64   String
@@ -152,7 +152,7 @@ function Dstat(outgroup::String, p::Phylip; pval=0.05::Float64, display_all=fals
         push!(df, result)
     end            
    
-    println("Tip: if neccessary, use showall(df) function to see all rows.")
+    println("Tip: if neccessary, use showall(df) function to see all the rows.")
 
     return df
 end
