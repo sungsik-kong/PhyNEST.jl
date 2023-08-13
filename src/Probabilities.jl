@@ -543,77 +543,104 @@ end
 #    GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64) end
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 """ 
-    sim_sp_counts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64)
-    sim_sp_counts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,length::Integer)
+    sim_sp_counts(type::Integer,
+                    myt1::Float64,
+                    myt2::Float64,
+                    myt3::Float64,
+                    theta::Float64)
+    sim_sp_counts(type::Integer,
+                    myt1::Float64,
+                    myt2::Float64,
+                    myt3::Float64,
+                    theta::Float64,
+                    alpha::Float64,
+                    length::Integer)
 
-This function simulates the 15 site pattern probabilities for five quartet tree topologies, \\
-one symmetric and four asymmetric quartets: 
+Generates site pattern frequencies for the five possible quartet topologies modeled as 
+a multinomial random variable under the assumption that the observed sites are independent, 
+conditional on the species tree. The five topologies are:
 
-- Type 0: ((i,j),(k,l));
-- Type 1: (i,((j,k),l));
-- Type 2: ((i,(j,k)),l); 
-- Type 3: (i,(j,(k,l))); 
-- Type 4: (((i,j),k),l).\\
+- Type 0: ((1,2),(3,4));
+- Type 1: (1,((2,3),4));
+- Type 2: ((1,(2,3)),4); 
+- Type 3: (1,(2,(3,4))); 
+- Type 4: (((1,2),3),4).
 
-## Input
-`type`   Specify the type of a quartet (use integer)\\
-`myt1`   Speciation time for the most recent internal tree node. Common ancestor of 1 and 2 in the symmetric case\\
-`myt2`   Speciation time for the internal tree node closer to the root\\
-`myt3`   Root node age\\
-`theta`  Effective population size parameter (default=0.01)\\
-`alpha`  Alpha (default=4/3)\\
-`length` Sequence lengths (default=1000000)
+The fifteen quartet site pattern frequencies are returned in the order of:
+    
+- AAAA 
+- AAAB 
+- AABA 
+- AABB 
+- AABC 
+- ABAA 
+- ABAB 
+- ABAC 
+- ABBA 
+- BAAA 
+- ABBC 
+- CABC 
+- BACA 
+- BCAA 
+- ABCD
+
+## Mandatory arguments
+- `type`      Type of the asymmetric quartet in interest. See above.
+- `myt1`      Speciation time for the common ancestor of species 3 and 4 in coalescent unit
+- `myt2`      Speciation time for the common ancestor of species 2 and (3,4) in coalescent unit
+- `myt3`      Root node age in coalescent unit
+- `theta`     Effective population size parameter
+
+##Optional argument
+- `alpha (dafault=4/3)`
+- `length` (default=1000000) Alignment length
+
+##Example
+```@jldoctest
+julia> sim_sp_counts(1,1.0,2.0,3.0,0.003,4/3,50000)
+15-element Vector{Int64}:
+ 48073
+   411
+   261
+    14
+     6
+   285
+    33
+     1
+   171
+   729
+     9
+     1
+     2
+     4
+     0
+julia> sim_sp_counts(2,1.0,2.0,3.0,0.003)
+15-element Vector{Int64}:
+ 962053
+  14160
+   5460
+    410
+     58
+   5405
+    380
+     57
+   3372
+   8434
+    122
+     32
+     32
+     24
+      1     
+```
 """
-sim_sp_counts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64)=sim_sp_counts(type,myt1,myt2,myt3,0.01,4/3,1000000)
+sim_sp_counts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=sim_sp_counts(type,myt1,myt2,myt3,theta,4/3,1000000)
 function sim_sp_counts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64,n::Integer)
     weights=[4,12,12,12,24,12,12,24,12,12,24,24,24,24,24]
     if type==0
         p=GetTrueProbsSymm(myt1,myt2,myt3,theta,alpha)
     else
-        p=GetTrueProbsNetTypes(type,myt1,myt2,myt3,theta,alpha)
+        p=GetTrueProbsAsymmTypes(type,myt1,myt2,myt3,theta,alpha)
     end
     prob=p.*weights
     sim=rand(Multinomial(n,prob))

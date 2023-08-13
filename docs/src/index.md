@@ -30,9 +30,11 @@ Please use [google group](https://groups.google.com/g/phynest-users) to report b
 
     PhyNEST.GetTrueProbsSymm
     PhyNEST.GetTrueProbsAsymm
+    PhyNEST.GetTrueProbsAsymmTypes
+    PhyNEST.sim_sp_freq
 
     PhyNEST.Dstat
-    PhyNEST.showall
+    PhyNEST.showallDF
 ```
 ## Types
 ```@docs
