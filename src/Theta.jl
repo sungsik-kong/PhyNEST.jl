@@ -17,7 +17,9 @@ somewhat loose interval that keeps the branch lengths positive from the moment e
 and then further tightens the interval using the golden section seach.
 """
 function get_start_theta(N::Network; 
-                        lower_bound=0.00001::Float64,factor=2.0::Float64,tolerance=0.01::Float64)
+                        lower_bound=0.00001::Float64,
+                        factor=2.0::Float64,
+                        tolerance=0.01::Float64)
     function find_theta(theta::Float64)
         new_topology=deepcopy(N)
         new_topology.theta=theta
@@ -176,12 +178,18 @@ function get_upper_lower_theta(N::Network;lower_bound=0.00001::Float64, factor=2
 end
 
 """
-    golden_section_search(f,lower::Float64,upper::Float64,tolerance::Float64)
+    function golden_section_search(f,
+                                lower::Float64,
+                                upper::Float64,
+                                tolerance::Float64)
 
-Using the loose interval for theta estimated from get_upper_lower_theta(), \\
-here, we further tighten the interval for the feasible theta using the golden ratio.
+Using the loose interval for theta estimated from function `get_upper_lower_theta()`, 
+golden section search further tighten the interval for the feasible theta using the golden ratio.
 """
-function golden_section_search(f,lower::Float64,upper::Float64,tolerance::Float64)
+function golden_section_search(f,
+                            lower::Float64,
+                            upper::Float64,
+                            tolerance::Float64)
     goldenratio=2/(sqrt(5)+1)
     
     #Use the golden ratio to set the initial test points

@@ -514,7 +514,7 @@ julia> GetTrueProbsAsymmTypes(4,1.0,2.0,3.0,0.003,4/3)
  1.4343273481706927e-6
  1.7612660121311035e-6
  2.7254257479319977e-8
- ```
+```
 """
 GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
 function GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
