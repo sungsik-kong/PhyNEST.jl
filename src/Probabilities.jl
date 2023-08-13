@@ -390,67 +390,131 @@ function GetTrueProbsAsymm(myt1::Float64,myt2::Float64,myt3::Float64,theta::Floa
 end
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 """
-    GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)
-    GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+    GetTrueProbsAsymmTypes(type::Integer,
+                            myt1::Float64,
+                            myt2::Float64,
+                            myt3::Float64,
+                            theta::Float64)
+    GetTrueProbsAsymmTypes(type::Integer,
+                            myt1::Float64,
+                            myt2::Float64,
+                            myt3::Float64,
+                            theta::Float64,
+                            alpha::Float64)
 
-Computes true site pattern probabilities for any of the four the asymmetric quartet trees: \\
+Computes true site pattern probabilities for any of the four the asymmetric quartet trees: 
 
-- Type 1: (i,((j,k),l));
-- Type 2: ((i,(j,k)),l); 
-- Type 3: (i,(j,(k,l))); 
-- Type 4: (((i,j),k),l).\\
-Three speciation times (or node ages) in coalescent unit and theta must be provided. \\
-Alhpa is not an essential argument for the function and if not provided, it isssumed to be 4/3 by default. \\
-See manuscript or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006] for more information.\\
+- Type 1: (1,((2,3),4));
+- Type 2: ((1,(2,3)),4); 
+- Type 3: (1,(2,(3,4))); 
+- Type 4: (((1,2),3),4);
 
-## Input
-`myt1`      Speciation time for the common ancestor of species 3 and 4\\
-`myt2`      Speciation time for the common ancestor of species 2, 3 and 4\\
-`myt3`      Root node age\\
-`theta`     Effective population size parameter\\
-`alpha`     4/3 by default
+The fifteen quartet site pattern probabilities are returned in the order of:
+    
+- AAAA 
+- AAAB 
+- AABA 
+- AABB 
+- AABC 
+- ABAA 
+- ABAB 
+- ABAC 
+- ABBA 
+- BAAA 
+- ABBC 
+- CABC 
+- BACA 
+- BCAA 
+- ABCD
+     
+Three speciation times (node ages) in coalescent unit and theta must be provided; alpha is assumed to be 4/3 if unspecified. 
+See the manuscript and/or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006] for more information.
+
+## Mandatory arguments
+- `type`      Type of the asymmetric quartet in interest. See above.
+- `myt1`      Speciation time for the common ancestor of species 3 and 4 in coalescent unit
+- `myt2`      Speciation time for the common ancestor of species 2 and (3,4) in coalescent unit
+- `myt3`      Root node age in coalescent unit
+- `theta`     Effective population size parameter
+
+##Optional argument
+- `alpha (dafault=4/3)`
+
+##Example
+```@jldoctest
+julia> GetTrueProbsAsymmTypes(1,1.0,2.0,3.0,0.003,4/3)
+15-element Vector{Float64}:
+ 0.24055000044773364
+ 0.0006951380185206657
+ 0.00045274538350207147
+ 3.283594866865977e-5
+ 1.4343273481706927e-6
+ 0.00045274538350207147
+ 3.283594866865977e-5
+ 1.4343273481706927e-6
+ 0.00027457470635933667
+ 0.0011794138135323934
+ 5.394333411761533e-6
+ 1.7612660121311035e-6
+ 2.401907811548733e-6
+ 2.401907811548733e-6
+ 2.7254257479319977e-8
+
+julia> GetTrueProbsAsymmTypes(2,1.0,2.0,3.0,0.003,4/3)
+15-element Vector{Float64}:
+ 0.24055000044773364
+ 0.0011794138135323934
+ 0.00045274538350207147
+ 3.283594866865977e-5
+ 2.401907811548733e-6
+ 0.00045274538350207147
+ 3.283594866865977e-5
+ 2.401907811548733e-6
+ 0.00027457470635933667
+ 0.0006951380185206657
+ 5.394333411761533e-6
+ 1.7612660121311035e-6
+ 1.4343273481706927e-6
+ 1.4343273481706927e-6
+ 2.7254257479319977e-8
+
+julia> GetTrueProbsAsymmTypes(3,1.0,2.0,3.0,0.003,4/3)
+15-element Vector{Float64}:
+ 0.24055000044773364
+ 0.00045274538350207147
+ 0.00045274538350207147
+ 0.00027457470635933667
+ 1.7612660121311035e-6
+ 0.0006951380185206657
+ 3.283594866865977e-5
+ 1.4343273481706927e-6
+ 3.283594866865977e-5
+ 0.0011794138135323934
+ 2.401907811548733e-6
+ 1.4343273481706927e-6
+ 2.401907811548733e-6
+ 5.394333411761533e-6
+ 2.7254257479319977e-8
+
+julia> GetTrueProbsAsymmTypes(4,1.0,2.0,3.0,0.003,4/3)
+15-element Vector{Float64}:
+ 0.24055000044773364
+ 0.0011794138135323934
+ 0.0006951380185206657
+ 0.00027457470635933667
+ 5.394333411761533e-6
+ 0.00045274538350207147
+ 3.283594866865977e-5
+ 2.401907811548733e-6
+ 3.283594866865977e-5
+ 0.00045274538350207147
+ 2.401907811548733e-6
+ 1.4343273481706927e-6
+ 1.4343273481706927e-6
+ 1.7612660121311035e-6
+ 2.7254257479319977e-8
+ ```
 """
 GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64)=GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,4/3)
 function GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
@@ -475,8 +539,51 @@ function GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::
 end
 
 #shame to the bad function naming skill...
-function GetTrueProbsNetTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
-    GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64) end
+#function GetTrueProbsNetTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64)
+#    GetTrueProbsAsymmTypes(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64,theta::Float64,alpha::Float64) end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 """ 
     sim_sp_counts(type::Integer,myt1::Float64,myt2::Float64,myt3::Float64)
