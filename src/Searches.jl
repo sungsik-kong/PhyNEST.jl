@@ -497,23 +497,75 @@ function initiate_search(starting_topology::HybridNetwork,p::Phylip,outgroup::St
 end
 
 
-#tuning: number_of_runs=10; maximum_number_of_steps=250000 (works for n7h2); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 """
     phyne!(starting_topology::HybridNetwork,p::Phylip,outgroup::String;
-        hmax=1::Integer,
-        maximum_number_of_steps=250000::Integer,
-        maximum_number_of_failures=100::Integer,
-        number_of_itera=1000::Integer,
-        number_of_runs=10::Integer,
-        do_hill_climbing=true::Bool,
-        number_of_burn_in=25::Integer,
-        k=10::Integer,
-        cons=0.5::Float64,
-        alph=0.5::Float64,
-        filename=""::AbstractString
-        )
+            hmax=1::Integer,
+            maximum_number_of_steps=250000::Integer,
+            maximum_number_of_failures=100::Integer,
+            number_of_itera=1000::Integer,
+            number_of_runs=10::Integer,
+            do_hill_climbing=true::Bool,
+            number_of_burn_in=25::Integer,
+            k=10::Integer,
+            cons=0.5::Float64,
+            alph=0.5::Float64,
+            filename=""::AbstractString)
 
-phyne! is fine.
+`phyne!` is fine.
+
+Estimate the species network (or tree if `hmax=0`) using maximum composite likelihood. The search begins from the `starting_topology`
+which can be either estimated or randomly generated. Starting topology can be either tree or a network with `<=hamx`. Outgroup taxon 
+must be specified to root the network.
+
+## Mandatory arguments
+- `starting_topology`       Starting topology in `HybridNetwork` object created using the function `readTopology` 
+- `p`                       Sequence alignment parsed in `Phylip` object using the function `readPhylip`
+- `outgroup`                Name of the outgroup taxa
+
+## Optional arguments
+### Generic
+- `hmax (dafault=1)`                            Maximum number of hybridizations to be included in the final network
+- `do_hill_climbing (default=true)`             When `=true`, network is searched using hill climbing and when `=false`, it searches using simulated annealing
+- `number_of_runs (default=10)`                 Number of independent runs
+
+### Network space search
+- `maximum_number_of_steps (default=250000)`    Maximum number of steps before the search terminates
+- `maximum_number_of_failures (default=100)`    Maximum number of consecutive failures (i.e., rejecting the proposed topology) before the search teminates
+
+### Optimization 
+- `number_of_itera (default=1000)`
+
+### For simulated annealing
+- `k (default=10)`                              Specifies the number of best networks to be stored at each run
+- `cons (default=0.5)`                          
+- `alph (default=0.5)`
+
+### Output
+- `filename (default="")` Specifies the name of the output file. If unspecified, it will use `PhyNEST_hc` or `PhyNEST_sa` depending on the heuristic method applied.
+- The best network estimated throughout the entire runs is written in the extended Newick format and stored in file with an extension `.out`. 
+First line in the file is readable by `PhyloNetworks` that can be visualized using `PhyloPlots`. Third (last) line is the identical network
+but readable by `DendroScope`. 
+- Specifics of the network search from each independent run is stored in the file with an extension `.log`. 
+It summarizes how many of each network 'moves' were made during the search, the reason for terminating the search 
+(e.g., researched maximum number of steps, reached maximum number of consecutive failures, or else), and 
+the final network estimated and its composite likelihood. When `do_hill_climbing=true`, a single best network is selected for each run,
+but when `do_hill_climbing=false` it prints `k` best networks visited.
 """
 function phyne!(starting_topology::HybridNetwork,p::Phylip,outgroup::String;
     hmax=1::Integer,
@@ -537,6 +589,7 @@ function phyne!(starting_topology::HybridNetwork,p::Phylip,outgroup::String;
     if(do_hill_climbing) filename=filename*("_hc") 
     else filename=filename*("_sa") end
 
+    #open log file
     log=string(filename,".log")
     logfile=open(log,"w")
     typeof(logfile)
