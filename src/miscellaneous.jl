@@ -197,8 +197,6 @@ function showallDF(df::DataFrame) CSV.show(df,allrows=true)   end
 
 
 
-function Dstatsearchquartets()
-end
 
 """
 
@@ -209,7 +207,7 @@ end
 #check if 1 ind res matches
 #check if multi ind yields the same spfreq
 #check res in various sim
-function HyDe(outgroup::String,p::Phylip; p_value=0.05::Float64, filter=true::Bool)
+function HyDe_indv(outgroup::String,p::Phylip; p_value=0.05::Float64, filter=true::Bool)
     outgroup1=0
     quartet=[]
     sitepattern=[]

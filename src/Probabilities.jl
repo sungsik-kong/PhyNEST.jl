@@ -438,10 +438,10 @@ See the manuscript and/or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006]
 - `myt3`      Root node age in coalescent unit
 - `theta`     Effective population size parameter
 
-##Optional argument
+## Optional argument
 - `alpha (dafault=4/3)`
 
-##Example
+## Example
 ```@jldoctest
 julia> GetTrueProbsAsymmTypes(1,1.0,2.0,3.0,0.003,4/3)
 15-element Vector{Float64}:
