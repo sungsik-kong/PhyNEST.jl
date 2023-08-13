@@ -5,7 +5,6 @@ module PhyNEST
     using DelimitedFiles
     using Distributed
     using CSV    
-    #using ProgressMeter
     using Distributions
     using Optim, LineSearches
     using StatsBase
@@ -63,9 +62,3 @@ module PhyNEST
     include("miscellaneous.jl")
 
 end
-
-#===
-7.28 removed showwprogressmeter dependency; but looks a little less fancy
-    modified some error messages
-
-===#

@@ -69,7 +69,7 @@ Function `showall(df)` can be subsequently used to show all rows.
 
 ## Optional arguments
 - `pval       (default=0.05)` Alpha level for significance
-- `display_all (default=false)` If set as `true`, the function print test results for every quartets. By default, it only prints those quartets where signficance was found.
+- `display_all (default=false)` If set as `true`, the function print test results for every quartet. By default, it only prints those quartets where signficance was found.
 
 ## Example
 ```@jldoctest
@@ -138,7 +138,16 @@ function Dstat(outgroup::String, p::Phylip; pval=0.05::Float64, display_all=fals
     end
 
     #print results in a cleaner way
-    df=DataFrame(outgroup=String[],taxa1=String[],taxa2=String[],taxa3=String[],ABAB=Int[],ABBA=Int[],Dstat=Float64[],Zscore=Float64[],pvalue=Float64[],significance=String[])
+    df=DataFrame(outgroup=String[],
+                taxa1=String[],
+                taxa2=String[],
+                taxa3=String[],
+                ABAB=Int[],
+                ABBA=Int[],
+                Dstat=Float64[],
+                Zscore=Float64[],
+                pvalue=Float64[],
+                significance=String[])
     for result in res
         push!(df, result)
     end            
