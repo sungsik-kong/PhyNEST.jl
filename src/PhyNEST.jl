@@ -49,7 +49,7 @@ module PhyNEST
         simulated_annealing,
         phyne!,
         Dstat, showallDF,
-        HyDe_ind,HyDe_map,HyDe
+        HyDe
 
     include("check.jl")
     include("Objects.jl")
