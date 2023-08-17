@@ -197,7 +197,8 @@ is provided in the `map` file, simply specify one of the outgroup species as lis
 ## Optional arguments
 - `pval       (default=0.05)` Alpha level for significance
 - `display_all (default=false)` If set as `true`, the function print test results for every quartet. By default, it only prints those quartets where signficance was found.
-- `map (default=no map file)`   Specify a map file, if available. 
+- `map (default=no map file)`   Specify a map file, if available. Map file is a simple text file where each line contains the name of the sequencea and the assignment of the sequence to
+a species, delimited by a tab. See an example below.
 - `writecsv (default=false)` If `true`, the result is stored in `.csv` file in the working directory
 - `filename` Specifies `.csv` file name if `writecsv=true`. If unspecified, the result is stored as `HyDe-out.csv`
 
@@ -243,13 +244,6 @@ Tip: if neccessary, use function showallDF(df) to see all the rows.
    1 │ 5         3       2       1        8005   1991   8057  0.502152  47.6571      0.0  *
    2 │ 5         1       2       3        8057   1991   8005  0.497848  47.6571      0.0  *
 
-shell> cat map.txt
-5	sp5out
-4	sp5out
-3	sp3
-1	sp1
-2	sp2
-
 julia> HyDe("5",p,map="map.txt",display_all=false)
 Map file [map.txt] provided.
 Tip: if neccessary, use function showallDF(df) to see all the rows.
@@ -259,6 +253,16 @@ Row │ outgroup  P1      Hybrid  P2      AABB   ABAB   ABBA   Gamma     Zscore 
 ─────┼─────────────────────────────────────────────────────────────────────────────────────────────────
     1 │ sp5out    sp3     sp2     sp1     15841   3418  15909  0.501365  49.4337      0.0  *
     2 │ sp5out    sp1     sp2     sp3     15909   3418  15841  0.498635  49.4337      0.0  *
+```
+
+where the `map.txt` used in above example is:
+```
+shell> cat map.txt
+5	sp5out
+4	sp5out
+3	sp3
+1	sp1
+2	sp2
 ```
 """
 function HyDe(outgroup::AbstractString, p::Phylip; 
