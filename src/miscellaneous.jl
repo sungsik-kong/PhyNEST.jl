@@ -71,7 +71,7 @@ Function `showall(df)` can be subsequently used to show all rows.
 
 ## Optional arguments
 - `pval       (default=0.05)` Alpha level for significance
-- `display_all (default=false)` If set as `true`, the function print test results for every quartet. By default, it only prints those quartets where signficance was found.
+- `display_all (default=false)` If set as `true`, the function print test results for every quartet. By default, it only prints those quartets where the signficance was found.
 - `writecsv (default=false)` If `true`, the result is stored in `.csv` file in the working directory
 - `filename` Specifies `.csv` file name if `writecsv=true`. If unspecified, the result is stored as `Dstat-out.csv`
 
@@ -189,16 +189,21 @@ function showallDF(df::DataFrame) CSV.show(df,allrows=true)   end
         writecsv=false::Bool, 
         filename=""::AbstractString
 
+
+Conducts HyDe: Hybrid Detectioo using Phylogenetic invariants. See Blischak et al., (2018) (https://doi.org/10.1093/sysbio/syy023) and the manual (https://hybridization-detection.readthedocs.io) for more information. 
+This function replicates `run_hyde.py` in the original python package. The map file, a two-column table with individual names in the first column and the name of the population that it belongs to in the second column
+(see example below) is not necessary to start the analysis. If the map file is not provided, each sequnece in the data is assumed to represent distinct species. 
+
+Map file is a simple text file where each line contains the name of the sequencea and the assignment of the sequence to a species, delimited by a tab. See an example below.
+
 ## Mandatory arguments
-- `outgroup`     Name of the outgroup taxa. Even when there are muliple outgroup individuals, but if their assignment to the species
-is provided in the `map` file, simply specify one of the outgroup species as listed in the alignment.
+- `outgroup`     Name of the outgroup taxa. Even when there are muliple outgroup individuals, but if their assignment to the species is provided in the `map` file, simply specify one of the outgroup species as listed in the alignment.
 - `p`   The `Phylip` object        
 
 ## Optional arguments
 - `pval       (default=0.05)` Alpha level for significance
-- `display_all (default=false)` If set as `true`, the function print test results for every quartet. By default, it only prints those quartets where signficance was found.
-- `map (default=no map file)`   Specify a map file, if available. Map file is a simple text file where each line contains the name of the sequencea and the assignment of the sequence to
-a species, delimited by a tab. See an example below.
+- `display_all (default=false)` If set as `true`, the function print test results for every quartet. By default, it only prints those quartets where the signficance was found.
+- `map (default=no map file)`   Specify a map file, if available. 
 - `writecsv (default=false)` If `true`, the result is stored in `.csv` file in the working directory
 - `filename` Specifies `.csv` file name if `writecsv=true`. If unspecified, the result is stored as `HyDe-out.csv`
 
