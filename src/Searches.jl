@@ -513,6 +513,136 @@ end
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 """
     phyne!(starting_topology::HybridNetwork,p::Phylip,outgroup::String;
             hmax=1::Integer,
@@ -527,11 +657,11 @@ end
             alph=0.5::Float64,
             filename=""::AbstractString)
 
-`phyne!` is fine.
+`phyne!` is fine. `phyne!` executes function `initiate_search(args)`.
 
 Estimate the species network (or tree if `hmax=0`) using maximum composite likelihood. The search begins from the `starting_topology`
 which can be either estimated or randomly generated. Starting topology can be either tree or a network with `<=hamx`. Outgroup taxon 
-must be specified to root the network.
+must be specified to root the network. 
 
 ## Mandatory arguments
 - `starting_topology`       Starting topology in `HybridNetwork` object created using the function `readTopology` 
@@ -552,6 +682,7 @@ must be specified to root the network.
 - `number_of_itera (default=1000)`
 
 ### For simulated annealing
+- `number_of_burn_in (default=25)`              
 - `k (default=10)`                              Specifies the number of best networks to be stored at each run
 - `cons (default=0.5)`                          
 - `alph (default=0.5)`
@@ -676,3 +807,7 @@ str*="Best topology: $best_top)"
 end
 
 
+# ProbST and add an optino to change starting points at each run
+# add feature to ignore topologies when no root position presents
+#seed (default 0 to get it from the clock): seed to replicate a given search
+#if any error occurred, file .err provides information (seed) to reproduce the error.

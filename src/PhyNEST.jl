@@ -1,10 +1,10 @@
 #Written by Sungsik Kong 2021-2022
 #Last updated by Sungsik Kong 2023
 module PhyNEST
+    using CSV    
     using DataFrames
     using DelimitedFiles
     using Distributed
-    using CSV    
     using Distributions
     using Optim, LineSearches
     using StatsBase
@@ -48,7 +48,8 @@ module PhyNEST
         hill_climbing,
         simulated_annealing,
         phyne!,
-        Dstat, showallDF
+        Dstat, showallDF,
+        HyDe_ind,HyDe_map,HyDe
 
     include("check.jl")
     include("Objects.jl")
