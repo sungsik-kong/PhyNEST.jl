@@ -274,7 +274,7 @@ shell> cat map.txt
 """
 function HyDe(p::Phylip, outgroup::AbstractString; 
                 alpha=0.05::Float64, 
-                display_all=true::Bool, #filter
+                display_all=false::Bool, #filter
                 map=""::AbstractString,
                 writecsv=false::Bool, 
                 filename=""::AbstractString)
@@ -480,6 +480,7 @@ function HyDe(p::Phylip, outgroup::AbstractString;
     if isempty(filename) filename="HyDe-out" end
     if (writecsv)
         CSV.write("$filename.csv",df) 
+        println("The results are stored as $filename.csv in the working directory.")    
     end
 
     println("Tip: if neccessary, use function showallDF(df) to see all the rows.")
