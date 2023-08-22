@@ -29,6 +29,11 @@ stillmoves = true
 #current_topology=readTopology(writeTopologyLevel1(starting_topology))
 current_topology=starting_topology
 
+#if probST<1.0 && rand() < 1-probST # modify starting tree by a nni move
+#    suc = NNIRepeat!(current_topology,10); #will try 10 attempts to do an nni move, if set to 1, hard to find it depending on currT
+#end
+
+
 res,current_topology=do_optimization(current_topology,p,number_of_itera=number_of_itera,update_parameters=true)
 current_t_clikelihood=res.minimum
 new_topology=deepcopy(current_topology)

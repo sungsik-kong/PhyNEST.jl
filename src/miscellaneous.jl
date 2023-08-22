@@ -55,8 +55,8 @@ end
 
 
 """
-    Dstat(outgroup::String, p::Phylip;
-        pval=0.05::Float64, 
+    Dstat(p::Phylip, outgroup::String;
+        alpha=0.05::Float64, 
         displayall=false::Bool,
         writecsv=false::Bool, 
         filename=""::AbstractString)
@@ -66,11 +66,11 @@ the D-statistic, Z-score, and the p-value for each quartet tested. Significance 
 Function `showall(df)` can be subsequently used to show all rows.
 
 ## Mandatory arguments
-- `outgroup`     Name of the outgroup taxa
 - `p`   The `Phylip` object
+- `outgroup`     Name of the outgroup taxa
 
 ## Optional arguments
-- `pval       (default=0.05)` Alpha level for significance
+- `alpha       (default=0.05)` Alpha level for significance
 - `display_all (default=false)` If set as `true`, the function print test results for every quartet. By default, it only prints those quartets where the signficance was found.
 - `writecsv (default=false)` If `true`, the result is stored in `.csv` file in the working directory
 - `filename` Specifies `.csv` file name if `writecsv=true`. If unspecified, the result is stored as `Dstat-out.csv`
@@ -78,7 +78,7 @@ Function `showall(df)` can be subsequently used to show all rows.
 ## Example
 ```@jldoctest
 julia> p=readPhylip("sample_n4h1.txt")
-julia> df=Dstat("4",p)
+julia> df=Dstat(p,"4")
 Tip: if neccessary, use showall(df) function to see all the rows.
 2×10 DataFrame
  Row │ outgroup  taxa1   taxa2   taxa3   ABAB   ABBA   Dstat     Zscore   pvalue   significance
@@ -87,7 +87,7 @@ Tip: if neccessary, use showall(df) function to see all the rows.
    1 │ 4         3       2       1        1427   7852  0.692424  66.6995      0.0  *
    2 │ 4         1       2       3        1427   7836  0.691892  66.5908      0.0  *
 
-julia> df=Dstat("4",p,display_all=true)
+julia> df=Dstat(p,"4",display_all=true)
 Tip: if neccessary, use showall(df) function to see all the rows.
 6×10 DataFrame
 Row │ outgroup  taxa1   taxa2   taxa3   ABAB   ABBA   Dstat        Zscore      pvalue    significance
@@ -101,9 +101,9 @@ Row │ outgroup  taxa1   taxa2   taxa3   ABAB   ABBA   Dstat        Zscore     
   6 │ 4         2       1       3        7852   7836  -0.00101989   -0.127743  0.550824
 ```
 """
-function Dstat(outgroup::String, p::Phylip; 
-                pval=0.05::Float64, 
-                showall=false::Bool, 
+function Dstat(p::Phylip, outgroup::String; 
+                alpha=0.05::Float64, 
+                display_all=false::Bool, 
                 writecsv=false::Bool, 
                 filename=""::AbstractString)
 
@@ -131,9 +131,9 @@ function Dstat(outgroup::String, p::Phylip;
             z=d/(2*sqrt((0.25/(ABBA+ABAB))))
             pv=1-cdf(ndist,z)
 
-            if pv<=(pval) ast="*" else ast="" end
+            if pv<=(alpha) ast="*" else ast="" end
 
-            if (showall)
+            if (display_all)
                 push!(res,[p.nametaxa[out],p.nametaxa[t1],p.nametaxa[t2],p.nametaxa[t3],ABAB, ABBA, d, z, pv, ast])
             else
                 if ast=="*"
@@ -164,6 +164,7 @@ function Dstat(outgroup::String, p::Phylip;
     if filename=="" filename="Dstat-out" end
     if (writecsv)
         CSV.write("$filename.csv",df) 
+        println("The results are stored as $filename.csv in the working directory.")    
     end
 
     println("Tip: if neccessary, use function showallDF(df) to see all the rows.")
@@ -182,8 +183,8 @@ function showallDF(df::DataFrame) CSV.show(df,allrows=true)   end
 
 
 """
-    HyDe(outgroup::AbstractString, p::Phylip; 
-        pval=0.05::Float64, 
+    HyDe(p::Phylip, outgroup::AbstractString; 
+        alpha=0.05::Float64, 
         display_all=true::Bool, #filter
         map=""::AbstractString,
         writecsv=false::Bool, 
@@ -197,19 +198,20 @@ This function replicates `run_hyde.py` in the original python package. The map f
 Map file is a simple text file where each line contains the name of the sequencea and the assignment of the sequence to a species, delimited by a tab. See an example below.
 
 ## Mandatory arguments
-- `outgroup`     Name of the outgroup taxa. Even when there are muliple outgroup individuals, but if their assignment to the species is provided in the `map` file, simply specify one of the outgroup species as listed in the alignment.
 - `p`   The `Phylip` object        
+- `outgroup`     Name of the outgroup taxa. Even when there are muliple outgroup individuals, but if their assignment to the species is provided in the `map` file, simply specify one of the outgroup species as listed in the alignment.
+
 
 ## Optional arguments
-- `pval       (default=0.05)` Alpha level for significance
-- `display_all (default=false)` If set as `true`, the function print test results for every quartet. By default, it only prints those quartets where the signficance was found.
+- `alpha       (default=0.05)` Alpha level for significance
+- `display_all (default=false)` If set as `true`, results are also filtered based on whether there is significant evidence for hybridization.
 - `map (default=no map file)`   Specify a map file, if available. 
 - `writecsv (default=false)` If `true`, the result is stored in `.csv` file in the working directory
 - `filename` Specifies `.csv` file name if `writecsv=true`. If unspecified, the result is stored as `HyDe-out.csv`
 
 ## Example
 ```@jldoctest
-julia> HyDe("5",p,display_all=true)
+julia> HyDe(p,"5",display_all=true)
 Tip: if neccessary, use function showallDF(df) to see all the rows.
 24×11 DataFrame
  Row │ outgroup  P1      Hybrid  P2      AABB   ABAB   ABBA   Gamma         Zscore         Pvalue    significance
@@ -240,7 +242,7 @@ Tip: if neccessary, use function showallDF(df) to see all the rows.
   23 │ 5         2       3       1        1991   8005   8057   -0.00872191      -0.408534  0.658559
   24 │ 5         2       1       3        1991   8057   8005    0.00849951      -0.412067  0.659855
 
-julia> HyDe("5",p,display_all=false)
+julia> HyDe(p,"5",display_all=false)
 Tip: if neccessary, use function showallDF(df) to see all the rows.
 2×11 DataFrame
  Row │ outgroup  P1      Hybrid  P2      AABB   ABAB   ABBA   Gamma     Zscore   Pvalue   significance
@@ -249,7 +251,7 @@ Tip: if neccessary, use function showallDF(df) to see all the rows.
    1 │ 5         3       2       1        8005   1991   8057  0.502152  47.6571      0.0  *
    2 │ 5         1       2       3        8057   1991   8005  0.497848  47.6571      0.0  *
 
-julia> HyDe("5",p,map="map.txt",display_all=false)
+julia> HyDe(p,"5",map="map.txt",display_all=false)
 Map file [map.txt] provided.
 Tip: if neccessary, use function showallDF(df) to see all the rows.
 2×11 DataFrame
@@ -270,8 +272,8 @@ shell> cat map.txt
 2	sp2
 ```
 """
-function HyDe(outgroup::AbstractString, p::Phylip; 
-                pval=0.05::Float64, 
+function HyDe(p::Phylip, outgroup::AbstractString; 
+                alpha=0.05::Float64, 
                 display_all=true::Bool, #filter
                 map=""::AbstractString,
                 writecsv=false::Bool, 
@@ -440,7 +442,7 @@ function HyDe(outgroup::AbstractString, p::Phylip;
 
         #push to res
         if display_all
-            if p_val<(pval/3)
+            if p_val<(alpha/3)
                 ast="*"
                 push!(res,[mapname_t1,mapname_t2,mapname_t3,mapname_t4,
                         aabb_obs,abab_obs,abba_obs,gamma,GH_ts,p_val,ast])
@@ -450,7 +452,7 @@ function HyDe(outgroup::AbstractString, p::Phylip;
                         aabb_obs,abab_obs,abba_obs,gamma,GH_ts,p_val,ast])
             end
         else
-            if p_val<(pval/3)
+            if p_val<(alpha/3)
                 ast="*"
                 push!(res,[mapname_t1,mapname_t2,mapname_t3,mapname_t4,
                         aabb_obs,abab_obs,abba_obs,gamma,GH_ts,p_val,ast])
