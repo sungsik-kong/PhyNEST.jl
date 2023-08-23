@@ -191,7 +191,7 @@ function showallDF(df::DataFrame) CSV.show(df,allrows=true)   end
         filename=""::AbstractString
 
 
-Conducts HyDe: Hybrid Detectioo using Phylogenetic invariants. See Blischak et al., (2018) (https://doi.org/10.1093/sysbio/syy023) and the manual (https://hybridization-detection.readthedocs.io) for more information. 
+Conducts HyDe: Hybrid Detection using Phylogenetic invariants. See Blischak et al., (2018) (https://doi.org/10.1093/sysbio/syy023) and the manual (https://hybridization-detection.readthedocs.io) for more information. 
 This function replicates `run_hyde.py` in the original python package. The map file, a two-column table with individual names in the first column and the name of the population that it belongs to in the second column
 (see example below) is not necessary to start the analysis. If the map file is not provided, each sequnece in the data is assumed to represent distinct species. 
 
