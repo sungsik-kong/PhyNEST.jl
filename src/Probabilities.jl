@@ -193,7 +193,7 @@ See the manuscript and/or Chifman and Kubatko (2015)[10.1016/j.jtbi.2015.03.006]
 - `myt3`      Root node age in coalescent unit
 - `theta`     Effective population size parameter
 
-##Optional argument
+## Optional argument
 - `alpha (dafault=4/3)`
 
 ## Example
@@ -592,11 +592,11 @@ The fifteen quartet site pattern frequencies are returned in the order of:
 - `myt3`      Root node age in coalescent unit
 - `theta`     Effective population size parameter
 
-##Optional argument
+## Optional argument
 - `alpha (dafault=4/3)`
 - `length` (default=1000000) Alignment length
 
-##Example
+## Example
 ```@jldoctest
 julia> sim_sp_freq(1,1.0,2.0,3.0,0.003,4/3,50000)
 15-element Vector{Int64}:
