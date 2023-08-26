@@ -63,21 +63,22 @@ abstract type Quartet end
 
 Subtype of abstract `Quartet` type with the following attributes:
 
-- `number`        List of individuals quartets in the order of i,j,k,l
+- `number`        List of individuals quartets in the order of 1,2,3,4
 - `displayed_tree`nth displayed tree that the quartet was extracted from
-- `quartet`       List of quartets in the order of i,j,k,l using the leaf numbers in HybridNetwork
-- `tquartet`      List of quartets in the order of i,j,k,l using the leaf numbers in Phylip
+- `quartet`       List of quartets in the order of 1,2,3,4 using the leaf numbers in HybridNetwork
+- `tquartet`      List of quartets in the order of 1,2,3,4 using the leaf numbers in Phylip
 - `gamma`         Inhertiance probability information provided in HybridNetwork
 - `mspcountsNET`  We can directly use this counts for likelihood calculation.
-- `mrca`          List of common ancesters of two taxa in the order of i and j (ij),ik,il,jk,jl,and kl
+- `mrca`          List of common ancesters of two taxa in the order of 1 and 2 (12),13,14,23,24,and 34
 - `ntau`          Unique number of the taus in the tau used in branchlengths
 - `momestlength`  Branch length identified for each quartet given the mspcounts using moment estimator
 - `average_mom_est_bl`         Branch length that is averaged for the entire tree/network - Will get filled later because theta is required
 - `symtype`       Type of each quartet. It can be either symmetric (type 0) or asymmetric. Asymmetric quartets have four possible topologies:
-    - Type 1: (i,((j,k),l));
-    - Type 2: ((i,(j,k)),l); 
-    - Type 3: (i,(j,(k,l))); 
-    - Type 4: (((i,j),k),l);
+    - Type 0: ((1,2),(3,4));
+    - Type 1: (1,((2,3),4));
+    - Type 2: ((1,(2,3)),4); 
+    - Type 3: (1,(2,(3,4))); 
+    - Type 4: (((1,2),3),4);
 - `logLik`        It's just a negative likelihood for the quartet in interest
 """
 mutable struct quartets <: Quartet

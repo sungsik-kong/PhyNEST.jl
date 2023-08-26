@@ -565,7 +565,7 @@ conditional on the species tree. The five topologies are:
 - Type 1: (1,((2,3),4));
 - Type 2: ((1,(2,3)),4); 
 - Type 3: (1,(2,(3,4))); 
-- Type 4: (((1,2),3),4).
+- Type 4: (((1,2),3),4);
 
 The fifteen quartet site pattern frequencies are returned in the order of:
     
