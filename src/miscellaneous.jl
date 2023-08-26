@@ -212,7 +212,6 @@ Map file is a simple text file where each line contains the name of the sequence
 ## Example
 ```@jldoctest
 julia> HyDe(p,"5",display_all=true)
-Tip: if neccessary, use function showallDF(df) to see all the rows.
 24×11 DataFrame
  Row │ outgroup  P1      Hybrid  P2      AABB   ABAB   ABBA   Gamma         Zscore         Pvalue    significance
      │ String    String  String  String  Int64  Int64  Int64  Float64       Float64        Float64   String
@@ -243,7 +242,6 @@ Tip: if neccessary, use function showallDF(df) to see all the rows.
   24 │ 5         2       1       3        1991   8057   8005    0.00849951      -0.412067  0.659855
 
 julia> HyDe(p,"5",display_all=false)
-Tip: if neccessary, use function showallDF(df) to see all the rows.
 2×11 DataFrame
  Row │ outgroup  P1      Hybrid  P2      AABB   ABAB   ABBA   Gamma     Zscore   Pvalue   significance
      │ String    String  String  String  Int64  Int64  Int64  Float64   Float64  Float64  String
@@ -253,7 +251,6 @@ Tip: if neccessary, use function showallDF(df) to see all the rows.
 
 julia> HyDe(p,"5",map="map.txt",display_all=false)
 Map file [map.txt] provided.
-Tip: if neccessary, use function showallDF(df) to see all the rows.
 2×11 DataFrame
  Row │ outgroup  P1      Hybrid  P2      AABB   ABAB   ABBA   Gamma     Zscore   Pvalue   significance
      │ String    String  String  String  Int64  Int64  Int64  Float64   Float64  Float64  String
@@ -482,8 +479,6 @@ function HyDe(p::Phylip, outgroup::AbstractString;
         CSV.write("$filename.csv",df) 
         println("The results are stored as $filename.csv in the working directory.")    
     end
-
-    println("Tip: if neccessary, use function showallDF(df) to see all the rows.")
 
     return df
     
