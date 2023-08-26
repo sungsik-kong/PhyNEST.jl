@@ -42,6 +42,7 @@ Please use [google group](https://groups.google.com/g/phynest-users) to report b
 ## Types
 ```@docs
     Phylip
+    quartets
 ```
 
 ## Index

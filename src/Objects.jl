@@ -15,14 +15,14 @@ abstract type INPUT end
 
 Subtype of abstract `INPUT` type with the following attributes:
 
-- `filename`      Name of the input phylip alignment file\\
-- `time`          Time taken for parsing the input in seconds\\
-- `numtaxa`       Number of taxa given at the first line of the input file\\
-- `seqleng`       Sequence length given at the first line of the input file\\
-- `nametaxa`      Sequence names given in the input file\\
-- `counttaxa`     Unique integer identifier given to each individual in the order of appearance in the input file\\
-- `allquartet`    All combinations of quartets for counttaxa\\
-- `index`         Just convert allquartet elements into arbitrary index numbers\\
+- `filename`      Name of the input phylip alignment file
+- `time`          Time taken for parsing the input in seconds
+- `numtaxa`       Number of taxa given at the first line of the input file
+- `seqleng`       Sequence length given at the first line of the input file
+- `nametaxa`      Sequence names given in the input file
+- `counttaxa`     Unique integer identifier given to each individual in the order of appearance in the input file
+- `allquartet`    All combinations of quartets for counttaxa
+- `index`         Just convert allquartet elements into arbitrary index numbers
 - `spcounts`      Arrays of 15 site pattern frequencies for each quartet in allquartet
 """
 mutable struct Phylip <: INPUT
@@ -59,26 +59,26 @@ An abstract type that cannot be instantiated, and serve only as nodes in the typ
 abstract type Quartet end
 
 """
-quartets
+    quartets
 
 Subtype of abstract `Quartet` type with the following attributes:
 
-`number`        List of individuals quartets in the order of i,j,k,l\\
-`displayed_tree`nth displayed tree that the quartet was extracted from\\
-`quartet`       List of quartets in the order of i,j,k,l using the leaf numbers in HybridNetwork\\
-`tquartet`      List of quartets in the order of i,j,k,l using the leaf numbers in Phylip\\
-`gamma`         Inhertiance probability information provided in HybridNetwork\\
-`mspcountsNET`  We can directly use this counts for likelihood calculation.\\
-`mrca`          List of common ancesters of two taxa in the order of i and j (ij),ik,il,jk,jl,and kl\\
-`ntau`          Unique number of the taus in the tau used in branchlengths\\
-`momestlength`  Branch length identified for each quartet given the mspcounts using moment estimator\\
-`average_mom_est_bl`         Branch length that is averaged for the entire tree/network - Will get filled later because theta is required\\
-`symtype`       Type of each quartet. It can be either symmetric (type 0) or asymmetric. Asymmetric quartets have four possible topologies:
-- Type 1: (i,((j,k),l));
-- Type 2: ((i,(j,k)),l); 
-- Type 3: (i,(j,(k,l))); 
-- Type 4: (((i,j),k),l).\\
-`logLik`        It's just a negative likelihood for the quartet in interest
+- `number`        List of individuals quartets in the order of i,j,k,l
+- `displayed_tree`nth displayed tree that the quartet was extracted from
+- `quartet`       List of quartets in the order of i,j,k,l using the leaf numbers in HybridNetwork
+- `tquartet`      List of quartets in the order of i,j,k,l using the leaf numbers in Phylip
+- `gamma`         Inhertiance probability information provided in HybridNetwork
+- `mspcountsNET`  We can directly use this counts for likelihood calculation.
+- `mrca`          List of common ancesters of two taxa in the order of i and j (ij),ik,il,jk,jl,and kl
+- `ntau`          Unique number of the taus in the tau used in branchlengths
+- `momestlength`  Branch length identified for each quartet given the mspcounts using moment estimator
+- `average_mom_est_bl`         Branch length that is averaged for the entire tree/network - Will get filled later because theta is required
+- `symtype`       Type of each quartet. It can be either symmetric (type 0) or asymmetric. Asymmetric quartets have four possible topologies:
+    - Type 1: (i,((j,k),l));
+    - Type 2: ((i,(j,k)),l); 
+    - Type 3: (i,(j,(k,l))); 
+    - Type 4: (((i,j),k),l);
+- `logLik`        It's just a negative likelihood for the quartet in interest
 """
 mutable struct quartets <: Quartet
     number::Int64
