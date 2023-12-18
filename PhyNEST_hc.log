@@ -1,0 +1,100 @@
+PhyNEST: Phylogenetic Network Estimation using SiTe patterns
+Analysis start: 2023-12-17 at 17:13:27
+Input sequence file: example/sample_n5h1.txt
+Number of sequences: 5 
+Sequence length: 1000000
+Starting Topology: (5,4,3,2,1);
+Outgroup specified for rooting: 5
+Number of maximum reticulation(s): 1
+The maximum number of iterations for each optimization: 1000
+Search algorithm selected: Hill climbing
+The maximum number of steps during search: 250000
+The maximum number of consecutive failures: 100 (using maximum_number_of_failures provided)
+Output file store path: /Users/khaosan/Dropbox/PhyNEST.jl
+The number of processors for this analysis: 1
+
+(1/5) Searching for the best network using the hill climbing algorithm, 2023-12-17 17:13:27.547
+The search terminated at step 120 and at 75th consecutive failures.
+Summary of each move:
+Insertion of reticulation edge: 3 proposed, 1 accepted.
+Tail move of reticulation edge: 29 proposed, 1 accepted. 
+Head move of reticulation edge: 33 proposed, 0 accepted.
+Change the direction of reticulation edge: 10 proposed, 0 accepted.
+Deletion of reticulation edge: 0 proposed, 0 accepted.
+Nearest-neighbor interchange (NNI): 44 proposed, 3 accepted.
+On the current topology, 96 moves were made, including 21 unsuccessful moves.
+Terminated although it neither reached the maximum number of steps or failures,
+possibly because there was no more move to make.
+(1/5) Estimated topology in this run: (5:10.279852508216186,(4:5.202396348480912,(#H6:3.2552607457770186::0.37946741741044854,(1:2.3633048477476857,(2:0.37557495918111433,(3:0.37557495918111433)#H6:0.0::0.6205325825895515):1.9877298885665713):1.2675308572104473):1.571560643522779):5.077456159735274);
+(1/5) Composite likelihood of the estimated topology in this run: 4.741362031645941e6
+
+(2/5) Searching for the best network using the hill climbing algorithm, 2023-12-17 17:14:5.776
+The search terminated at step 130 and at 75th consecutive failures.
+Summary of each move:
+Insertion of reticulation edge: 1 proposed, 1 accepted.
+Tail move of reticulation edge: 38 proposed, 1 accepted. 
+Head move of reticulation edge: 34 proposed, 1 accepted.
+Change the direction of reticulation edge: 12 proposed, 0 accepted.
+Deletion of reticulation edge: 0 proposed, 0 accepted.
+Nearest-neighbor interchange (NNI): 44 proposed, 1 accepted.
+On the current topology, 96 moves were made, including 21 unsuccessful moves.
+Terminated although it neither reached the maximum number of steps or failures,
+possibly because there was no more move to make.
+(2/5) Estimated topology in this run: (5:10.269709315698341,(4:5.196775448706899,(#H6:3.250400886226674::0.38027342196202496,(3:2.3579554127434714,(2:0.38031591472558735,(1:0.38031591472558735)#H6:0.0::0.619726578037975):1.9776394980178842):1.2727613882087896):1.5660586477546379):5.072933866991442);
+(2/5) Composite likelihood of the estimated topology in this run: 4.741352247347821e6
+
+(3/5) Searching for the best network using the hill climbing algorithm, 2023-12-17 17:15:27.069
+The search terminated at step 89 and at 84th consecutive failures.
+Summary of each move:
+Insertion of reticulation edge: 1 proposed, 1 accepted.
+Tail move of reticulation edge: 26 proposed, 1 accepted. 
+Head move of reticulation edge: 26 proposed, 0 accepted.
+Change the direction of reticulation edge: 4 proposed, 0 accepted.
+Deletion of reticulation edge: 0 proposed, 0 accepted.
+Nearest-neighbor interchange (NNI): 31 proposed, 1 accepted.
+On the current topology, 96 moves were made, including 12 unsuccessful moves.
+Terminated although it neither reached the maximum number of steps or failures,
+possibly because there was no more move to make.
+(3/5) Estimated topology in this run: (5:6.084643849319767,(((3:1.1164900125750847,(2:1.1007769107016687,#H8:0.0::1.0):0.015713101873416013):0.2437888159597208,1:1.3602788285348055):1.5429700523479688,(4:1.1007769107016687)#H8:1.8024719701811056::0.0):3.181394968436993);
+(3/5) Composite likelihood of the estimated topology in this run: 4.748445058064805e6
+
+(4/5) Searching for the best network using the hill climbing algorithm, 2023-12-17 17:15:44.077
+The search terminated at step 116 and at 82th consecutive failures.
+Summary of each move:
+Insertion of reticulation edge: 2 proposed, 1 accepted.
+Tail move of reticulation edge: 34 proposed, 1 accepted. 
+Head move of reticulation edge: 35 proposed, 2 accepted.
+Change the direction of reticulation edge: 11 proposed, 2 accepted.
+Deletion of reticulation edge: 0 proposed, 0 accepted.
+Nearest-neighbor interchange (NNI): 33 proposed, 0 accepted.
+On the current topology, 97 moves were made, including 15 unsuccessful moves.
+Terminated although it neither reached the maximum number of steps or failures,
+possibly because there was no more move to make.
+(4/5) Estimated topology in this run: (5:9.873014056142255,(((3:1.5703953920059508,(2:0.0)#H8:1.5703953920059508::0.5246316139942712):1.4274321357773632,(1:1.4303356774878893,#H8:1.4303356774878893::0.47536838600572884):1.5674918502954247):1.9807296102992824,4:4.978557138082596):4.894456918059658);
+(4/5) Composite likelihood of the estimated topology in this run: 4.7413446340573225e6
+
+(5/5) Searching for the best network using the hill climbing algorithm, 2023-12-17 17:16:48.419
+The search terminated at step 94 and at 88th consecutive failures.
+Summary of each move:
+Insertion of reticulation edge: 1 proposed, 1 accepted.
+Tail move of reticulation edge: 25 proposed, 0 accepted. 
+Head move of reticulation edge: 25 proposed, 0 accepted.
+Change the direction of reticulation edge: 4 proposed, 0 accepted.
+Deletion of reticulation edge: 0 proposed, 0 accepted.
+Nearest-neighbor interchange (NNI): 38 proposed, 2 accepted.
+On the current topology, 96 moves were made, including 8 unsuccessful moves.
+Terminated although it neither reached the maximum number of steps or failures,
+possibly because there was no more move to make.
+(5/5) Estimated topology in this run: (5:9.873013935808101,(((1:1.430336353730211,(2:0.0)#H6:1.430336353730211::0.4753686041425541):1.56749113182852,(3:1.5703947913279592,#H6:1.5703947913279592::0.5246313958574459):1.4274326942307718):1.9807295865914147,4:4.978557072150146):4.894456863657956);
+(5/5) Composite likelihood of the estimated topology in this run: 4.7413446340573225e6
+
+-----Summary of the networks found
+Run   Composite Likelihood    Network
+1	4.74136203165e6         (5:10.279852508216186,(4:5.202396348480912,(#H6:3.2552607457770186::0.37946741741044854,(1:2.3633048477476857,(2:0.37557495918111433,(3:0.37557495918111433)#H6:0.0::0.6205325825895515):1.9877298885665713):1.2675308572104473):1.571560643522779):5.077456159735274);
+2	4.74135224735e6         (5:10.269709315698341,(4:5.196775448706899,(#H6:3.250400886226674::0.38027342196202496,(3:2.3579554127434714,(2:0.38031591472558735,(1:0.38031591472558735)#H6:0.0::0.619726578037975):1.9776394980178842):1.2727613882087896):1.5660586477546379):5.072933866991442);
+3	4.74844505806e6         (5:6.084643849319767,(((3:1.1164900125750847,(2:1.1007769107016687,#H8:0.0::1.0):0.015713101873416013):0.2437888159597208,1:1.3602788285348055):1.5429700523479688,(4:1.1007769107016687)#H8:1.8024719701811056::0.0):3.181394968436993);
+4	4.74134463406e6         (5:9.873014056142255,(((3:1.5703953920059508,(2:0.0)#H8:1.5703953920059508::0.5246316139942712):1.4274321357773632,(1:1.4303356774878893,#H8:1.4303356774878893::0.47536838600572884):1.5674918502954247):1.9807296102992824,4:4.978557138082596):4.894456918059658);
+5	4.74134463406e6         (5:9.873013935808101,(((1:1.430336353730211,(2:0.0)#H6:1.430336353730211::0.4753686041425541):1.56749113182852,(3:1.5703947913279592,#H6:1.5703947913279592::0.5246313958574459):1.4274326942307718):1.9807295865914147,4:4.978557072150146):4.894456863657956);
+
+-----end of analysis
+Best topology: (5:9.873014056142255,(((3:1.5703953920059508,(2:0.0)#H8:1.5703953920059508::0.5246316139942712):1.4274321357773632,(1:1.4303356774878893,#H8:1.4303356774878893::0.47536838600572884):1.5674918502954247):1.9807296102992824,4:4.978557138082596):4.894456918059658);)

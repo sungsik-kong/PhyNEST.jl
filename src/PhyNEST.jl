@@ -11,9 +11,11 @@ module PhyNEST
     using Dates
     using Logging
     using Suppressor
+    using PhyloNetworks
     import PhyloNetworks: 
         readTopology, 
         displayedTrees,
+        Node,
         Edge, 
         HybridNetwork,
         NNIRepeat!,
@@ -24,6 +26,7 @@ module PhyNEST
         proposedTop!,
         printEverything,
         printEdges
+        
     export 
         readTopology,
         displayedTrees,

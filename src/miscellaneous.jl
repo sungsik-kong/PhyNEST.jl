@@ -26,7 +26,6 @@ function greet()
     """)
 end
 
-
 """
     get_average(i::Array)
 
@@ -36,8 +35,6 @@ function get_average(i::Array)
     average=sum(i)/length(i)
     return average
 end
-
-
 
 """
     checkDEBUG()
@@ -53,6 +50,35 @@ function checkDEBUG()
     @debug "Debugging message is being displayed."
 end
 
+"""
+    correct_outgroup(net::HybridNetwork, outgroup::AbstractString)
+
+    Check if the outgroup is indeed the outgroup of the network
+"""
+function correct_outgroup(net::HybridNetwork, outgroup::AbstractString)
+    rooted_with_outgroup=false
+    root_node_number=net.root
+    root=net.node[root_node_number]
+    if length(root.edge)==2
+        attached_edge_1_to_root=root.edge[1]
+        attached_edge_2_to_root=root.edge[2]
+
+        child1=GetChild(attached_edge_1_to_root)
+        child2=GetChild(attached_edge_2_to_root)
+
+        if child1.name==outgroup
+            rooted_with_outgroup=true
+            return rooted_with_outgroup
+        elseif child2.name==outgroup
+            rooted_with_outgroup=true
+            return rooted_with_outgroup
+        else
+            rooted_with_outgroup=false
+            return rooted_with_outgroup
+        end
+    end
+    return rooted_with_outgroup
+end
 
 """
     Dstat(p::Phylip, outgroup::String;
@@ -178,9 +204,6 @@ end
 Print all rows of the DataFrame object using the package `CSV`.    
 """
 function showallDF(df::DataFrame) CSV.show(df,allrows=true)   end
-
-
-
 
 """
     HyDe(p::Phylip, outgroup::AbstractString; 
@@ -484,66 +507,607 @@ function HyDe(p::Phylip, outgroup::AbstractString;
     
 end
 
+"""
+    function cct(pvals::AbstractArray; weights=Float64[]::Array)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    A function to perform the Cauchy combination test. It takes a list of
+    p-values and a list of weights and return the global p-value.
+            
+    See [https://github.com/rhaque62/pyghdet] for more information. This function is the
+    PhyNEST implementation of the Cauchy combination test proposed in Haque and Kubatko (2023)
+    [https://www.biorxiv.org/content/biorxiv/early/2023/02/27/2023.02.24.529943.full.pdf],
+    a method that consider hybridization and coalescence in a unified framework that can
+    detect whether there are any hybrid species in a given set of species. Based on this global
+    test of hybridization, one can decide whether a tree or network analysis is appropriate for 
+    a given data set.
 
 """
-    correct_outgroup(net::HybridNetwork, outgroup::AbstractString)
+function cct(pvals::Array; weights=Float64[]::Array,
+            lower_bound=1e-17::Float64, upper_bound=0.99::Float64)
 
-    Check if the outgroup is indeed the outgroup of the network
-"""
-function correct_outgroup(net::HybridNetwork, outgroup::AbstractString)
-    rooted_with_outgroup=false
-    root_node_number=net.root
-    root=net.node[root_node_number]
-    if length(root.edge)==2
-        attached_edge_1_to_root=root.edge[1]
-        attached_edge_2_to_root=root.edge[2]
-
-        child1=GetChild(attached_edge_1_to_root)
-        child2=GetChild(attached_edge_2_to_root)
-
-        if child1.name==outgroup
-            rooted_with_outgroup=true
-            return rooted_with_outgroup
-        elseif child2.name==outgroup
-            rooted_with_outgroup=true
-            return rooted_with_outgroup
-        else
-            rooted_with_outgroup=false
-            return rooted_with_outgroup
+    #check if there is any non-numeric values in the pvals
+    all_float=Float64 in typeof.(pvals)
+    all_float || error("The individual tests produced p-values containing non-numeric character! Failed to test the global null hypothesis")
+    
+    #check if all element in pv_arr < 1 and > 0
+    p_btw_zero_and_one=all(>=(0.0), pvals) && all(<=(1.0), pvals)
+    p_btw_zero_and_one || error("All the individual p-values must be between 0 and 1! Failed to test the global null hypothesis")
+    
+    # making the p-value ready for cct
+    pv=Float64[]
+    for p in pvals
+        if p==0 push!(pv,lower_bound)
+        elseif p==1 push!(pv,upper_bound)
+        else push!(pv,p)
         end
     end
-    return rooted_with_outgroup
+    
+    #check the weights length=pval length; all weight > 0
+    if isempty(weights)
+        weights=zeros(length(pvals))
+        w=1/length(pvals)
+        fill!(weights, w)
+    end
+    #println(weights)
+    all(>=(0), weights) && all(<=(1), weights) ||  #&& sum(weights)==1 
+        error("There are some problems with the weights. Check again. (weights=$weights)")
+
+    #cct computation
+    small_p=Float64[]
+    small_w=Float64[]
+    large_p=Float64[]
+    large_w=Float64[]
+
+    i=1
+    for item in pv
+        if item < (lower_bound*10)
+            push!(small_p,item)
+            push!(small_w,weights[i])
+            i+=1
+        else
+            push!(large_p,item)
+            push!(large_w,weights[i])
+        end
+    end
+
+    if length(small_p)==0
+        cct_stat=[]
+        j=1
+        for item in large_p
+            np=large_w[j]*tan((0.5-item)*pi)
+            push!(cct_stat,np)
+            j+=1
+        end
+        cct_stat=sum(cct_stat)
+    else
+        cct_small=Float64[]
+        cct_large=Float64[]
+        k=1
+        for item in small_p
+            np=(weights[k]/item)/pi
+            push!(cct_small,np)
+            k=+1
+        end
+        cct_small=sum(cct_small)
+
+        l=1
+        for item in large_p
+            np=large_w[l]*tan(0.5-item)*pi
+            push!(cct_large,np)
+            l+=1
+        end
+
+        cct_large=sum(cct_large)
+        cct_stat=cct_small+cct_large
+    end
+
+    #calculate the pv for the global test
+    D=Distributions.Cauchy()
+    if cct_stat>1e15
+        pval=(1/cct_stat)/pi
+    else
+        pval=1-Distributions.cdf(D,cct_stat)
+    end
+
+    return pval
 end
+
+"""
+    function cmc(pvals::Array)
+
+A function to perform the CMC test. It takes a list of p-values and return the global p-value.
+"""
+function cmc(pvals::Array)
+    p_min = min(1, length(pvals)*findmin(pvals)[1])
+    p_cmc=cct([cct(pvals),p_min])
+    
+    return p_cmc
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -611,7 +1175,6 @@ end
 "###---Adding a leaf on a topology: Misc. function designed for a task with Tang at UWM---###"
 # add a leaf 
 #q=readTopology("(1,2,(3,4));") #unrooted quartet
-
 function add_a_leaf(top::HybridNetwork, new_leaf_name::AbstractString)
     treeset=HybridNetwork[]
     #Create a branch (u,v) where 
@@ -628,7 +1191,7 @@ function add_a_leaf(top::HybridNetwork, new_leaf_name::AbstractString)
         end
     end
     v=smallest_internal_node_number-1
-
+    
     #make the node objects for u and v
     node_u=PhyloNetworks.Node(u,true)
     node_u.name=new_leaf_name
@@ -706,8 +1269,12 @@ function add_a_leaf(top::HybridNetwork, new_leaf_name::AbstractString)
         end    
         #println("=====tree alsmot final=====")
         #printEverything(t)
-        t0=readTopology(PhyloNetworks.writeTopologyLevel1(t))
-        push!(treeset,t0)
+        try
+            t0=readTopology(PhyloNetworks.writeTopologyLevel1(t))
+            push!(treeset,t0)
+        catch
+            continue
+        end
     end
     
     return treeset

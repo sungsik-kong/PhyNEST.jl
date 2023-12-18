@@ -29,10 +29,12 @@ stillmoves = true
 #current_topology=readTopology(writeTopologyLevel1(starting_topology))
 current_topology=starting_topology
 
-#if probST<1.0 && rand() < 1-probST # modify starting tree by a nni move
+#probNNI=0.001
+#if probNNI<=1.0 && rand() > 1-probNNI # modify starting tree by a nni move
 #    suc = NNIRepeat!(current_topology,10); #will try 10 attempts to do an nni move, if set to 1, hard to find it depending on currT
 #end
-
+#if !suc current_topology=starting_topology end
+#println(PhyloNetworks.writeTopologyLevel1(current_topology))
 
 res,current_topology=do_optimization(current_topology,p,number_of_itera=number_of_itera,update_parameters=true)
 current_t_clikelihood=res.minimum
@@ -155,6 +157,7 @@ function burn_in(starting_topology::HybridNetwork, p::Phylip, outgroup::String,
             proposedTop!(move,new_topology,true,steps,10, movescount,movesfail,false) #unrooted, make modification on newT accroding to move
             @suppress begin new_topology=readTopology(writeTopologyLevel1(new_topology,outgroup)) end #Roots the network
             res,new_topology=do_optimization(new_topology,p,number_of_itera=number_of_itera,update_parameters=false)
+            
             new_t_clikelihood=res.minimum
             
             delta=abs(current_t_clikelihood-new_t_clikelihood)
@@ -169,6 +172,16 @@ function burn_in(starting_topology::HybridNetwork, p::Phylip, outgroup::String,
     end
     
     return findmax(BurnIn)[1] 
+end
+
+"""
+    numfails(p::Phylip, probN::Float64) 
+"""
+function numfails(p::Phylip, probN::Float64) 
+    n=p.numtaxa
+    numfail=(log(probN)/log(1-(1/(n-2)))/n)
+    numfail=round(Int64,numfail)
+    return numfail
 end
 
 """
@@ -391,6 +404,7 @@ end
         maximum_number_of_failures::Integer,
         number_of_itera::Integer,
         number_of_runs::Integer,
+        nniST::Bool,
         do_hill_climbing::Bool,
         number_of_burn_in::Int64,
         k::Integer,
@@ -405,6 +419,7 @@ function initiate_search(starting_topology::HybridNetwork,p::Phylip,outgroup::St
     maximum_number_of_failures::Integer,
     number_of_itera::Integer,
     number_of_runs::Integer,
+    nniST::Bool,
     do_hill_climbing::Bool,
     number_of_burn_in::Int64,
     k::Integer,
@@ -420,13 +435,26 @@ function initiate_search(starting_topology::HybridNetwork,p::Phylip,outgroup::St
         #while i < number_of_runs
         #for i in 1:number_of_runs
         search_results = Distributed.pmap(1:number_of_runs) do i
+                       
             str="\n($i/$number_of_runs) Searching for the best network using the hill climbing algorithm, $(Dates.format(Dates.now(), "yyyy-mm-dd H:M:S.s"))\n"
             print(str)
             if (write_log)
                 write(logfile,str)
                 flush(logfile)
             end
+
+            if(nniST) 
+                starting_topology=preNNI(starting_topology,outgroup) 
+                str="Starting topology changed to $(writeTopologyLevel1(starting_topology)) using NNI.\n"
+                print(str)
+                if (write_log)
+                    write(logfile,str)
+                    flush(logfile)
+                end
+            end
+
             try
+                #println(PhyloNetworks.writeTopologyLevel1(starting_topology))
                 current_t_clikelihood,current_topology=hill_climbing(starting_topology,p,outgroup,
                                                                     hmax,
                                                                     maximum_number_of_steps,
@@ -466,6 +494,17 @@ function initiate_search(starting_topology::HybridNetwork,p::Phylip,outgroup::St
                 write(logfile,str)
                 flush(logfile)
             end
+
+            if(nniST) 
+                starting_topology=preNNI(starting_topology,outgroup) 
+                str="Starting topology changed to $(writeTopologyLevel1(starting_topology)) using NNI.\n"
+                print(str)
+                if (write_log)
+                    write(logfile,str)
+                    flush(logfile)
+                end
+            end
+            
             try 
                 current_t_clikelihood,current_topology=simulated_annealing(starting_topology, p, outgroup, 
                             hmax,
@@ -505,149 +544,6 @@ end
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 """
     phyne!(starting_topology::HybridNetwork,p::Phylip,outgroup::String;
             hmax=1::Integer,
@@ -655,6 +551,7 @@ end
             maximum_number_of_failures=100::Integer,
             number_of_itera=1000::Integer,
             number_of_runs=10::Integer,
+            nniST=false::Bool,
             do_hill_climbing=true::Bool,
             number_of_burn_in=25::Integer,
             k=10::Integer,
@@ -682,6 +579,7 @@ must be specified to root the network.
 ### Network space search
 - `maximum_number_of_steps (default=250000)`    Maximum number of steps before the search terminates
 - `maximum_number_of_failures (default=100)`    Maximum number of consecutive failures (i.e., rejecting the proposed topology) before the search teminates
+- `nniST (default=false)`                       Conducts NNI operation on the specified starting topology if set as `true`
 
 ### Optimization 
 - `number_of_itera (default=1000)`
@@ -707,8 +605,10 @@ function phyne!(starting_topology::HybridNetwork,p::Phylip,outgroup::String;
     hmax=1::Integer,
     maximum_number_of_steps=250000::Integer,
     maximum_number_of_failures=100::Integer,
+    probN=9.5e-45::Float64,
     number_of_itera=1000::Integer,
     number_of_runs=10::Integer,
+    nniST=false::Bool,
     do_hill_climbing=true::Bool,
     number_of_burn_in=25::Integer,
     k=10::Integer,
@@ -736,7 +636,16 @@ function phyne!(starting_topology::HybridNetwork,p::Phylip,outgroup::String;
     num_processors=Distributed.nprocs()
     write_log=true
     if num_processors!==1 write_log=false end
-    
+
+    #maximum number of failures
+    if (do_hill_climbing) 
+        maximum_number_of_failures=maximum_number_of_failures
+        maxfailcomment="using maximum_number_of_failures provided"
+    else 
+        maximum_number_of_failures=numfails(p, probN) 
+        maxfailcomment="computed using probN=$probN provided."
+    end
+
     #which searching strategy algorithm selected
     if (do_hill_climbing) algorithm="Hill climbing"
     else algorithm="Simulated annealing" end
@@ -752,6 +661,7 @@ Number of maximum reticulation(s): $hmax
 The maximum number of iterations for each optimization: $number_of_itera
 Search algorithm selected: $algorithm
 The maximum number of steps during search: $maximum_number_of_steps
+The maximum number of consecutive failures: $maximum_number_of_failures ($maxfailcomment)
 Output file store path: $(pwd())
 The number of processors for this analysis: $(num_processors)\n"
     print(str)
@@ -765,6 +675,7 @@ The number of processors for this analysis: $(num_processors)\n"
                         maximum_number_of_failures,
                         number_of_itera,
                         number_of_runs,
+                        nniST,
                         do_hill_climbing,
                         number_of_burn_in,
                         k,
@@ -774,18 +685,32 @@ The number of processors for this analysis: $(num_processors)\n"
                         logfile
                         )
 
+#    display(search_results)                        
+
+    
     run=0    
     str="\n-----Summary of the networks found\n"
     str*=
     "Run   Composite Likelihood    Network\n"
         for i in search_results
             run+=1
-        str *=
-    "$run\t$(round(i[1],digits=5))         $(writeTopologyLevel1(i[2]))\n"
+            if i!==nothing
+                str *=
+                "$run\t$(round(i[1],digits=5))         $(writeTopologyLevel1(i[2]))\n"
+            else
+                str *=
+                "$run\tRun $run was terminated due to an error\n"
+            end
         end
-    print(str)
-    write(logfile,str)
-    flush(logfile)
+        print(str)
+        write(logfile,str)
+        flush(logfile)
+    
+    deleteat!(search_results, findall(x->x==nothing, search_results))
+
+    if isempty(search_results)
+        return "None of the heuristic searches were successful. Try return with more number of runs."
+    else
 
     sorted_search_results=sort(search_results, by = first)
     @debug "[$(Dates.now())] The search results from $(number_of_runs) runs are sorted by their composite likelihood"
@@ -809,6 +734,8 @@ str*="Best topology: $best_top)"
     flush(outfile)
 
     return best_topology
+
+    end
 end
 
 
@@ -816,3 +743,31 @@ end
 # add feature to ignore topologies when no root position presents
 #seed (default 0 to get it from the clock): seed to replicate a given search
 #if any error occurred, file .err provides information (seed) to reproduce the error.
+
+"""
+    preNNI(net::HybridNetwork,outgroup::AbstractString)
+
+Function to make an NNI modification on the topology so the search can be initiated in different starting 
+points. This could be very useful if we have low confidence in the starting topology.
+In brief, using the input network, it unroots the topology, conduct NNI modification, removes branch lengths 
+and set gamma to 0.5, and root the topology using the ougroup provided. We assume this should be (almost always) successful.
+
+### Input
+- **`net`**        A tree/network in HybridNetwork\\
+- **`outgroup`**   Outgroup taxa in a string\\
+"""
+function preNNI(net::HybridNetwork,outgroup::AbstractString)
+    suc=false
+    nStartT=readTopologyUpdate(writeTopologyLevel1(net))#unroot the net
+    while (!suc)
+        suc=NNIRepeat!(nStartT,10)
+    end
+    for e in nStartT.edge
+        e.length=-1.0
+    end
+    #nStartT=fixWierdos(unrootN) #unrooted, check if all gamma is (0,1); if all branch legnth is >0
+    @suppress begin nStartT=readTopology(writeTopologyLevel1(nStartT,outgroup)) end #Roots the network
+    if (suc) @debug "Successfully modified the starting topology using NNI." 
+    else @debug "Modying the starting topology using NNI unsuccessful." end
+    return nStartT
+end
