@@ -36,7 +36,7 @@ current_topology=starting_topology
 #if !suc current_topology=starting_topology end
 #println(PhyloNetworks.writeTopologyLevel1(current_topology))
 
-res,current_topology=do_optimization(current_topology,p,number_of_itera=number_of_itera,update_parameters=true)
+res,current_topology=do_optimization(current_topology,p,number_of_itera=number_of_itera)
 current_t_clikelihood=res.minimum
 new_topology=deepcopy(current_topology)
 
@@ -55,7 +55,7 @@ while(steps<maximum_number_of_steps && failures<maximum_number_of_failures && st
         outgroup_rooted=correct_outgroup(new_topology,outgroup)
              
         if(outgroup_rooted)
-            res,new_topology=do_optimization(new_topology,p,number_of_itera=number_of_itera,update_parameters=true)
+            res,new_topology=do_optimization(new_topology,p,number_of_itera=number_of_itera)
             new_t_clikelihood=res.minimum
         else
             new_t_clikelihood=Inf
@@ -142,7 +142,7 @@ function burn_in(starting_topology::HybridNetwork, p::Phylip, outgroup::String,
     
 
     current_topology=deepcopy(starting_topology)
-    res,current_topology=do_optimization(current_topology,p,number_of_itera=number_of_itera,update_parameters=false)
+    res,current_topology=do_optimization(current_topology,p,number_of_itera=number_of_itera)
     current_t_clikelihood=res.minimum
     new_topology=deepcopy(current_topology)
 
@@ -156,7 +156,7 @@ function burn_in(starting_topology::HybridNetwork, p::Phylip, outgroup::String,
             new_topology=readTopologyUpdate(writeTopologyLevel1(new_topology)) #change to unrooted, plus update branch lengths to 1.0, we change to unrooted because proposedTop! requires it
             proposedTop!(move,new_topology,true,steps,10, movescount,movesfail,false) #unrooted, make modification on newT accroding to move
             @suppress begin new_topology=readTopology(writeTopologyLevel1(new_topology,outgroup)) end #Roots the network
-            res,new_topology=do_optimization(new_topology,p,number_of_itera=number_of_itera,update_parameters=false)
+            res,new_topology=do_optimization(new_topology,p,number_of_itera=number_of_itera)
             
             new_t_clikelihood=res.minimum
             
@@ -224,7 +224,7 @@ function simulated_annealing(starting_topology::HybridNetwork, p::Phylip, outgro
     #dealing with the starting tree
     current_topology=starting_topology
     #current_topology=readTopology(writeTopologyLevel1(starting_topology))
-    res,current_topology=do_optimization(current_topology,p,number_of_itera=number_of_itera,update_parameters=true)
+    res,current_topology=do_optimization(current_topology,p,number_of_itera=number_of_itera)
     current_t_clikelihood=res.minimum
     current_topology_newick=writeTopologyLevel1(current_topology)
     push!(ktrees,(current_t_clikelihood,current_topology_newick))
@@ -266,7 +266,7 @@ function simulated_annealing(starting_topology::HybridNetwork, p::Phylip, outgro
             outgroup_rooted=correct_outgroup(new_topology,outgroup)
             #println("hi")
             if(outgroup_rooted)
-                res,updated_new_topology=do_optimization(new_topology,p,update_parameters=true)
+                res,updated_new_topology=do_optimization(new_topology,p)
                 new_t_clikelihood=res.minimum
             else
             new_t_clikelihood=Inf
@@ -770,4 +770,34 @@ function preNNI(net::HybridNetwork,outgroup::AbstractString)
     if (suc) @debug "Successfully modified the starting topology using NNI." 
     else @debug "Modying the starting topology using NNI unsuccessful." end
     return nStartT
+end
+
+"""
+    correct_outgroup(net::HybridNetwork, outgroup::AbstractString)
+
+Check if the outgroup is indeed the outgroup of the network
+"""
+function correct_outgroup(net::HybridNetwork, outgroup::AbstractString)
+    rooted_with_outgroup=false
+    root_node_number=net.root
+    root=net.node[root_node_number]
+    if length(root.edge)==2
+        attached_edge_1_to_root=root.edge[1]
+        attached_edge_2_to_root=root.edge[2]
+
+        child1=GetChild(attached_edge_1_to_root)
+        child2=GetChild(attached_edge_2_to_root)
+
+        if child1.name==outgroup
+            rooted_with_outgroup=true
+            return rooted_with_outgroup
+        elseif child2.name==outgroup
+            rooted_with_outgroup=true
+            return rooted_with_outgroup
+        else
+            rooted_with_outgroup=false
+            return rooted_with_outgroup
+        end
+    end
+    return rooted_with_outgroup
 end

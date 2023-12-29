@@ -28,6 +28,7 @@ function get_start_theta(N::Network;
             each_quartet.momestlength=momentEstimate(each_quartet,theta)
         end
         average_momest=get_average_moment_branch_length(new_topology)
+        #println(average_momest)
         for each_quartet in new_topology.quartet
             each_quartet.average_mom_est_bl=(average_momest[each_quartet.ntau[1]],average_momest[each_quartet.ntau[2]],average_momest[each_quartet.ntau[3]])
         end

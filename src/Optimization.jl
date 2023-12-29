@@ -1,64 +1,71 @@
 #written by Sungsik Kong 2021-2022
 """
     do_optimization(net::HybridNetwork, p::Phylip;
-                        lower_bound=0.00001::Float64,factor=2.0::Float64,tolerance=0.01::Float64,
-                        number_of_itera=1000::Int64)
+                    lower_bound=0.00001::Float64,
+                    factor=2.0::Float64,
+                    tolerance=0.01::Float64,
+                    number_of_itera=1000::Int64)
 
 Optimizes the composite likelihood of the network topology given the data.
+
+
 """
-function do_optimization(net::HybridNetwork, p::Phylip;
+function do_optimization(topology::HybridNetwork, p::Phylip;
                         lower_bound=0.00001::Float64,
                         factor=2.0::Float64,
                         tolerance=0.01::Float64,
-                        number_of_itera=1000::Int64,
-                        update_parameters=true::Bool)
+                        number_of_itera=1000::Int64)
     
-    paramss=[]
-    N=get_quartets(net,p)
-    new_topology=N
-    
-    #get the starting values 
-    theta=get_start_theta(N,lower_bound=lower_bound,factor=factor,tolerance=tolerance)
-    
-    average_momest=get_average_moment_branch_length(N)
-    pcs=get_parent_child(net)
-    #display("pcs:$pc")
+    net=deepcopy(topology)
 
-#    average_momest=[16.507375369179304, 5.979365035010345, 5.357744739245734, NaN, 0.6833765862560925, 5.359051975359995]
-    #pcs=[[[0, 1], [1, 2], [2, 3], [2, 6], [3, 5]]]#, [6, 5]]
-    #pcs=[[[3, 5], [2, 3], [2, 6], [1, 2], [0, 1]]]
-    #display(pcs)
-    npcs=[]
-    for pc in pcs
-        npc=sort(pc, rev=false)
-        push!(npcs,npc)
-        #println("Why?")
-    end
-    pcs=npcs
-    #display(pcs)
-
-
-    #println("average_momest: $average_momest")
-    #println("pc: $pc")   
-
-    gammas_in_net, nodes_of_hybrid_edge_in_net=get_start_gamma_info(net)
-    how_many_hybrid_nodes=net.numHybrids
-    net.numHybrids==length((gammas_in_net)/2)
-    how_many_gammas=length(gammas_in_net)
-    
-    #trasform the starting parameters and push them to the params array
-    for pc in pcs
-        params=Float64[]
-        initTau=get_initial_taus(average_momest,pc)
-        for element in initTau
-            push!(params,element)
+    #---check topology---#
+    #weather or not gamma values are specified, if not, arbitrarily insert 1/2*h.
+    for e in net.edge
+        if e.hybrid && !(0<e.gamma<1)
+            e.gamma=1/(2*net.numHybrids)
         end
-        push!(paramss,params)
+    end
+    
+    #---preamble---#
+    parameter_sets=Vector{Array{Float64}}()#Array[]   
+    #decomposing the input network into a set of quartets
+    topology=get_quartets(net,p)
+    
+    #---starting values---#
+    #starting value for theta
+    starting_theta=get_start_theta(topology,
+                                    lower_bound=lower_bound,
+                                    factor=factor,
+                                    tolerance=tolerance)
+    if starting_theta<1e-5 
+        @error("An error occurred during determining the start value of theta. Setting it to 1e-5 arbitrarily.")
+        starting_theta=1e-5 
     end
 
-
-    for params in paramss
-        if gammas_in_net==1
+    #starting values for gamma
+    gammas_in_net, nodes_of_hybrid_edge_in_net=get_start_gamma_info(net)
+    how_many_gammas=2*net.numHybrids
+    length(gammas_in_net)==length(nodes_of_hybrid_edge_in_net) &&
+    net.numHybrids==Int(length(gammas_in_net)/2) &&
+    how_many_gammas==length(gammas_in_net) || @error("An error occurred during determining the start value(s) of gamma.")
+    
+    #starting values for tau
+    average_momest=get_average_moment_branch_length(topology)
+    #tobe fixed: for some reason average_momest sometimes contains one or more negative values, 
+    #               but it shouldn't; although it will not affect the final result.
+    #all(>=(0), average_momest) || @error("An error occurred during determining the start value(s) of tau. Strating theta seems infeasible.")
+    #println(average_momest)
+    all_pc_pairs=get_parent_child(net)
+    length(all_pc_pairs)==2*net.numHybrids || @error("An error occurred during parametrizing edge lengths.")
+    
+    #---parameter transformations---#
+    #each parameter set contains transformed parameters in the order of [taus,gamma,theta].
+    for parent_child in all_pc_pairs
+        #params=Float64[] #initializing a parameter set
+        #for taus
+        params=get_initial_taus(average_momest,parent_child)
+        #for gammas
+        if isTree(net)
             push!(params,asin(sqrt(1.0)))    
         else    
             for i in 1:how_many_gammas
@@ -66,88 +73,202 @@ function do_optimization(net::HybridNetwork, p::Phylip;
                 i+=2
             end
         end
-        push!(params,log(theta))
+        #for theta
+        push!(params,log(starting_theta))
+        #push everything
+        push!(parameter_sets,params)
     end
 
-    #display(paramss)
-
-    #the obejctive function
-    function objective(params::Array)
-        #backtransform the parameters 
-        theta=exp(params[length(params)])  
-        if theta<1e-5 theta=1e-5 end
-
-        Taus=backTransform(average_momest,params,pcs[count])
-
-        #println(Taus)
-        
-        gammas=Float64[]
-        if how_many_hybrid_nodes==0
-            push!(gammas,1)
-        else
-            for i in (length(params)-(how_many_hybrid_nodes)):(length(params)-1)
-                push!(gammas,sin(params[i])^2)
-                push!(gammas,1-sin(params[i])^2)
+    #---the obejctive function---#
+        function objective(params::Array)
+            lParam=length(params)
+            #backtransform the parameters 
+            #taus
+            taus=backTransform(average_momest,params,all_pc_pairs[which_pair])
+            #gammas
+            gammas=Float64[]
+            if isTree(net) push!(gammas,1)
+            else
+                for i in (lParam-net.numHybrids):(lParam-1)
+                    push!(gammas,sin(params[i])^2)
+                    push!(gammas,1-sin(params[i])^2)
+                end
             end
+            #theta
+            theta=exp(params[lParam])             
+
+            #probabilities for the parental trees
+            prob_for_parental_trees=Float64[]
+            if net.numHybrids<=1
+                prob_for_parental_trees=gammas 
+            else
+                for i in 1:2
+                    for j in 3:length(gammas)
+                        push!(prob_for_parental_trees,(gammas[i]*gammas[j]))
+                        #this is based on the observation but might not always be true
+                    end
+                end
+            end
+                        
+            #insert the transformed parameters into the Network object for CL optimization
+            topology.theta=theta
+            for each_quartet in topology.quartet
+                each_quartet.gamma=prob_for_parental_trees[(each_quartet.displayed_tree)]
+                each_quartet.average_mom_est_bl=(taus[each_quartet.ntau[1]],taus[each_quartet.ntau[2]],taus[each_quartet.ntau[3]])
+            end
+            
+            #compute negative log composite likelihood using the updated Network object
+            neg_log_composite_likelihood=get_negative_log_clikelihood(topology)#Then compute pseudolikelihood
+            
+            return neg_log_composite_likelihood            
         end
 
-                prob_for_parental_trees=Float64[]
-        if how_many_hybrid_nodes<=1
-            prob_for_parental_trees=gammas 
-        else
-            for i in 1:2
-                for j in 3:length(gammas)
-                    push!(prob_for_parental_trees,(gammas[i]*gammas[j]))
-                    #this is based on the observation but might not always be true
+    #---optimization---#
+    #some preamble for optimization
+    which_pair=0
+    res=nothing
+    cLikelihood=Inf
+    net_after_update=deepcopy(net)
+
+    for params in parameter_sets
+        which_pair+=1
+        res=Optim.optimize(objective,params,BFGS(linesearch=LineSearches.BackTracking()),Optim.Options(iterations=number_of_itera)) 
+        if !isnan(res.minimum) && res.minimum<cLikelihood 
+            cLikelihood=res.minimum
+            taus,gammas,nodes_of_hybrid_edge_in_net=backtransform_parameters(average_momest,res.minimizer,all_pc_pairs[which_pair],net.numHybrids,nodes_of_hybrid_edge_in_net)
+            net_after_update=update_topology(net,taus,gammas,nodes_of_hybrid_edge_in_net)
+        end           
+    end
+    
+    return res, net_after_update
+end
+
+"""
+    update_topology(net_before_update::HybridNetwork,Taus, theta, gammas, nodes_of_hybrid_edge_in_net)
+
+Update optimized parameters on topology
+"""
+function update_topology(net_before_update::HybridNetwork,
+                        taus::Vector{Float64}, 
+                        gammas::Vector{Float64}, 
+                        nodes_of_hybrid_edge_in_net::Vector{Tuple{Int64, Int64}})
+        
+    net=deepcopy(net_before_update)
+    hnodes=net.hybrid
+
+    for e in net.edge
+        u=GetParent(e)
+        v=GetChild(e)
+        if !(u.hybrid) && !(v.hybrid) # neither u nor v in e=(u,v) are hybrid nodes
+            if !(u.hybrid) && v.leaf
+                e.length=taus[tauNum(u.number)]
+            elseif !(u.hybrid) && !(v.hybrid)
+                e.length=taus[tauNum(u.number)]-taus[tauNum(v.number)] 
+            end    
+        else #at least one of u nor v in e=(u,v) are hybrid nodes
+            #only update gamma; reticulation branch lengths are updated next
+            for i in 1:length(nodes_of_hybrid_edge_in_net)
+                if nodes_of_hybrid_edge_in_net[i]==(u.number,v.number)
+                    e.gamma=gammas[i]
                 end
             end
         end
-        
-        #reimplement the transformed parameters into the Network object for CL optimization
-        new_topology.theta=theta
-
-        for each_quartet in new_topology.quartet
-            each_quartet.gamma=prob_for_parental_trees[(each_quartet.displayed_tree)]
-        end
-
-        for each_quartet in new_topology.quartet
-            each_quartet.average_mom_est_bl=(Taus[each_quartet.ntau[1]],Taus[each_quartet.ntau[2]],Taus[each_quartet.ntau[3]])
-        end
-        
-        #compute negative log composite likelihood using the updated Network object
-        neg_log_composite_likelihood=get_negative_log_clikelihood(new_topology)#Then compute pseudolikelihood
-        #println(neg_log_composite_likelihood)
-        return neg_log_composite_likelihood
-        
     end
-
-    #optimize the objective function and kind of visualize the minimizer in interpretable values
-    res_net_selection_pool=[]
-    count=0
-    for params in paramss
-        count+=1
-        res=Optim.optimize(objective,params,BFGS(linesearch=LineSearches.BackTracking()),Optim.Options(iterations = number_of_itera))
-        net_after_update=deepcopy(net)
-        if(update_parameters)
-            Taus, theta, gammas, nodes_of_hybrid_edge_in_net=backtransform_parameters(average_momest, res.minimizer, pcs[count], how_many_hybrid_nodes,nodes_of_hybrid_edge_in_net)
-            net_after_update=update_topology(net,Taus, theta, gammas, nodes_of_hybrid_edge_in_net)
-            #println(Taus, theta, gammas, nodes_of_hybrid_edge_in_net)
-        end
-
-        if res.minimum !==NaN
-            push!(res_net_selection_pool,[res.minimum,res,net_after_update])
-        else
-            continue
-        end
-        
-        
-    end
-
-    #display(res_net_selection_pool)
-    ress=res_net_selection_pool
     
-    return ress[1][2], ress[1][3]
+    for hn in hnodes
+        length(hn.edge)==3 || @error("Hybrid node $(hn.number) is not a degree-3 node.")
+        
+        hnage=0.0
+        if !(hn.edge[1].hybrid)
+            p1e=taus[abs(GetParent(hn.edge[2]).number)-1]
+            p2e=taus[abs(GetParent(hn.edge[3]).number)-1]
+            if p1e<p2e 
+                (hn.edge[2]).length=0.0
+                (hn.edge[3]).length=p2e-p1e
+                hnage=p1e
+            elseif p1e>p2e 
+                (hn.edge[2]).length=p1e-p2e
+                (hn.edge[3]).length=0.0
+                hnage=p2e
+            else
+                (hn.edge[2]).length=(hn.edge[3]).length=0.0
+                hnage=p1e
+            end
+
+            child=GetChild(hn.edge[1])
+            if child.leaf
+                hn.edge[1].length=hnage
+            elseif child.hybrid
+                @error "Descendant of a hybrid node cannot be another hybrid node."
+            else
+                hn.edge[1].length=hnage-taus[abs(child.number)-1]
+            end
+            
+            
+        elseif !(hn.edge[2].hybrid)
+            p1e=taus[abs(GetParent(hn.edge[1]).number)-1]
+            p2e=taus[abs(GetParent(hn.edge[3]).number)-1]
+            if p1e<p2e 
+                (hn.edge[1]).length=0.0
+                (hn.edge[3]).length=p2e-p1e
+                hnage=p1e
+            elseif p1e>p2e 
+                (hn.edge[1]).length=p1e-p2e
+                (hn.edge[3]).length=0.0
+                hnage=p2e
+            else
+                (hn.edge[1]).length=(hn.edge[3]).length=0.0
+                hnage=p1e
+            end
+
+            child=GetChild(hn.edge[2])
+            if child.leaf
+                hn.edge[2].length=hnage
+            elseif child.hybrid
+                @error "Descendant of a hybrid node cannot be another hybrid node."
+            else
+                hn.edge[2].length=hnage-taus[abs(child.number)-1]
+            end
+        else 
+            p1e=taus[abs(GetParent(hn.edge[1]).number)-1]
+            p2e=taus[abs(GetParent(hn.edge[2]).number)-1]
+            if p1e<p2e 
+                (hn.edge[1]).length=0.0
+                (hn.edge[2]).length=p2e-p1e
+                hnage=p1e
+            elseif p1e>p2e 
+                (hn.edge[1]).length=p1e-p2e
+                (hn.edge[2]).length=0.0
+                hnage=p2e
+            else
+                (hn.edge[1]).length=(hn.edge[2]).length=0.0
+                hnage=p1e
+            end
+
+            child=GetChild(hn.edge[3])
+            if child.leaf
+                hn.edge[3].length=hnage
+            elseif child.hybrid
+                @error "Descendant of a hybrid node cannot be another hybrid node."
+            else
+                hn.edge[3].length=hnage-taus[abs(child.number)-1]
+            end
+        end
+
+
+    end
+
+    #set the number of digits at mantissa and round
+    #numdigits is a global variable and set as 5 by default (in Objects.jl)
+    for e in net.edge
+        e.length=round(e.length,digits=numdigits)
+        if e.gamma<1 e.gamma=round(e.gamma,digits=numdigits) end
+    end
+    
+    return net
 end
+
+
 
 """
     get_start_gamma_info(net::HybridNetwork)
@@ -158,9 +279,8 @@ and the parent and child nodes of the branches the inheritance probability is as
 function get_start_gamma_info(net::HybridNetwork)
     gammas_in_net=Float64[]
     nodes_of_hybrid_edge_in_net=Tuple{Int64, Int64}[]
-    edges=net.edge
-
-    for each_edge in edges
+    
+    for each_edge in net.edge
         if (each_edge.hybrid)
             push!(gammas_in_net,each_edge.gamma)
             head_and_tail=Int64[]
@@ -173,7 +293,6 @@ function get_start_gamma_info(net::HybridNetwork)
     end
     
     return gammas_in_net, nodes_of_hybrid_edge_in_net
-    
 end
 
 
@@ -258,6 +377,12 @@ function get_parent_child(net::HybridNetwork)
         end
     end
 
+    npcs=[]
+    for pc in parentchildss
+        npc=sort(pc, rev=false)
+        push!(npcs,npc)
+    end
+    parentchildss=npcs
     
     return parentchildss
 end
@@ -341,7 +466,7 @@ function backtransform_parameters(average_momest::Array,
                                     nodes_of_hybrid_edge_in_net::Vector{Tuple{Int64, Int64}})
 
     Taus=backTransform(average_momest,res_minimizer,pc)
-    theta=exp(res_minimizer[length(res_minimizer)])*2
+    #theta=exp(res_minimizer[length(res_minimizer)])*2
     gammas=Float64[]
         if how_many_hybrid_nodes==0
             push!(gammas,1)
@@ -356,210 +481,6 @@ function backtransform_parameters(average_momest::Array,
     #println("Taus=$(Taus)")
     #println("theta=$(exp(res_minimizer[length(res_minimizer)])*2)")
     
-    return Taus, theta, gammas, nodes_of_hybrid_edge_in_net
+    return Taus, gammas, nodes_of_hybrid_edge_in_net
 end
 
-"""
-    update_topology(net_before_update::HybridNetwork,Taus, theta, gammas, nodes_of_hybrid_edge_in_net)
-
-Update optimized parameters on topology
-"""
-function update_topology(net_before_update::HybridNetwork,Taus, theta, gammas, nodes_of_hybrid_edge_in_net)
-    #printEdges(net)
-    #println(writeTopologyLevel1(net))
-    #println(Taus, theta, gammas, nodes_of_hybrid_edge_in_net)
-    #println(Taus)
-    net=deepcopy(net_before_update)
-    n_taus=length(Taus)
-    
-    for branch in net.edge
-        parent=GetParent(branch)
-        child=GetChild(branch)
-        
-        parent_node=parent.number
-        child_node=child.number
-        
-        tau_num_parent=tauNum(parent_node)
-        tau_num_child=tauNum(child_node)
-        
-        #branch lengths
-        if tau_num_parent<=n_taus #&& tau_num_child<=n_taus
-            if child_node<0 && !(branch.hybrid)   # tree branch
-                branch.length=Taus[tau_num_parent]-Taus[tau_num_child]
-            elseif child_node>0 && !(branch.hybrid)   #tree branch leading to the tip
-                #branch lengths for the hybrid edge are set as 0.0
-                branch.length=Taus[tau_num_parent]
-            elseif child_node>0 && (branch.hybrid)   #hybrid branch leading to the hybrid node
-                branch.length=Taus[tau_num_parent]
-            else #child_node<0 && (branch.hybrid)   
-                branch.length=0.0 
-            end
-        else
-            branch.length=10^-10
-        end
-
-        #gamma
-        for i in 1:length(nodes_of_hybrid_edge_in_net)
-            if (parent_node,child_node)==nodes_of_hybrid_edge_in_net[i]
-                this_gamma=gammas[i]
-                if this_gamma==NaN
-                    this_gamma=1/length(nodes_of_hybrid_edge_in_net)
-                    branch.gamma=this_gamma
-                else
-                    branch.gamma=this_gamma
-                end
-            elseif (child_node,parent_node)==nodes_of_hybrid_edge_in_net[i]
-                this_gamma=gammas[i]
-                    if this_gamma==NaN
-                    this_gamma=1/length(nodes_of_hybrid_edge_in_net)
-                    branch.gamma=this_gamma
-                else
-                    branch.gamma=this_gamma
-                end
-            else 
-                continue
-            end
-        end
-
-    end
-    
-    #fix hybrid branch lengths
-    hybrid_nodes=net.hybrid
-    for each_hybrid_node in hybrid_nodes
-        edge1=each_hybrid_node.edge[1]
-        edge2=each_hybrid_node.edge[2]
-        edge3=each_hybrid_node.edge[3]
-
-        edge1_length=edge1.length
-        edge2_length=edge2.length
-        edge3_length=edge3.length
-
-        the_three_edge_lengths=[edge1_length,edge2_length,edge3_length]
-        #println([edge1_length,edge2_length,edge3_length])
-        sorted=sort([edge1_length,edge2_length,edge3_length])
-        shortest_length=minimum(the_three_edge_lengths)
-
-        if edge1.hybrid==false
-            if shortest_length!==0
-                edge1.length=shortest_length
-            else
-                edge1.length=sorted[2]
-            end
-        elseif edge1.hybrid==true
-            if edge1.length==shortest_length
-                edge1.length=0
-            else
-                edge1.length=edge1_length-shortest_length
-            end
-        end
-
-        if edge2.hybrid==false
-            edge2.length=shortest_length
-        elseif edge2.hybrid==true
-            if edge2.length==shortest_length
-                edge2.length=0
-            else
-                edge2.length=edge2_length-shortest_length
-            end
-        end
-
-        if edge3.hybrid==false
-            edge3.length=shortest_length
-        elseif edge3.hybrid==true
-            if edge3.length==shortest_length
-                edge3.length=0
-            else
-                edge3.length=edge3_length-shortest_length
-            end
-        end        
-    end
-
-    return net
-end
-
-
-
-
-
-
-
-
-
-
-#==
-
-function get_parent_child1(net::HybridNetwork)
-    pcs=[[]]
-    pairs=[]
-
-    
-
-    for n in net.node
-        if n.leaf
-            #println("The node $(n.number) is a leaf.")
-            continue
-        elseif n.number<0 
-            parents=parentnodes(n.number,net)
-            #println(n.number)
-            #println(parents)
-            if isempty(parents)
-                for i in pcs
-                    push!(i,[0,n.number])
-                end
-            else
-                if parents[1]>0
-                    pparents=parentnodes(parents[1],net)
-                    for i in 1:length(pparents)
-                        pair=[pparents[i],n.number]
-                        push!(pairs,pair)
-                    end
-                    #println(pairs)
-                                                   
-                    #println("The node $(n.number) is NOT a leaf but the parent is an
-                    #hybrid, so its possible A(j)s are $pparents.")
-                else
-                    for i in pcs
-                        push!(i,[parents[1],n.number])
-                    end
-                    #println("The node $(n.number) is NOT a leaf and the parent is $parents.")
-                end
-            end
-        end
-    end
-    
-    
-    for element in pairs
-        #parentchild=unique(parentchild)
-        #organize array, root on top and moves down the network
-        #parentchild=sort(parentchild, rev=true)
-        #for element in parentchild #just renaming for PhyNe from the number assigned from PhyloNetworks
-            i=element[1] #parent
-            j=element[2] #child
-            if i!==0 
-                element[1]=abs(i)-1
-            else
-                element[1]=0
-            end
-            #basically j is always non-zero
-            #if j!==0
-                element[2]=abs(j)-1
-            #else
-            #    element[2]=0
-            #end
-        #end
-    end
-    
-    return pairs
-end
-
-function parentnodes(childnode::Int64,network::HybridNetwork)
-    parents=Int64[]
-    for edge in network.edge
-        if childnode==GetChild(edge).number
-            parentnode=GetParent(edge).number
-            push!(parents,parentnode)
-        end
-    end
-    return parents
-end
-==#

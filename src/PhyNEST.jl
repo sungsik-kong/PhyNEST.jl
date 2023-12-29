@@ -25,7 +25,8 @@ module PhyNEST
         writeTopologyLevel1,
         proposedTop!,
         printEverything,
-        printEdges
+        printEdges,
+        isTree
         
     export 
         readTopology,
