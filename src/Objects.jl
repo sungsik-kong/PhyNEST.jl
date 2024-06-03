@@ -1,7 +1,6 @@
 #written by Sungsik Kong 2021-2022
 
 #=Set the precision (in bits) to be used for T arithmetic. See https://docs.julialang.org/en/v1/base/numbers/#Base.MPFR.setprecision=#
-global const numdigits = 5
 setprecision(64)
 
 

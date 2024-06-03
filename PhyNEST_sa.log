@@ -1,0 +1,74 @@
+PhyNEST: Phylogenetic Network Estimation using SiTe patterns
+Analysis start: 2024-06-02 at 20:03:58
+Input file: example/sample_n5h1.txt
+Number of sequences: 5
+Sequence length: 1000000
+Starting Topology: (5,(2,(3,(4,1))));
+Outgroup specified for rooting: 5
+Number of maximum reticulation(s): 1
+The maximum number of iterations for each optimization: 1000
+Search algorithm selected: Simulated annealing with alpha=0.5; c=0.5
+The maximum number of steps during search: 250000
+The maximum number of consecutive failures: 50 (computed using probN=9.5e-45 provided.)
+Output file store directory: /Users/khaosan/Dropbox/PhyNESTp.jl
+The number of processors for this analysis: 1
+
+(1/2) Searching for the best network using the simulated annealing algorithm; 2024-06-02 at 20:03:59
+Starting topology remains unchanged
+Running 25 burn-ins...
+Burn in complete. At most -log likelihood value can change 253831.89630290028 at a single step.
+Showing 10 best topologies found in this run:
+Rank	Composite Likelihood         Network
+1	4.74134463406e6         (5:9.873,(4:4.979,((3:1.57,(2:1.43)#H6:0.14::0.525):1.427,(1:1.43,#H6:0.0::0.475):1.567):1.981):4.894);
+2	4.74134463406e6         (5:9.873,(4:4.979,((3:1.57,(2:1.43)#H6:0.14::0.525):1.427,(#H6:0.0::0.475,1:1.43):1.567):1.981):4.894);
+3	4.74134463406e6         (5:9.873,(4:4.979,((3:1.57,(2:1.43)#H6:0.14::0.525):1.427,(1:1.43,#H6:0.0::0.475):1.567):1.981):4.894);
+4	4.74135224735e6         (5:10.27,(4:5.197,((3:2.358,(2:0.38,#H6:0.0::0.62):1.978):1.273,(1:0.38)#H6:3.25::0.38):1.566):5.073);
+The total length of best trees is shorter than k.
+Speciation times for some newicks may not have updated if estimates are weird (e.g., NaN).
+The search terminated at step 585 and at 50th consecutive failures and (Cooling schedule)ci=2154.7764941621217.
+Summary of each move:
+Insertion of reticulation edge: 2 proposed, 1 accepted.
+Tail move of reticulation edge: 165 proposed, 106 accepted.
+Head move of reticulation edge: 133 proposed, 44 accepted.
+Change the direction of reticulation edge: 122 proposed, 37 accepted.
+Deletion of reticulation edge: 0 proposed, 0 accepted.
+Nearest-neighbor interchange (NNI): 163 proposed, 9 accepted.
+On the current topology, 68 moves were made, including 18 unsuccessful moves.
+Terminated because it reached the maximum number of failures (current maximum_number_of_failures=50).
+(1/2) Estimated topology in this run: (5:9.873,(4:4.979,((3:1.57,(2:1.43)#H6:0.14::0.525):1.427,(1:1.43,#H6:0.0::0.475):1.567):1.981):4.894);
+(1/2) Composite likelihood of the estimated topology in this run: 4.741344634057322e6
+
+(2/2) Searching for the best network using the simulated annealing algorithm; 2024-06-02 at 20:05:13
+Starting topology remains unchanged
+Running 25 burn-ins...
+Burn in complete. At most -log likelihood value can change 276213.0673120329 at a single step.
+Showing 10 best topologies found in this run:
+Rank	Composite Likelihood         Network
+1	4.74134463406e6         (5:9.873,(4:4.979,((1:1.43,(2:1.43)#H6:0.0::0.475):1.567,(3:1.57,#H6:0.14::0.525):1.427):1.981):4.894);
+2	4.74134463406e6         (5:9.873,(((1:1.43,(2:1.43)#H6:0.0::0.475):1.567,(#H6:0.14::0.525,3:1.57):1.427):1.981,4:4.979):4.894);
+3	4.74134463406e6         (5:9.873,(4:4.979,((3:1.57,(2:1.43)#H6:0.14::0.525):1.427,(1:1.43,#H6:0.0::0.475):1.567):1.981):4.894);
+4	4.74134463406e6         (5:9.873,(4:4.979,((1:1.43,#H6:0.0::0.525):1.567,((2:1.43)#H6:0.14::0.475,3:1.57):1.427):1.981):4.894);
+5	4.74134463406e6         (5:9.873,(4:4.979,((#H6:0.0::0.525,1:1.43):1.567,((2:1.43)#H6:0.14::0.475,3:1.57):1.427):1.981):4.894);
+6	4.74134463406e6         (5:9.873,(4:4.979,((3:1.57,(2:1.43)#H6:0.14::0.525):1.427,(#H6:0.0::0.475,1:1.43):1.567):1.981):4.894);
+The total length of best trees is shorter than k.
+Speciation times for some newicks may not have updated if estimates are weird (e.g., NaN).
+The search terminated at step 910 and at 50th consecutive failures and (Cooling schedule)ci=1512.6720311686329.
+Summary of each move:
+Insertion of reticulation edge: 1 proposed, 1 accepted.
+Tail move of reticulation edge: 251 proposed, 131 accepted.
+Head move of reticulation edge: 228 proposed, 69 accepted.
+Change the direction of reticulation edge: 216 proposed, 95 accepted.
+Deletion of reticulation edge: 0 proposed, 0 accepted.
+Nearest-neighbor interchange (NNI): 214 proposed, 14 accepted.
+On the current topology, 66 moves were made, including 16 unsuccessful moves.
+Terminated because it reached the maximum number of failures (current maximum_number_of_failures=50).
+(2/2) Estimated topology in this run: (5:9.873,(4:4.979,((1:1.43,#H6:0.0::0.475):1.567,(3:1.57,(2:1.43)#H6:0.14::0.525):1.427):1.981):4.894);
+(2/2) Composite likelihood of the estimated topology in this run: 4.741344634057322e6
+
+Summary:
+Run	Composite likelihood	Network estimated
+1	4.7413446e6		(5:9.873,(4:4.979,((3:1.57,(2:1.43)#H6:0.14::0.525):1.427,(1:1.43,#H6:0.0::0.475):1.567):1.981):4.894);
+2	4.7413446e6		(5:9.873,(4:4.979,((1:1.43,#H6:0.0::0.475):1.567,(3:1.57,(2:1.43)#H6:0.14::0.525):1.427):1.981):4.894);
+
+Best topology: (5:9.873,(4:4.979,((3:1.57,(2:1.43)#H6:0.14::0.525):1.427,(1:1.43,#H6:0.0::0.475):1.567):1.981):4.894);)
+End;

@@ -275,6 +275,9 @@ function sitePatternCounts(p::Phylip,ppbase::Array,counts::Array)
         end
         push!(p.spcounts,spcount)
     end 
+
+    #println(counts)
+
     return p
 end
 #try to speed this task up by utilizing dictionary 

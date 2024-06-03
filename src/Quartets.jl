@@ -68,6 +68,7 @@ function get_quartets(net::HybridNetwork, p::Phylip;
     end
     estimated_theta=default_theta
     estimated_theta=get_start_theta(N)
+    
     if min_theta < estimated_theta < max_theta
         N.theta=estimated_theta
     else
@@ -75,7 +76,7 @@ function get_quartets(net::HybridNetwork, p::Phylip;
     end
 
     for each_quartet in N.quartet
-        each_quartet.momestlength=momentEstimate(each_quartet,estimated_theta)
+        each_quartet.momestlength=methodofmomentestimator(each_quartet,estimated_theta)
     end
     average_momest=get_average_moment_branch_length(N)
     for each_quartet in N.quartet

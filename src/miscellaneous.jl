@@ -16,13 +16,14 @@ Preprint available online on BioRxiv at https://doi.org/10.1101/2022.11.14.51646
 ```
 """
 function greet()
-    #now=Dates.now()
+    now=Dates.now()
     println("""
     Thank you for using PhyNEST: Phylogenetic Network Estimation using SiTe patterns.
     Please report bugs or make suggestions to https://groups.google.com/g/phynest-users.
     If you conduct an analysis using PhyNEST, please cite:
     Sungsik Kong, David Swofford, and Laura Kubatko (2022) Inference of Phylogenetic Networks from Sequence Data using Composite Likelihood.
     Preprint available online on BioRxiv at https://doi.org/10.1101/2022.11.14.516468.
+    time stamp: $(Dates.format(now, "yyyy-mm-dd at HH:MM:SS"))
     """)
 end
 
@@ -31,10 +32,18 @@ end
 
 Compute average of the values in an array. 
 """
-function get_average(i::Array)
-    average=sum(i)/length(i)
-    return average
-end
+function get_average(i::Array) return sum(i)/length(i) end
+
+
+
+
+
+
+
+
+
+
+
 
 """
     checkDEBUG()
@@ -301,6 +310,8 @@ function HyDe(p::Phylip, outgroup::AbstractString;
         push!(outgroups,outgroup)
     end
 
+    display(mapdict)
+
     #get the quartets and relevant site patterns for the analysis
     for n in 1:length(p.allquartet)
         for outgroup_ids in outgroups
@@ -331,14 +342,15 @@ function HyDe(p::Phylip, outgroup::AbstractString;
                                 t1,
                                 t2,
                                 t3,
-                                t4])
+                                t4]
+                        )
                 end
             end
         end
     end
-    
+
     #summarize and add up according to the map file
-    if !(isempty(map))
+    if havemap && length(unique(keys(mapdict)))<p.numtaxa
         newdata=[]
         for i in 1:length(data)-1
             for j in i+1:length(data)
@@ -352,6 +364,7 @@ function HyDe(p::Phylip, outgroup::AbstractString;
         end
         data=newdata
     end
+
 
     #HyDe analysis
     data_length=length(data)
@@ -596,5 +609,24 @@ end
 
 
 
+"""
+    function LRT
+"""
 
+function LRT(p::Phylip)
+    s2=readTopology("(O,((P1,H),P2));") #gamma=0
+    s=readTopology("(O,((P2,(H)#H1:::0.51),(P1,#H1:::0.49)));") #gamma!==0
+    #display(p)
+    #display(s2)
+    #display(s)
 
+    sups2=do_optimization(s2,p)
+    sups=do_optimization(s,p)
+    
+    sups2=(sups2[1].minimum)
+    sups=(sups[1].minimum)
+
+    lambda=-2*(sups2-sups)
+
+    println(lambda)
+end

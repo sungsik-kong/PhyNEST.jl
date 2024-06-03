@@ -5,7 +5,6 @@ tests=[
     "test_check.jl"
     #"test_Quartets.jl"
     #"test_Probabilities.jl"
-    #"test_MomentEstimat.jl"
     #"test_Optimization.jl"
 ]
 

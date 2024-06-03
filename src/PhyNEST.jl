@@ -42,7 +42,11 @@ module PhyNEST
         GetTrueProbsSymm,
         GetTrueProbsAsymm,
         GetTrueProbsAsymmTypes,
-        sim_sp_freq,
+        sim_sp_freq,        
+        MOMEst,
+        mom_est_sym,
+        mom_est_asym,
+        get_average_moment_branch_length,
         Network,
         quartets,
         get_quartets,
@@ -55,7 +59,6 @@ module PhyNEST
         Dstat, showallDF,
         HyDe
 
-    include("check.jl")
     include("Objects.jl")
     include("readPhylip.jl")
     include("Probabilities.jl")
