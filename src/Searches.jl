@@ -487,8 +487,8 @@ function initiate_search(starting_topology::HybridNetwork,p::Phylip,outgroup::St
                                                                     number_of_itera,
                                                                     write_log,
                                                                     logfile)
-                str="($i/$number_of_runs) Estimated topology in this run: $(writeTopologyLevel1(current_topology))\n"
-                str*="($i/$number_of_runs) Composite likelihood of the estimated topology in this run: $(current_t_clikelihood)\n"
+                str="Estimated topology in this run: $(writeTopologyLevel1(current_topology))\n"
+                str*="Composite likelihood of the estimated topology in this run: $(current_t_clikelihood)\n"
                 print(str)
                 if (write_log) writeflush(logfile,str) end
                 
